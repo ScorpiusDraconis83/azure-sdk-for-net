@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2024-11-26)
+
+### Other Changes
+
+- Updated dependency `Microsoft.Extensions.DependencyInjection` to version `8.0.11`
+- Updated dependency `Microsoft.Bcl.AsyncInterfaces` to version `8.0.0`
+
+## 1.2.4 (2024-08-16)
+
+### Other Changes
+
+- Updated reference to `Azure.Security.KeyVault.Keys` v4.6.0 to mitigate a reported SSRF vulnerability.
+
+## 1.2.3 (2024-02-12)
+
+### Bugs Fixed
+
+- Fix several issues related to ThreadPool starvation for synchronous scenarios
 
 ## 1.2.2 (2023-03-11)
 

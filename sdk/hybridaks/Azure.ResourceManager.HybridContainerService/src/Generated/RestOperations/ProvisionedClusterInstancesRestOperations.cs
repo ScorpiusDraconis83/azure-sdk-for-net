@@ -9,7 +9,6 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 using Azure.ResourceManager.HybridContainerService.Models;
@@ -33,8 +32,19 @@ namespace Azure.ResourceManager.HybridContainerService
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2023-11-15-preview";
+            _apiVersion = apiVersion ?? "2024-01-01";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
+        }
+
+        internal RequestUriBuilder CreateGetRequestUri(string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateGetRequest(string connectedClusterResourceUri)
@@ -54,8 +64,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Gets the Hybrid AKS provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Gets the provisioned cluster instance. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public async Task<Response<ProvisionedClusterData>> GetAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -80,8 +90,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Gets the Hybrid AKS provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Gets the provisioned cluster instance. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public Response<ProvisionedClusterData> Get(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -106,6 +116,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreateCreateOrUpdateRequestUri(string connectedClusterResourceUri, ProvisionedClusterData data)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateCreateOrUpdateRequest(string connectedClusterResourceUri, ProvisionedClusterData data)
         {
             var message = _pipeline.CreateMessage();
@@ -121,15 +142,15 @@ namespace Azure.ResourceManager.HybridContainerService
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
             var content = new Utf8JsonRequestContent();
-            content.JsonWriter.WriteObjectValue(data);
+            content.JsonWriter.WriteObjectValue(data, ModelSerializationExtensions.WireOptions);
             request.Content = content;
             _userAgent.Apply(message);
             return message;
         }
 
-        /// <summary> Creates the Hybrid AKS provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
-        /// <param name="data"> The <see cref="ProvisionedClusterData"/> to use. </param>
+        /// <summary> Creates or updates the provisioned cluster instance. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
+        /// <param name="data"> Provisioned Cluster resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> or <paramref name="data"/> is null. </exception>
         public async Task<Response> CreateOrUpdateAsync(string connectedClusterResourceUri, ProvisionedClusterData data, CancellationToken cancellationToken = default)
@@ -149,9 +170,9 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Creates the Hybrid AKS provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
-        /// <param name="data"> The <see cref="ProvisionedClusterData"/> to use. </param>
+        /// <summary> Creates or updates the provisioned cluster instance. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
+        /// <param name="data"> Provisioned Cluster resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> or <paramref name="data"/> is null. </exception>
         public Response CreateOrUpdate(string connectedClusterResourceUri, ProvisionedClusterData data, CancellationToken cancellationToken = default)
@@ -171,6 +192,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreateDeleteRequestUri(string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateDeleteRequest(string connectedClusterResourceUri)
         {
             var message = _pipeline.CreateMessage();
@@ -188,8 +220,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Deletes the Hybrid AKS provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Deletes the provisioned cluster instance. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public async Task<Response> DeleteAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -208,8 +240,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Deletes the Hybrid AKS provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Deletes the provisioned cluster instance. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public Response Delete(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -226,6 +258,17 @@ namespace Azure.ResourceManager.HybridContainerService
                 default:
                     throw new RequestFailedException(message.Response);
             }
+        }
+
+        internal RequestUriBuilder CreateListRequestUri(string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateListRequest(string connectedClusterResourceUri)
@@ -245,11 +288,11 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
-        public async Task<Response<ProvisionedClustersListResult>> ListAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
+        public async Task<Response<ProvisionedClusterListResult>> ListAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(connectedClusterResourceUri, nameof(connectedClusterResourceUri));
 
@@ -259,9 +302,9 @@ namespace Azure.ResourceManager.HybridContainerService
             {
                 case 200:
                     {
-                        ProvisionedClustersListResult value = default;
+                        ProvisionedClusterListResult value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ProvisionedClustersListResult.DeserializeProvisionedClustersListResult(document.RootElement);
+                        value = ProvisionedClusterListResult.DeserializeProvisionedClusterListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -269,11 +312,11 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
-        public Response<ProvisionedClustersListResult> List(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
+        public Response<ProvisionedClusterListResult> List(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(connectedClusterResourceUri, nameof(connectedClusterResourceUri));
 
@@ -283,14 +326,25 @@ namespace Azure.ResourceManager.HybridContainerService
             {
                 case 200:
                     {
-                        ProvisionedClustersListResult value = default;
+                        ProvisionedClusterListResult value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ProvisionedClustersListResult.DeserializeProvisionedClustersListResult(document.RootElement);
+                        value = ProvisionedClusterListResult.DeserializeProvisionedClusterListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
                     throw new RequestFailedException(message.Response);
             }
+        }
+
+        internal RequestUriBuilder CreateGetUpgradeProfileRequestUri(string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/upgradeProfiles/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateGetUpgradeProfileRequest(string connectedClusterResourceUri)
@@ -310,8 +364,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Gets the upgrade profile of a provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Gets the upgrade profile of a provisioned cluster. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public async Task<Response<ProvisionedClusterUpgradeProfileData>> GetUpgradeProfileAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -336,8 +390,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Gets the upgrade profile of a provisioned cluster instance. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Gets the upgrade profile of a provisioned cluster. </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public Response<ProvisionedClusterUpgradeProfileData> GetUpgradeProfile(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -362,6 +416,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreateListUserKubeconfigRequestUri(string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/listUserKubeconfig", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateListUserKubeconfigRequest(string connectedClusterResourceUri)
         {
             var message = _pipeline.CreateMessage();
@@ -379,8 +444,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Lists the AAD user credentials of a provisioned cluster instance used only in direct mode. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Lists the user credentials of the provisioned cluster (can only be used within private network). </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public async Task<Response> ListUserKubeconfigAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -399,8 +464,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Lists the AAD user credentials of a provisioned cluster instance used only in direct mode. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Lists the user credentials of the provisioned cluster (can only be used within private network). </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public Response ListUserKubeconfig(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -417,6 +482,17 @@ namespace Azure.ResourceManager.HybridContainerService
                 default:
                     throw new RequestFailedException(message.Response);
             }
+        }
+
+        internal RequestUriBuilder CreateListAdminKubeconfigRequestUri(string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(connectedClusterResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/listAdminKubeconfig", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateListAdminKubeconfigRequest(string connectedClusterResourceUri)
@@ -436,8 +512,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Lists the admin credentials of a provisioned cluster instance used only in direct mode. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Lists the admin credentials of the provisioned cluster (can only be used within private network). </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public async Task<Response> ListAdminKubeconfigAsync(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -456,8 +532,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Lists the admin credentials of a provisioned cluster instance used only in direct mode. </summary>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <summary> Lists the admin credentials of the provisioned cluster (can only be used within private network). </summary>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="connectedClusterResourceUri"/> is null. </exception>
         public Response ListAdminKubeconfig(string connectedClusterResourceUri, CancellationToken cancellationToken = default)
@@ -476,6 +552,14 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreateListNextPageRequestUri(string nextLink, string connectedClusterResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendRawNextLink(nextLink, false);
+            return uri;
+        }
+
         internal HttpMessage CreateListNextPageRequest(string nextLink, string connectedClusterResourceUri)
         {
             var message = _pipeline.CreateMessage();
@@ -490,12 +574,12 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster. </summary>
+        /// <summary> Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/> or <paramref name="connectedClusterResourceUri"/> is null. </exception>
-        public async Task<Response<ProvisionedClustersListResult>> ListNextPageAsync(string nextLink, string connectedClusterResourceUri, CancellationToken cancellationToken = default)
+        public async Task<Response<ProvisionedClusterListResult>> ListNextPageAsync(string nextLink, string connectedClusterResourceUri, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNull(connectedClusterResourceUri, nameof(connectedClusterResourceUri));
@@ -506,9 +590,9 @@ namespace Azure.ResourceManager.HybridContainerService
             {
                 case 200:
                     {
-                        ProvisionedClustersListResult value = default;
+                        ProvisionedClusterListResult value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ProvisionedClustersListResult.DeserializeProvisionedClustersListResult(document.RootElement);
+                        value = ProvisionedClusterListResult.DeserializeProvisionedClusterListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -516,12 +600,12 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Gets the Hybrid AKS provisioned cluster instances associated with the connected cluster. </summary>
+        /// <summary> Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
-        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource manager identifier of the connected cluster resource. </param>
+        /// <param name="connectedClusterResourceUri"> The fully qualified Azure Resource Manager identifier of the connected cluster resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="nextLink"/> or <paramref name="connectedClusterResourceUri"/> is null. </exception>
-        public Response<ProvisionedClustersListResult> ListNextPage(string nextLink, string connectedClusterResourceUri, CancellationToken cancellationToken = default)
+        public Response<ProvisionedClusterListResult> ListNextPage(string nextLink, string connectedClusterResourceUri, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNull(nextLink, nameof(nextLink));
             Argument.AssertNotNull(connectedClusterResourceUri, nameof(connectedClusterResourceUri));
@@ -532,9 +616,9 @@ namespace Azure.ResourceManager.HybridContainerService
             {
                 case 200:
                     {
-                        ProvisionedClustersListResult value = default;
+                        ProvisionedClusterListResult value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ProvisionedClustersListResult.DeserializeProvisionedClustersListResult(document.RootElement);
+                        value = ProvisionedClusterListResult.DeserializeProvisionedClusterListResult(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:

@@ -7,11 +7,8 @@
 
 using System.Threading;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Authorization;
 using Azure.ResourceManager.Authorization.Models;
 
 namespace Azure.ResourceManager.Authorization.Mocking
@@ -66,7 +63,7 @@ namespace Azure.ResourceManager.Authorization.Mocking
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => ClassicAdministratorsRestClient.CreateListRequest(Id.SubscriptionId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => ClassicAdministratorsRestClient.CreateListNextPageRequest(nextLink, Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, AuthorizationClassicAdministrator.DeserializeAuthorizationClassicAdministrator, ClassicAdministratorsClientDiagnostics, Pipeline, "MockableAuthorizationSubscriptionResource.GetClassicAdministrators", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => AuthorizationClassicAdministrator.DeserializeAuthorizationClassicAdministrator(e), ClassicAdministratorsClientDiagnostics, Pipeline, "MockableAuthorizationSubscriptionResource.GetClassicAdministrators", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -92,7 +89,7 @@ namespace Azure.ResourceManager.Authorization.Mocking
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => ClassicAdministratorsRestClient.CreateListRequest(Id.SubscriptionId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => ClassicAdministratorsRestClient.CreateListNextPageRequest(nextLink, Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, AuthorizationClassicAdministrator.DeserializeAuthorizationClassicAdministrator, ClassicAdministratorsClientDiagnostics, Pipeline, "MockableAuthorizationSubscriptionResource.GetClassicAdministrators", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => AuthorizationClassicAdministrator.DeserializeAuthorizationClassicAdministrator(e), ClassicAdministratorsClientDiagnostics, Pipeline, "MockableAuthorizationSubscriptionResource.GetClassicAdministrators", "value", "nextLink", cancellationToken);
         }
     }
 }

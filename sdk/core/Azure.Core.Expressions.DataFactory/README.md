@@ -89,10 +89,10 @@ blobDataSet.FolderPath = DataFactoryElement<string>.FromSecretString("some/secre
 #### Key Vault Secret Reference
 
 ```C# Snippet:DataFactoryElementKeyVaultSecretReference
-var store = new DataFactoryLinkedServiceReference(DataFactoryLinkedServiceReferenceType.LinkedServiceReference,
+var store = new DataFactoryLinkedServiceReference(DataFactoryLinkedServiceReferenceKind.LinkedServiceReference,
     "referenceName");
-var keyVaultReference = new DataFactoryKeyVaultSecretReference(store, "secretName");
-blobDataSet.FolderPath = DataFactoryElement<string>.FromKeyVaultSecretReference(keyVaultReference);
+var keyVaultReference = new DataFactoryKeyVaultSecret(store, "secretName");
+blobDataSet.FolderPath = DataFactoryElement<string>.FromKeyVaultSecret(keyVaultReference);
 ```
 
 In each case the library will be able to serialize and deserialize all scenarios appropriately allowing you to seamlessly use either according to your application's needs.
@@ -117,6 +117,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 [source]: https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/core/Azure.Core/src
 [package]: https://www.nuget.org/packages/Azure.Core/
-[docs]: https://docs.microsoft.com/dotnet/api/azure.core
+[docs]: https://learn.microsoft.com/dotnet/api/azure.core
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/

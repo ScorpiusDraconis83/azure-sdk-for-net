@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 
 namespace Azure.Communication.CallAutomation
 {
@@ -19,6 +20,7 @@ namespace Azure.Communication.CallAutomation
         {
             IncomingCallContext = incomingCallContext;
             CallbackUri = callbackUri;
+            CustomCallingContext = new CustomCallingContext(sipHeaders: new Dictionary<string, string>(), voipHeaders: new Dictionary<string, string>());
         }
 
         /// <summary>
@@ -57,9 +59,8 @@ namespace Azure.Communication.CallAutomation
         public string OperationContext { get; set; }
 
         /// <summary>
-        /// The caller ID number which is a phone number that will be used when inviting a pstn target.
-        /// Required only when this is an incoming voip call and there will be a transfer call request to a PSTN target.
+        /// The Custom Context which contains SIP and voip headers.
         /// </summary>
-        public PhoneNumberIdentifier SourceCallerIdNumber { get; set; }
+        public CustomCallingContext CustomCallingContext { get; }
     }
 }

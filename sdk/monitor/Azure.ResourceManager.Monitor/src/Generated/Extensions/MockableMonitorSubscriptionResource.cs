@@ -9,11 +9,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Monitor;
 using Azure.ResourceManager.Monitor.Models;
 
 namespace Azure.ResourceManager.Monitor.Mocking
@@ -45,6 +42,8 @@ namespace Azure.ResourceManager.Monitor.Mocking
         private DataCollectionRulesRestOperations _dataCollectionRuleRestClient;
         private ClientDiagnostics _monitorWorkspaceResourceAzureMonitorWorkspacesClientDiagnostics;
         private AzureMonitorWorkspacesRestOperations _monitorWorkspaceResourceAzureMonitorWorkspacesRestClient;
+        private ClientDiagnostics _pipelineGroupClientDiagnostics;
+        private PipelineGroupsRestOperations _pipelineGroupRestClient;
 
         /// <summary> Initializes a new instance of the <see cref="MockableMonitorSubscriptionResource"/> class for mocking. </summary>
         protected MockableMonitorSubscriptionResource()
@@ -82,6 +81,8 @@ namespace Azure.ResourceManager.Monitor.Mocking
         private DataCollectionRulesRestOperations DataCollectionRuleRestClient => _dataCollectionRuleRestClient ??= new DataCollectionRulesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(DataCollectionRuleResource.ResourceType));
         private ClientDiagnostics MonitorWorkspaceResourceAzureMonitorWorkspacesClientDiagnostics => _monitorWorkspaceResourceAzureMonitorWorkspacesClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", MonitorWorkspaceResource.ResourceType.Namespace, Diagnostics);
         private AzureMonitorWorkspacesRestOperations MonitorWorkspaceResourceAzureMonitorWorkspacesRestClient => _monitorWorkspaceResourceAzureMonitorWorkspacesRestClient ??= new AzureMonitorWorkspacesRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(MonitorWorkspaceResource.ResourceType));
+        private ClientDiagnostics PipelineGroupClientDiagnostics => _pipelineGroupClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.Monitor", PipelineGroupResource.ResourceType.Namespace, Diagnostics);
+        private PipelineGroupsRestOperations PipelineGroupRestClient => _pipelineGroupRestClient ??= new PipelineGroupsRestOperations(Pipeline, Diagnostics.ApplicationId, Endpoint, GetApiVersionOrNull(PipelineGroupResource.ResourceType));
 
         private string GetApiVersionOrNull(ResourceType resourceType)
         {
@@ -362,7 +363,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => ActivityLogsRestClient.CreateListRequest(Id.SubscriptionId, filter, select);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => ActivityLogsRestClient.CreateListNextPageRequest(nextLink, Id.SubscriptionId, filter, select);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, EventDataInfo.DeserializeEventDataInfo, ActivityLogsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetActivityLogs", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => EventDataInfo.DeserializeEventDataInfo(e), ActivityLogsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetActivityLogs", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -393,7 +394,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => ActivityLogsRestClient.CreateListRequest(Id.SubscriptionId, filter, select);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => ActivityLogsRestClient.CreateListNextPageRequest(nextLink, Id.SubscriptionId, filter, select);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, EventDataInfo.DeserializeEventDataInfo, ActivityLogsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetActivityLogs", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => EventDataInfo.DeserializeEventDataInfo(e), ActivityLogsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetActivityLogs", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -422,7 +423,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
             Argument.AssertNotNull(options, nameof(options));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => MetricsRestClient.CreateListAtSubscriptionScopeRequest(Id.SubscriptionId, options.Region, options.Timespan, options.Interval, options.Metricnames, options.Aggregation, options.Top, options.Orderby, options.Filter, options.ResultType, options.Metricnamespace, options.AutoAdjustTimegrain, options.ValidateDimensions);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric, MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetrics", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric(e), MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetrics", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -451,7 +452,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
             Argument.AssertNotNull(options, nameof(options));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => MetricsRestClient.CreateListAtSubscriptionScopeRequest(Id.SubscriptionId, options.Region, options.Timespan, options.Interval, options.Metricnames, options.Aggregation, options.Top, options.Orderby, options.Filter, options.ResultType, options.Metricnamespace, options.AutoAdjustTimegrain, options.ValidateDimensions);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric, MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetrics", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric(e), MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetrics", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -480,7 +481,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
             Argument.AssertNotNull(options, nameof(options));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => MetricsRestClient.CreateListAtSubscriptionScopePostRequest(Id.SubscriptionId, options.Region, options.Content, options.Timespan, options.Interval, options.Metricnames, options.Aggregation, options.Top, options.Orderby, options.Filter, options.ResultType, options.Metricnamespace, options.AutoAdjustTimegrain, options.ValidateDimensions);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric, MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetricsWithPost", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric(e), MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetricsWithPost", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -509,7 +510,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
             Argument.AssertNotNull(options, nameof(options));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => MetricsRestClient.CreateListAtSubscriptionScopePostRequest(Id.SubscriptionId, options.Region, options.Content, options.Timespan, options.Interval, options.Metricnames, options.Aggregation, options.Top, options.Orderby, options.Filter, options.ResultType, options.Metricnamespace, options.AutoAdjustTimegrain, options.ValidateDimensions);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric, MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetricsWithPost", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => SubscriptionMonitorMetric.DeserializeSubscriptionMonitorMetric(e), MetricsClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorMetricsWithPost", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -883,7 +884,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-03</description>
+        /// <description>2023-10-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -913,7 +914,7 @@ namespace Azure.ResourceManager.Monitor.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-03</description>
+        /// <description>2023-10-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -928,6 +929,66 @@ namespace Azure.ResourceManager.Monitor.Mocking
             HttpMessage FirstPageRequest(int? pageSizeHint) => MonitorWorkspaceResourceAzureMonitorWorkspacesRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => MonitorWorkspaceResourceAzureMonitorWorkspacesRestClient.CreateListBySubscriptionNextPageRequest(nextLink, Id.SubscriptionId);
             return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => new MonitorWorkspaceResource(Client, MonitorWorkspaceResourceData.DeserializeMonitorWorkspaceResourceData(e)), MonitorWorkspaceResourceAzureMonitorWorkspacesClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetMonitorWorkspaceResources", "value", "nextLink", cancellationToken);
+        }
+
+        /// <summary>
+        /// Lists all workspaces in the specified subscription
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/providers/Microsoft.Monitor/pipelineGroups</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>PipelineGroups_ListBySubscription</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-10-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="PipelineGroupResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> An async collection of <see cref="PipelineGroupResource"/> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<PipelineGroupResource> GetPipelineGroupsAsync(CancellationToken cancellationToken = default)
+        {
+            HttpMessage FirstPageRequest(int? pageSizeHint) => PipelineGroupRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId);
+            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => PipelineGroupRestClient.CreateListBySubscriptionNextPageRequest(nextLink, Id.SubscriptionId);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => new PipelineGroupResource(Client, PipelineGroupData.DeserializePipelineGroupData(e)), PipelineGroupClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetPipelineGroups", "value", "nextLink", cancellationToken);
+        }
+
+        /// <summary>
+        /// Lists all workspaces in the specified subscription
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/providers/Microsoft.Monitor/pipelineGroups</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>PipelineGroups_ListBySubscription</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-10-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="PipelineGroupResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="PipelineGroupResource"/> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<PipelineGroupResource> GetPipelineGroups(CancellationToken cancellationToken = default)
+        {
+            HttpMessage FirstPageRequest(int? pageSizeHint) => PipelineGroupRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId);
+            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => PipelineGroupRestClient.CreateListBySubscriptionNextPageRequest(nextLink, Id.SubscriptionId);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => new PipelineGroupResource(Client, PipelineGroupData.DeserializePipelineGroupData(e)), PipelineGroupClientDiagnostics, Pipeline, "MockableMonitorSubscriptionResource.GetPipelineGroups", "value", "nextLink", cancellationToken);
         }
     }
 }

@@ -16,11 +16,11 @@ namespace Azure.Communication.CallAutomation
         /// <summary>
         /// Parsing a MediaStreaming package from BinaryData.
         /// </summary>
-        /// <param name="json"></param>
+        /// <param name="binaryData"></param>
         /// <returns></returns>
-        public static StreamingData Parse(BinaryData json)
+        public static StreamingData Parse(BinaryData binaryData)
         {
-            return Parse(json.ToString());
+            return Parse(binaryData.ToString());
         }
 
         /// <summary>
@@ -71,12 +71,13 @@ namespace Azure.Communication.CallAutomation
                         transcriptionDataInternal.Format,
                         transcriptionDataInternal.Confidence,
                         transcriptionDataInternal.Offset,
+                        transcriptionDataInternal.Duration,
                         transcriptionDataInternal.Words,
                         transcriptionDataInternal.ParticipantRawID,
-                        transcriptionDataInternal.ResultStatus
+                        transcriptionDataInternal.ResultState
                         );
 
-                    #endregion
+                #endregion
 
                 default:
                     throw new NotSupportedException(stringJson);

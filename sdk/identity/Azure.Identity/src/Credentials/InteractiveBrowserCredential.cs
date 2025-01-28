@@ -16,9 +16,6 @@ namespace Azure.Identity
     /// The browser will only be launched to authenticate the user once, then will silently acquire access tokens through the users refresh token as long as it's valid.
     /// </summary>
     public class InteractiveBrowserCredential : TokenCredential
-#if PREVIEW_FEATURE_FLAG
-    , ISupportsProofOfPossession
-#endif
     {
         internal string TenantId { get; }
         internal string[] AdditionallyAllowedTenantIds { get; }
@@ -28,9 +25,10 @@ namespace Azure.Identity
         internal MsalPublicClient Client { get; }
         internal CredentialPipeline Pipeline { get; }
         internal bool DisableAutomaticAuthentication { get; }
-        internal AuthenticationRecord Record { get; private set; }
+        internal AuthenticationRecord Record { get; set; }
         internal string DefaultScope { get; }
         internal TenantIdResolverBase TenantIdResolver { get; }
+        internal bool UseOperatingSystemAccount { get; }
 
         private const string AuthenticationRequiredMessage = "Interactive authentication is needed to acquire token. Call Authenticate to interactively authenticate.";
         private const string NoDefaultScopeMessage = "Authenticating in this environment requires specifying a TokenRequestContext.";
@@ -56,7 +54,7 @@ namespace Azure.Identity
         /// <summary>
         /// Creates a new <see cref="InteractiveBrowserCredential"/> with the specified options, which will authenticate users with the specified application.
         /// </summary>
-        /// <param name="clientId">The client id of the application to which the users will authenticate</param>
+        /// <param name="clientId">The client id of the application to which the users will authenticate. It is recommended that developers register their applications and assign appropriate roles. For more information, visit <see href="https://aka.ms/azsdk/identity/AppRegistrationAndRoleAssignment"/>. If not specified, users will authenticate to an Azure development application, which is not recommended for production scenarios.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public InteractiveBrowserCredential(string clientId)
             : this(null, clientId, null, null)
@@ -66,7 +64,7 @@ namespace Azure.Identity
         /// Creates a new <see cref="InteractiveBrowserCredential"/> with the specified options, which will authenticate users with the specified application.
         /// </summary>
         /// <param name="tenantId">The tenant id of the application and the users to authenticate. Can be null in the case of multi-tenant applications.</param>
-        /// <param name="clientId">The client id of the application to which the users will authenticate</param>
+        /// <param name="clientId">The client id of the application to which the users will authenticate. It is recommended that developers register their applications and assign appropriate roles. For more information, visit <see href="https://aka.ms/azsdk/identity/AppRegistrationAndRoleAssignment"/>. If not specified, users will authenticate to an Azure development application, which is not recommended for production scenarios.</param>
         /// TODO: need to link to info on how the application has to be created to authenticate users, for multiple applications
         /// <param name="options">The client options for the newly created <see cref="InteractiveBrowserCredential"/>.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -95,6 +93,7 @@ namespace Azure.Identity
             AdditionallyAllowedTenantIds = TenantIdResolver.ResolveAddionallyAllowedTenantIds((options as ISupportsAdditionallyAllowedTenants)?.AdditionallyAllowedTenants);
             Record = (options as InteractiveBrowserCredentialOptions)?.AuthenticationRecord;
             BrowserCustomization = (options as InteractiveBrowserCredentialOptions)?.BrowserCustomization;
+            UseOperatingSystemAccount = (options as IMsalPublicClientInitializerOptions)?.UseDefaultBrokerAccount ?? false;
         }
 
         /// <summary>
@@ -150,58 +149,34 @@ namespace Azure.Identity
         }
 
         /// <summary>
-        /// Obtains an <see cref="AccessToken"/> token for a user account silently if the user has already authenticated, otherwise the
-        /// default browser is launched to authenticate the user. Acquired tokens are cached by the credential instance. Token lifetime and
-        /// refreshing is handled automatically. Where possible, reuse credential instances to optimize cache effectiveness.
+        /// Silently obtains an <see cref="AccessToken"/> for a user account if the user has already authenticated. Otherwise, the default browser is launched
+        /// to authenticate the user. Acquired tokens are <see href="https://aka.ms/azsdk/net/identity/token-cache">cached</see> by the
+        /// credential instance. Token lifetime and refreshing is handled automatically. Where possible, <see href="https://aka.ms/azsdk/net/identity/credential-reuse">reuse credential instances</see>
+        /// to optimize cache effectiveness.
         /// </summary>
         /// <param name="requestContext">The details of the authentication request.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> controlling the request lifetime.</param>
         /// <returns>An <see cref="AccessToken"/> which can be used to authenticate service client calls.</returns>
+        /// <exception cref="AuthenticationFailedException">Thrown when the authentication failed.</exception>
         public override AccessToken GetToken(TokenRequestContext requestContext, CancellationToken cancellationToken = default)
-        {
-            return GetTokenImplAsync(false, PopTokenRequestContext.FromTokenRequestContext(requestContext), cancellationToken).EnsureCompleted();
-        }
-
-        /// <summary>
-        /// Obtains an <see cref="AccessToken"/> token for a user account silently if the user has already authenticated, otherwise the
-        /// default browser is launched to authenticate the user. Acquired tokens are cached by the credential instance. Token lifetime and
-        /// refreshing is handled automatically. Where possible, reuse credential instances to optimize cache effectiveness.
-        /// </summary>
-        /// <param name="requestContext">The details of the authentication request.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> controlling the request lifetime.</param>
-        /// <returns>An <see cref="AccessToken"/> which can be used to authenticate service client calls.</returns>
-        public override async ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken = default)
-        {
-            return await GetTokenImplAsync(true, PopTokenRequestContext.FromTokenRequestContext(requestContext), cancellationToken).ConfigureAwait(false);
-        }
-
-#if PREVIEW_FEATURE_FLAG
-        /// <summary>
-        /// Obtains an <see cref="AccessToken"/> token for a user account silently if the user has already authenticated, otherwise the
-        /// default browser is launched to authenticate the user. Acquired tokens are cached by the credential instance. Token lifetime and
-        /// refreshing is handled automatically. Where possible, reuse credential instances to optimize cache effectiveness.
-        /// </summary>
-        /// <param name="requestContext">The details of the authentication request.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> controlling the request lifetime.</param>
-        /// <returns>An <see cref="AccessToken"/> which can be used to authenticate service client calls.</returns>
-        public AccessToken GetToken(PopTokenRequestContext requestContext, CancellationToken cancellationToken = default)
         {
             return GetTokenImplAsync(false, requestContext, cancellationToken).EnsureCompleted();
         }
 
         /// <summary>
-        /// Obtains an <see cref="AccessToken"/> token for a user account silently if the user has already authenticated, otherwise the
-        /// default browser is launched to authenticate the user. Acquired tokens are cached by the credential instance. Token lifetime and
-        /// refreshing is handled automatically. Where possible, reuse credential instances to optimize cache effectiveness.
+        /// Silently obtains an <see cref="AccessToken"/> for a user account if the user has already authenticated. Otherwise, the default browser is launched
+        /// to authenticate the user. Acquired tokens are <see href="https://aka.ms/azsdk/net/identity/token-cache">cached</see> by the
+        /// credential instance. Token lifetime and refreshing is handled automatically. Where possible, <see href="https://aka.ms/azsdk/net/identity/credential-reuse">reuse credential instances</see>
+        /// to optimize cache effectiveness.
         /// </summary>
         /// <param name="requestContext">The details of the authentication request.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> controlling the request lifetime.</param>
         /// <returns>An <see cref="AccessToken"/> which can be used to authenticate service client calls.</returns>
-        public async ValueTask<AccessToken> GetTokenAsync(PopTokenRequestContext requestContext, CancellationToken cancellationToken = default)
+        /// <exception cref="AuthenticationFailedException">Thrown when the authentication failed.</exception>
+        public override async ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken = default)
         {
             return await GetTokenImplAsync(true, requestContext, cancellationToken).ConfigureAwait(false);
         }
-#endif
 
         private async Task<AuthenticationRecord> AuthenticateImplAsync(bool async, TokenRequestContext requestContext, CancellationToken cancellationToken)
         {
@@ -209,7 +184,7 @@ namespace Azure.Identity
 
             try
             {
-                scope.Succeeded(await GetTokenViaBrowserLoginAsync(PopTokenRequestContext.FromTokenRequestContext(requestContext), async, cancellationToken).ConfigureAwait(false));
+                scope.Succeeded(await GetTokenViaBrowserLoginAsync(requestContext, async, cancellationToken).ConfigureAwait(false));
 
                 return Record;
             }
@@ -219,7 +194,7 @@ namespace Azure.Identity
             }
         }
 
-        private async ValueTask<AccessToken> GetTokenImplAsync(bool async, PopTokenRequestContext requestContext, CancellationToken cancellationToken)
+        private async ValueTask<AccessToken> GetTokenImplAsync(bool async, TokenRequestContext requestContext, CancellationToken cancellationToken)
         {
             using CredentialDiagnosticScope scope = Pipeline.StartGetTokenScope($"{nameof(InteractiveBrowserCredential)}.{nameof(GetToken)}", requestContext);
 
@@ -228,15 +203,41 @@ namespace Azure.Identity
                 Exception inner = null;
 
                 var tenantId = TenantIdResolver.Resolve(TenantId ?? Record?.TenantId, requestContext, AdditionallyAllowedTenantIds);
-                if (Record is not null)
+                if (Record is not null || UseOperatingSystemAccount)
                 {
                     try
                     {
-                        AuthenticationResult result = await Client
-                            .AcquireTokenSilentAsync(requestContext.Scopes, requestContext.Claims, Record, tenantId, requestContext.IsCaeEnabled, async, cancellationToken)
-                            .ConfigureAwait(false);
+                        AuthenticationResult result;
+                        if (Record is null)
+                        {
+                            result = await Client
+                                .AcquireTokenSilentAsync(
+                                    requestContext.Scopes,
+                                    requestContext.Claims,
+                                    PublicClientApplication.OperatingSystemAccount,
+                                    tenantId,
+                                    requestContext.IsCaeEnabled,
+                                    requestContext,
+                                    async,
+                                    cancellationToken)
+                                .ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            result = await Client
+                                .AcquireTokenSilentAsync(
+                                    requestContext.Scopes,
+                                    requestContext.Claims,
+                                    Record,
+                                    tenantId,
+                                    requestContext.IsCaeEnabled,
+                                    requestContext,
+                                    async,
+                                    cancellationToken)
+                                .ConfigureAwait(false);
+                        }
 
-                        return scope.Succeeded(new AccessToken(result.AccessToken, result.ExpiresOn));
+                        return scope.Succeeded(result.ToAccessToken());
                     }
                     catch (MsalUiRequiredException e)
                     {
@@ -246,7 +247,7 @@ namespace Azure.Identity
 
                 if (DisableAutomaticAuthentication)
                 {
-                    throw new AuthenticationRequiredException(AuthenticationRequiredMessage, requestContext.ToTokenRequestContext(), inner);
+                    throw new AuthenticationRequiredException(AuthenticationRequiredMessage, requestContext, inner);
                 }
 
                 return scope.Succeeded(await GetTokenViaBrowserLoginAsync(requestContext, async, cancellationToken).ConfigureAwait(false));
@@ -257,7 +258,7 @@ namespace Azure.Identity
             }
         }
 
-        private async Task<AccessToken> GetTokenViaBrowserLoginAsync(PopTokenRequestContext context, bool async, CancellationToken cancellationToken)
+        private async Task<AccessToken> GetTokenViaBrowserLoginAsync(TokenRequestContext context, bool async, CancellationToken cancellationToken)
         {
             Prompt prompt = LoginHint switch
             {
@@ -267,11 +268,21 @@ namespace Azure.Identity
 
             var tenantId = TenantIdResolver.Resolve(TenantId ?? Record?.TenantId, context, AdditionallyAllowedTenantIds);
             AuthenticationResult result = await Client
-                .AcquireTokenInteractiveAsync(context.Scopes, context.Claims, prompt, LoginHint, tenantId, context.IsCaeEnabled, BrowserCustomization, context, async, cancellationToken)
+                .AcquireTokenInteractiveAsync(
+                    context.Scopes,
+                    context.Claims,
+                    prompt,
+                    LoginHint,
+                    tenantId,
+                    context.IsCaeEnabled,
+                    BrowserCustomization,
+                    context,
+                    async,
+                    cancellationToken)
                 .ConfigureAwait(false);
 
             Record = new AuthenticationRecord(result, ClientId);
-            return new AccessToken(result.AccessToken, result.ExpiresOn);
+            return result.ToAccessToken();
         }
     }
 }

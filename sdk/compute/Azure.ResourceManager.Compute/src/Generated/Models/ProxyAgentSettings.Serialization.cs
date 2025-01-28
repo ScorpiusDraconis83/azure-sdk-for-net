@@ -5,16 +5,35 @@
 
 #nullable disable
 
+using System;
+using System.ClientModel.Primitives;
+using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 
 namespace Azure.ResourceManager.Compute.Models
 {
-    public partial class ProxyAgentSettings : IUtf8JsonSerializable
+    public partial class ProxyAgentSettings : IUtf8JsonSerializable, IJsonModel<ProxyAgentSettings>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ProxyAgentSettings>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+
+        void IJsonModel<ProxyAgentSettings>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ProxyAgentSettings>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(ProxyAgentSettings)} does not support writing '{format}' format.");
+            }
+
             if (Optional.IsDefined(Enabled))
             {
                 writer.WritePropertyName("enabled"u8);
@@ -30,18 +49,48 @@ namespace Azure.ResourceManager.Compute.Models
                 writer.WritePropertyName("keyIncarnationId"u8);
                 writer.WriteNumberValue(KeyIncarnationId.Value);
             }
-            writer.WriteEndObject();
+            if (options.Format != "W" && _serializedAdditionalRawData != null)
+            {
+                foreach (var item in _serializedAdditionalRawData)
+                {
+                    writer.WritePropertyName(item.Key);
+#if NET6_0_OR_GREATER
+				writer.WriteRawValue(item.Value);
+#else
+                    using (JsonDocument document = JsonDocument.Parse(item.Value))
+                    {
+                        JsonSerializer.Serialize(writer, document.RootElement);
+                    }
+#endif
+                }
+            }
         }
 
-        internal static ProxyAgentSettings DeserializeProxyAgentSettings(JsonElement element)
+        ProxyAgentSettings IJsonModel<ProxyAgentSettings>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
+            var format = options.Format == "W" ? ((IPersistableModel<ProxyAgentSettings>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(ProxyAgentSettings)} does not support reading '{format}' format.");
+            }
+
+            using JsonDocument document = JsonDocument.ParseValue(ref reader);
+            return DeserializeProxyAgentSettings(document.RootElement, options);
+        }
+
+        internal static ProxyAgentSettings DeserializeProxyAgentSettings(JsonElement element, ModelReaderWriterOptions options = null)
+        {
+            options ??= ModelSerializationExtensions.WireOptions;
+
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<bool> enabled = default;
-            Optional<Mode> mode = default;
-            Optional<int> keyIncarnationId = default;
+            bool? enabled = default;
+            Mode? mode = default;
+            int? keyIncarnationId = default;
+            IDictionary<string, BinaryData> serializedAdditionalRawData = default;
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("enabled"u8))
@@ -71,8 +120,44 @@ namespace Azure.ResourceManager.Compute.Models
                     keyIncarnationId = property.Value.GetInt32();
                     continue;
                 }
+                if (options.Format != "W")
+                {
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                }
             }
-            return new ProxyAgentSettings(Optional.ToNullable(enabled), Optional.ToNullable(mode), Optional.ToNullable(keyIncarnationId));
+            serializedAdditionalRawData = rawDataDictionary;
+            return new ProxyAgentSettings(enabled, mode, keyIncarnationId, serializedAdditionalRawData);
         }
+
+        BinaryData IPersistableModel<ProxyAgentSettings>.Write(ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ProxyAgentSettings>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options);
+                default:
+                    throw new FormatException($"The model {nameof(ProxyAgentSettings)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        ProxyAgentSettings IPersistableModel<ProxyAgentSettings>.Create(BinaryData data, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ProxyAgentSettings>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    {
+                        using JsonDocument document = JsonDocument.Parse(data);
+                        return DeserializeProxyAgentSettings(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(ProxyAgentSettings)} does not support reading '{options.Format}' format.");
+            }
+        }
+
+        string IPersistableModel<ProxyAgentSettings>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }
