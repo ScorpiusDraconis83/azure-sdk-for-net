@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Enable the new model serialization by using the System.ClientModel, refer this [document](https://aka.ms/azsdk/net/mrw) for more details.
+- Exposed `JsonModelWriteCore` for model serialization procedure.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -43,7 +46,7 @@
 This release is the first stable release of the Fluid Relay management library.
 
 ### Breaking Changes
-    
+
 Polishing since last public beta release:
 - Prepended `FluidRelay` prefix to all single / simple model names.
 - Corrected the format of all `ResourceIdentifier` type properties / parameters.
@@ -73,4 +76,4 @@ This package follows the [new Azure SDK guidelines](https://azure.github.io/azur
 
 This package is a Public Preview version, so expect incompatible changes in subsequent releases as we improve the product. To provide feedback, submit an issue in our [Azure SDK for .NET GitHub repo](https://github.com/Azure/azure-sdk-for-net/issues).
 
-> NOTE: For more information about unified authentication, refer to [Microsoft Azure Identity documentation for .NET](https://docs.microsoft.com//dotnet/api/overview/azure/identity-readme?view=azure-dotnet).
+> NOTE: For more information about unified authentication, refer to [Microsoft Azure Identity documentation for .NET](https://learn.microsoft.com/dotnet/api/overview/azure/identity-readme?view=azure-dotnet).

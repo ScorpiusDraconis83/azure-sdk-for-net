@@ -6,7 +6,6 @@
 #nullable disable
 
 using System.Text.Json;
-using Azure.Core;
 
 namespace Azure.Communication.CallAutomation
 {
@@ -18,24 +17,15 @@ namespace Azure.Communication.CallAutomation
             {
                 return null;
             }
-            Optional<ResultInformation> resultInformation = default;
-            Optional<int> sequenceId = default;
-            Optional<DtmfTone> tone = default;
-            Optional<string> operationContext = default;
-            Optional<string> callConnectionId = default;
-            Optional<string> serverCallId = default;
-            Optional<string> correlationId = default;
+            int? sequenceId = default;
+            DtmfTone? tone = default;
+            string callConnectionId = default;
+            string serverCallId = default;
+            string correlationId = default;
+            string operationContext = default;
+            ResultInformation resultInformation = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("resultInformation"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    resultInformation = ResultInformation.DeserializeResultInformation(property.Value);
-                    continue;
-                }
                 if (property.NameEquals("sequenceId"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -54,11 +44,6 @@ namespace Azure.Communication.CallAutomation
                     tone = new DtmfTone(property.Value.GetString());
                     continue;
                 }
-                if (property.NameEquals("operationContext"u8))
-                {
-                    operationContext = property.Value.GetString();
-                    continue;
-                }
                 if (property.NameEquals("callConnectionId"u8))
                 {
                     callConnectionId = property.Value.GetString();
@@ -74,8 +59,37 @@ namespace Azure.Communication.CallAutomation
                     correlationId = property.Value.GetString();
                     continue;
                 }
+                if (property.NameEquals("operationContext"u8))
+                {
+                    operationContext = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("resultInformation"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    resultInformation = ResultInformation.DeserializeResultInformation(property.Value);
+                    continue;
+                }
             }
-            return new ContinuousDtmfRecognitionToneReceived(resultInformation.Value, Optional.ToNullable(sequenceId), Optional.ToNullable(tone), operationContext.Value, callConnectionId.Value, serverCallId.Value, correlationId.Value);
+            return new ContinuousDtmfRecognitionToneReceived(
+                sequenceId,
+                tone,
+                callConnectionId,
+                serverCallId,
+                correlationId,
+                operationContext,
+                resultInformation);
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static ContinuousDtmfRecognitionToneReceived FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeContinuousDtmfRecognitionToneReceived(document.RootElement);
         }
     }
 }

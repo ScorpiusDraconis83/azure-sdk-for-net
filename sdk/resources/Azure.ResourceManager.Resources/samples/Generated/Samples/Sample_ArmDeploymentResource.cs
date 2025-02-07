@@ -6,25 +6,21 @@
 #nullable disable
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Resources;
 using Azure.ResourceManager.Resources.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.Resources.Samples
 {
     public partial class Sample_ArmDeploymentResource
     {
-        // Create deployment at a given scope.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_CreateDeploymentAtAGivenScope()
         {
-            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentAtScope.json
+            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentAtScope.json
             // this example is just showing the usage of "Deployments_CreateOrUpdateAtScope" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -42,20 +38,18 @@ namespace Azure.ResourceManager.Resources.Samples
             // invoke the operation
             ArmDeploymentContent content = new ArmDeploymentContent(new ArmDeploymentProperties(ArmDeploymentMode.Incremental)
             {
-                TemplateLink = new ArmDeploymentTemplateLink()
+                TemplateLink = new ArmDeploymentTemplateLink
                 {
                     Uri = new Uri("https://example.com/exampleTemplate.json"),
                 },
-                Parameters = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
-                {
-                }),
+                Parameters = BinaryData.FromObjectAsJson(new object()),
             })
             {
                 Location = new AzureLocation("eastus"),
                 Tags =
 {
 ["tagKey1"] = "tag-value-1",
-["tagKey2"] = "tag-value-2",
+["tagKey2"] = "tag-value-2"
 },
             };
             ArmOperation<ArmDeploymentResource> lro = await armDeployment.UpdateAsync(WaitUntil.Completed, content);
@@ -68,12 +62,11 @@ namespace Azure.ResourceManager.Resources.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Predict template changes at management group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task WhatIf_PredictTemplateChangesAtManagementGroupScope()
         {
-            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnTenant.json
+            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnTenant.json
             // this example is just showing the usage of "Deployments_WhatIfAtTenantScope" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -91,13 +84,11 @@ namespace Azure.ResourceManager.Resources.Samples
             // invoke the operation
             ArmDeploymentWhatIfContent content = new ArmDeploymentWhatIfContent(new ArmDeploymentWhatIfProperties(ArmDeploymentMode.Incremental)
             {
-                TemplateLink = new ArmDeploymentTemplateLink()
+                TemplateLink = new ArmDeploymentTemplateLink
                 {
                     Uri = new Uri("https://example.com/exampleTemplate.json"),
                 },
-                Parameters = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
-                {
-                }),
+                Parameters = BinaryData.FromObjectAsJson(new object()),
             })
             {
                 Location = new AzureLocation("eastus"),
@@ -108,12 +99,11 @@ namespace Azure.ResourceManager.Resources.Samples
             Console.WriteLine($"Succeeded: {result}");
         }
 
-        // Predict template changes at management group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task WhatIf_PredictTemplateChangesAtManagementGroupScope1()
+        [Test]
+        [Ignore("Only validating compilation of examples")]
+        public async Task WhatIf_PredictTemplateChangesAtManagementGroupScope()
         {
-            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnManagementGroup.json
+            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnManagementGroup.json
             // this example is just showing the usage of "Deployments_WhatIfAtManagementGroupScope" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -132,13 +122,11 @@ namespace Azure.ResourceManager.Resources.Samples
             // invoke the operation
             ArmDeploymentWhatIfContent content = new ArmDeploymentWhatIfContent(new ArmDeploymentWhatIfProperties(ArmDeploymentMode.Incremental)
             {
-                TemplateLink = new ArmDeploymentTemplateLink()
+                TemplateLink = new ArmDeploymentTemplateLink
                 {
                     Uri = new Uri("https://example.com/exampleTemplate.json"),
                 },
-                Parameters = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
-                {
-                }),
+                Parameters = BinaryData.FromObjectAsJson(new object()),
             })
             {
                 Location = new AzureLocation("eastus"),
@@ -149,12 +137,11 @@ namespace Azure.ResourceManager.Resources.Samples
             Console.WriteLine($"Succeeded: {result}");
         }
 
-        // Predict template changes at subscription scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task WhatIf_PredictTemplateChangesAtSubscriptionScope()
         {
-            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnSubscription.json
+            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnSubscription.json
             // this example is just showing the usage of "Deployments_WhatIfAtSubscriptionScope" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -173,13 +160,11 @@ namespace Azure.ResourceManager.Resources.Samples
             // invoke the operation
             ArmDeploymentWhatIfContent content = new ArmDeploymentWhatIfContent(new ArmDeploymentWhatIfProperties(ArmDeploymentMode.Incremental)
             {
-                TemplateLink = new ArmDeploymentTemplateLink()
+                TemplateLink = new ArmDeploymentTemplateLink
                 {
                     Uri = new Uri("https://example.com/exampleTemplate.json"),
                 },
-                Parameters = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
-                {
-                }),
+                Parameters = BinaryData.FromObjectAsJson(new object()),
             })
             {
                 Location = new AzureLocation("westus"),
@@ -190,12 +175,11 @@ namespace Azure.ResourceManager.Resources.Samples
             Console.WriteLine($"Succeeded: {result}");
         }
 
-        // Predict template changes at resource group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task WhatIf_PredictTemplateChangesAtResourceGroupScope()
         {
-            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnResourceGroup.json
+            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnResourceGroup.json
             // this example is just showing the usage of "Deployments_WhatIf" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -215,75 +199,14 @@ namespace Azure.ResourceManager.Resources.Samples
             // invoke the operation
             ArmDeploymentWhatIfContent content = new ArmDeploymentWhatIfContent(new ArmDeploymentWhatIfProperties(ArmDeploymentMode.Incremental)
             {
-                TemplateLink = new ArmDeploymentTemplateLink()
+                TemplateLink = new ArmDeploymentTemplateLink
                 {
                     Uri = new Uri("https://example.com/exampleTemplate.json"),
                 },
-                Parameters = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
-                {
-                }),
+                Parameters = BinaryData.FromObjectAsJson(new object()),
             });
             ArmOperation<WhatIfOperationResult> lro = await armDeployment.WhatIfAsync(WaitUntil.Completed, content);
             WhatIfOperationResult result = lro.Value;
-
-            Console.WriteLine($"Succeeded: {result}");
-        }
-
-        // Calculate template hash
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task CalculateDeploymentTemplateHash_CalculateTemplateHash()
-        {
-            // Generated from example definition: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/CalculateTemplateHash.json
-            // this example is just showing the usage of "Deployments_CalculateTemplateHash" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this TenantResource created on azure
-            // for more information of creating TenantResource, please refer to the document of TenantResource
-            var tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
-
-            // invoke the operation
-            BinaryData template = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
-            {
-                ["$schema"] = "http://schemas.management.azure.com/deploymentTemplate?api-version=2014-04-01-preview",
-                ["contentVersion"] = "1.0.0.0",
-                ["outputs"] = new Dictionary<string, object>()
-                {
-                    ["string"] = new Dictionary<string, object>()
-                    {
-                        ["type"] = "string",
-                        ["value"] = "myvalue"
-                    }
-                },
-                ["parameters"] = new Dictionary<string, object>()
-                {
-                    ["string"] = new Dictionary<string, object>()
-                    {
-                        ["type"] = "string"
-                    }
-                },
-                ["resources"] = new object[] { },
-                ["variables"] = new Dictionary<string, object>()
-                {
-                    ["array"] = new object[] { "1", "2", "3", "4" },
-                    ["bool"] = "true",
-                    ["int"] = "42",
-                    ["object"] = new Dictionary<string, object>()
-                    {
-                        ["object"] = new Dictionary<string, object>()
-                        {
-                            ["location"] = "West US",
-                            ["vmSize"] = "Large"
-                        }
-                    },
-                    ["string"] = "string"
-                }
-            });
-            TemplateHashResult result = await tenantResource.CalculateDeploymentTemplateHashAsync(template);
 
             Console.WriteLine($"Succeeded: {result}");
         }

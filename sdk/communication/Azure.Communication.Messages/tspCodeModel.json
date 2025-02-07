@@ -1,0 +1,3798 @@
+{
+ "$id": "1",
+ "Name": "Azure.Communication.MessagesService",
+ "ApiVersions": [
+  "2024-02-01",
+  "2024-08-30"
+ ],
+ "Enums": [
+  {
+   "$id": "2",
+   "kind": "enum",
+   "name": "CommunicationMessageKind",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.CommunicationMessageKind",
+   "valueType": {
+    "$id": "3",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "4",
+     "kind": "enumvalue",
+     "name": "text",
+     "value": "text",
+     "valueType": {
+      "$id": "5",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Text message type.",
+     "decorators": []
+    },
+    {
+     "$id": "6",
+     "kind": "enumvalue",
+     "name": "image",
+     "value": "image",
+     "valueType": {
+      "$id": "7",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Image message type.",
+     "decorators": []
+    },
+    {
+     "$id": "8",
+     "kind": "enumvalue",
+     "name": "image_v0",
+     "value": "image_v0",
+     "valueType": {
+      "$id": "9",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Image message type. Legacy image type for `MediaNotificationContent` which is being deprecated",
+     "decorators": []
+    },
+    {
+     "$id": "10",
+     "kind": "enumvalue",
+     "name": "document",
+     "value": "document",
+     "valueType": {
+      "$id": "11",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Document message type.",
+     "decorators": []
+    },
+    {
+     "$id": "12",
+     "kind": "enumvalue",
+     "name": "video",
+     "value": "video",
+     "valueType": {
+      "$id": "13",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Video message type.",
+     "decorators": []
+    },
+    {
+     "$id": "14",
+     "kind": "enumvalue",
+     "name": "audio",
+     "value": "audio",
+     "valueType": {
+      "$id": "15",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Audio message type.",
+     "decorators": []
+    },
+    {
+     "$id": "16",
+     "kind": "enumvalue",
+     "name": "template",
+     "value": "template",
+     "valueType": {
+      "$id": "17",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "2"
+     },
+     "doc": "Template message type.",
+     "decorators": []
+    }
+   ],
+   "doc": "The type of message.",
+   "isFixed": false,
+   "isFlags": false,
+   "usage": "Input,Json",
+   "decorators": []
+  },
+  {
+   "$id": "18",
+   "kind": "enum",
+   "name": "MessageTemplateValueKind",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateValueKind",
+   "valueType": {
+    "$id": "19",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "20",
+     "kind": "enumvalue",
+     "name": "text",
+     "value": "text",
+     "valueType": {
+      "$id": "21",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "18"
+     },
+     "doc": "The text template parameter type.",
+     "decorators": []
+    },
+    {
+     "$id": "22",
+     "kind": "enumvalue",
+     "name": "image",
+     "value": "image",
+     "valueType": {
+      "$id": "23",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "18"
+     },
+     "doc": "The image template parameter type.",
+     "decorators": []
+    },
+    {
+     "$id": "24",
+     "kind": "enumvalue",
+     "name": "document",
+     "value": "document",
+     "valueType": {
+      "$id": "25",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "18"
+     },
+     "doc": "The document template parameter type.",
+     "decorators": []
+    },
+    {
+     "$id": "26",
+     "kind": "enumvalue",
+     "name": "video",
+     "value": "video",
+     "valueType": {
+      "$id": "27",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "18"
+     },
+     "doc": "The video template parameter type.",
+     "decorators": []
+    },
+    {
+     "$id": "28",
+     "kind": "enumvalue",
+     "name": "location",
+     "value": "location",
+     "valueType": {
+      "$id": "29",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "18"
+     },
+     "doc": "The location template parameter type.",
+     "decorators": []
+    },
+    {
+     "$id": "30",
+     "kind": "enumvalue",
+     "name": "quickAction",
+     "value": "quickAction",
+     "valueType": {
+      "$id": "31",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "18"
+     },
+     "doc": "The quick action template parameter type.",
+     "decorators": []
+    }
+   ],
+   "doc": "The type of the template parameter.",
+   "isFixed": false,
+   "isFlags": false,
+   "usage": "Input,Json",
+   "decorators": []
+  },
+  {
+   "$id": "32",
+   "kind": "enum",
+   "name": "MessageTemplateBindingsKind",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateBindingsKind",
+   "valueType": {
+    "$id": "33",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "34",
+     "kind": "enumvalue",
+     "name": "whatsApp",
+     "value": "whatsApp",
+     "valueType": {
+      "$id": "35",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "32"
+     },
+     "doc": "The WhatsApp template type.",
+     "decorators": []
+    }
+   ],
+   "doc": "The type of the message template.",
+   "isFixed": false,
+   "isFlags": false,
+   "usage": "Input,Json",
+   "decorators": []
+  },
+  {
+   "$id": "36",
+   "kind": "enum",
+   "name": "WhatsAppMessageButtonSubType",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageButtonSubType",
+   "valueType": {
+    "$id": "37",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "38",
+     "kind": "enumvalue",
+     "name": "quickReply",
+     "value": "quickReply",
+     "valueType": {
+      "$id": "39",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "36"
+     },
+     "doc": "The WhatsApp button sub type is quick reply.",
+     "decorators": []
+    },
+    {
+     "$id": "40",
+     "kind": "enumvalue",
+     "name": "url",
+     "value": "url",
+     "valueType": {
+      "$id": "41",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "36"
+     },
+     "doc": "The WhatsApp button sub type is url.",
+     "decorators": []
+    }
+   ],
+   "doc": "The WhatsApp button sub type.",
+   "isFixed": false,
+   "isFlags": false,
+   "usage": "Input,Json",
+   "decorators": []
+  },
+  {
+   "$id": "42",
+   "kind": "enum",
+   "name": "Versions",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.Versions",
+   "valueType": {
+    "$id": "43",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "44",
+     "kind": "enumvalue",
+     "name": "c2024_02_01",
+     "value": "2024-02-01",
+     "valueType": {
+      "$id": "45",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "42"
+     },
+     "doc": "Azure Communication Messages 2024-02-01 api version",
+     "decorators": []
+    },
+    {
+     "$id": "46",
+     "kind": "enumvalue",
+     "name": "c2024_08_30",
+     "value": "2024-08-30",
+     "valueType": {
+      "$id": "47",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "42"
+     },
+     "doc": "Azure Communication Messages 2024-08-30 api version",
+     "decorators": []
+    }
+   ],
+   "doc": "Azure Communication Messages Versions",
+   "isFixed": true,
+   "isFlags": false,
+   "usage": "ApiVersionEnum",
+   "decorators": []
+  },
+  {
+   "$id": "48",
+   "kind": "enum",
+   "name": "MessageTemplateStatus",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateStatus",
+   "valueType": {
+    "$id": "49",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "50",
+     "kind": "enumvalue",
+     "name": "approved",
+     "value": "approved",
+     "valueType": {
+      "$id": "51",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "48"
+     },
+     "doc": "Message template is approved.",
+     "decorators": []
+    },
+    {
+     "$id": "52",
+     "kind": "enumvalue",
+     "name": "rejected",
+     "value": "rejected",
+     "valueType": {
+      "$id": "53",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "48"
+     },
+     "doc": "Message template is rejected.",
+     "decorators": []
+    },
+    {
+     "$id": "54",
+     "kind": "enumvalue",
+     "name": "pending",
+     "value": "pending",
+     "valueType": {
+      "$id": "55",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "48"
+     },
+     "doc": "Message template is pending.",
+     "decorators": []
+    },
+    {
+     "$id": "56",
+     "kind": "enumvalue",
+     "name": "paused",
+     "value": "paused",
+     "valueType": {
+      "$id": "57",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "48"
+     },
+     "doc": "Message template is paused.",
+     "decorators": []
+    }
+   ],
+   "doc": "The aggregated template status.",
+   "isFixed": false,
+   "isFlags": false,
+   "usage": "Output,Json",
+   "decorators": []
+  },
+  {
+   "$id": "58",
+   "kind": "enum",
+   "name": "CommunicationMessagesChannel",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.CommunicationMessagesChannel",
+   "valueType": {
+    "$id": "59",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "60",
+     "kind": "enumvalue",
+     "name": "whatsApp",
+     "value": "whatsApp",
+     "valueType": {
+      "$id": "61",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "58"
+     },
+     "doc": "The WhatsApp communication messages channel type.",
+     "decorators": []
+    }
+   ],
+   "doc": "The type of the communication messages channel.",
+   "isFixed": false,
+   "isFlags": false,
+   "usage": "Output,Json",
+   "decorators": []
+  },
+  {
+   "$id": "62",
+   "kind": "enum",
+   "name": "RepeatabilityResult",
+   "crossLanguageDefinitionId": "Azure.Core.RepeatabilityResult",
+   "valueType": {
+    "$id": "63",
+    "kind": "string",
+    "name": "string",
+    "crossLanguageDefinitionId": "TypeSpec.string",
+    "decorators": []
+   },
+   "values": [
+    {
+     "$id": "64",
+     "kind": "enumvalue",
+     "name": "accepted",
+     "value": "accepted",
+     "valueType": {
+      "$id": "65",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "62"
+     },
+     "doc": "If the request was accepted and the server guarantees that the server state reflects a single execution of the operation.",
+     "decorators": []
+    },
+    {
+     "$id": "66",
+     "kind": "enumvalue",
+     "name": "rejected",
+     "value": "rejected",
+     "valueType": {
+      "$id": "67",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "enumType": {
+      "$ref": "62"
+     },
+     "doc": "If the request was rejected because the combination of Repeatability-First-Sent and Repeatability-Request-ID were invalid\nor because the Repeatability-First-Sent value was outside the range of values held by the server.",
+     "decorators": []
+    }
+   ],
+   "doc": "Repeatability Result header options",
+   "isFixed": true,
+   "isFlags": false,
+   "usage": "Output",
+   "decorators": []
+  }
+ ],
+ "Models": [
+  {
+   "$id": "68",
+   "kind": "model",
+   "name": "NotificationContent",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.NotificationContent",
+   "usage": "Input,Json",
+   "doc": "Details of the message to send.",
+   "decorators": [],
+   "discriminatorProperty": {
+    "$id": "69",
+    "kind": "property",
+    "name": "kind",
+    "serializedName": "kind",
+    "doc": "The type discriminator describing a notification type.",
+    "type": {
+     "$ref": "2"
+    },
+    "optional": false,
+    "readOnly": false,
+    "discriminator": true,
+    "flatten": false,
+    "decorators": [],
+    "crossLanguageDefinitionId": "Azure.Communication.MessagesService.NotificationContent.kind",
+    "serializationOptions": {
+     "$id": "70",
+     "json": {
+      "$id": "71",
+      "name": "kind"
+     }
+    }
+   },
+   "properties": [
+    {
+     "$id": "72",
+     "kind": "property",
+     "name": "channelRegistrationId",
+     "serializedName": "channelRegistrationId",
+     "doc": "The Channel Registration ID for the Business Identifier.",
+     "type": {
+      "$id": "73",
+      "kind": "string",
+      "name": "uuid",
+      "crossLanguageDefinitionId": "Azure.Core.uuid",
+      "baseType": {
+       "$id": "74",
+       "kind": "string",
+       "name": "string",
+       "crossLanguageDefinitionId": "TypeSpec.string",
+       "decorators": []
+      },
+      "decorators": []
+     },
+     "optional": false,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.NotificationContent.channelRegistrationId",
+     "serializationOptions": {
+      "$id": "75",
+      "json": {
+       "$id": "76",
+       "name": "channelRegistrationId"
+      }
+     }
+    },
+    {
+     "$id": "77",
+     "kind": "property",
+     "name": "to",
+     "serializedName": "to",
+     "doc": "The native external platform user identifiers of the recipient.",
+     "type": {
+      "$id": "78",
+      "kind": "array",
+      "name": "Array",
+      "valueType": {
+       "$id": "79",
+       "kind": "string",
+       "name": "string",
+       "crossLanguageDefinitionId": "TypeSpec.string",
+       "decorators": []
+      },
+      "crossLanguageDefinitionId": "TypeSpec.Array",
+      "decorators": []
+     },
+     "optional": false,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.NotificationContent.to",
+     "serializationOptions": {
+      "$id": "80",
+      "json": {
+       "$id": "81",
+       "name": "to"
+      }
+     }
+    },
+    {
+     "$ref": "69"
+    }
+   ],
+   "discriminatedSubtypes": {
+    "$id": "82",
+    "text": {
+     "$id": "83",
+     "kind": "model",
+     "name": "TextNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.TextNotificationContent",
+     "usage": "Input,Json",
+     "doc": "A request to send a text notification.",
+     "discriminatorValue": "text",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "84",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is text.",
+       "type": {
+        "$id": "85",
+        "kind": "constant",
+        "valueType": {
+         "$id": "86",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "text",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.TextNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "87",
+        "json": {
+         "$id": "88",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "89",
+       "kind": "property",
+       "name": "content",
+       "serializedName": "content",
+       "doc": "Message content.",
+       "type": {
+        "$id": "90",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.TextNotificationContent.content",
+       "serializationOptions": {
+        "$id": "91",
+        "json": {
+         "$id": "92",
+         "name": "content"
+        }
+       }
+      }
+     ]
+    },
+    "image_v0": {
+     "$id": "93",
+     "kind": "model",
+     "name": "MediaNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MediaNotificationContent",
+     "usage": "Input,Json",
+     "deprecation": "`MediaNotificationContent` is being deprecated, we encourage you to use the new `ImageNotificationContent` for sending images instead.",
+     "doc": "@deprecated A request to send an image notification.",
+     "discriminatorValue": "image_v0",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "94",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is image.",
+       "type": {
+        "$id": "95",
+        "kind": "constant",
+        "valueType": {
+         "$id": "96",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "image_v0",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MediaNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "97",
+        "json": {
+         "$id": "98",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "99",
+       "kind": "property",
+       "name": "content",
+       "serializedName": "content",
+       "doc": "Optional text content.",
+       "type": {
+        "$id": "100",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "optional": true,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MediaNotificationContent.content",
+       "serializationOptions": {
+        "$id": "101",
+        "json": {
+         "$id": "102",
+         "name": "content"
+        }
+       }
+      },
+      {
+       "$id": "103",
+       "kind": "property",
+       "name": "mediaUri",
+       "serializedName": "mediaUri",
+       "doc": "A media url for the file. Required if the type is one of the supported media types, e.g. image",
+       "type": {
+        "$id": "104",
+        "kind": "url",
+        "name": "url",
+        "crossLanguageDefinitionId": "TypeSpec.url",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MediaNotificationContent.mediaUri",
+       "serializationOptions": {
+        "$id": "105",
+        "json": {
+         "$id": "106",
+         "name": "mediaUri"
+        }
+       }
+      }
+     ]
+    },
+    "image": {
+     "$id": "107",
+     "kind": "model",
+     "name": "ImageNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ImageNotificationContent",
+     "usage": "Input,Json",
+     "doc": "A request to send an image notification.",
+     "discriminatorValue": "image",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "108",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is image.",
+       "type": {
+        "$id": "109",
+        "kind": "constant",
+        "valueType": {
+         "$id": "110",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "image",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ImageNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "111",
+        "json": {
+         "$id": "112",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "113",
+       "kind": "property",
+       "name": "caption",
+       "serializedName": "caption",
+       "doc": "Optional text content.",
+       "type": {
+        "$id": "114",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "optional": true,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ImageNotificationContent.caption",
+       "serializationOptions": {
+        "$id": "115",
+        "json": {
+         "$id": "116",
+         "name": "caption"
+        }
+       }
+      },
+      {
+       "$id": "117",
+       "kind": "property",
+       "name": "mediaUri",
+       "serializedName": "mediaUri",
+       "doc": "A media url for the file. Required if the type is one of the supported media types, e.g. image",
+       "type": {
+        "$id": "118",
+        "kind": "url",
+        "name": "url",
+        "crossLanguageDefinitionId": "TypeSpec.url",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.ImageNotificationContent.mediaUri",
+       "serializationOptions": {
+        "$id": "119",
+        "json": {
+         "$id": "120",
+         "name": "mediaUri"
+        }
+       }
+      }
+     ]
+    },
+    "document": {
+     "$id": "121",
+     "kind": "model",
+     "name": "DocumentNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.DocumentNotificationContent",
+     "usage": "Input,Json",
+     "doc": "A request to send a document notification.",
+     "discriminatorValue": "document",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "122",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is image.",
+       "type": {
+        "$id": "123",
+        "kind": "constant",
+        "valueType": {
+         "$id": "124",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "document",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.DocumentNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "125",
+        "json": {
+         "$id": "126",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "127",
+       "kind": "property",
+       "name": "caption",
+       "serializedName": "caption",
+       "doc": "Optional text content.",
+       "type": {
+        "$id": "128",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "optional": true,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.DocumentNotificationContent.caption",
+       "serializationOptions": {
+        "$id": "129",
+        "json": {
+         "$id": "130",
+         "name": "caption"
+        }
+       }
+      },
+      {
+       "$id": "131",
+       "kind": "property",
+       "name": "fileName",
+       "serializedName": "fileName",
+       "doc": "Optional name for the file.",
+       "type": {
+        "$id": "132",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "optional": true,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.DocumentNotificationContent.fileName",
+       "serializationOptions": {
+        "$id": "133",
+        "json": {
+         "$id": "134",
+         "name": "fileName"
+        }
+       }
+      },
+      {
+       "$id": "135",
+       "kind": "property",
+       "name": "mediaUri",
+       "serializedName": "mediaUri",
+       "doc": "A media url for the file. Required if the type is one of the supported media types, e.g. image",
+       "type": {
+        "$id": "136",
+        "kind": "url",
+        "name": "url",
+        "crossLanguageDefinitionId": "TypeSpec.url",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.DocumentNotificationContent.mediaUri",
+       "serializationOptions": {
+        "$id": "137",
+        "json": {
+         "$id": "138",
+         "name": "mediaUri"
+        }
+       }
+      }
+     ]
+    },
+    "video": {
+     "$id": "139",
+     "kind": "model",
+     "name": "VideoNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.VideoNotificationContent",
+     "usage": "Input,Json",
+     "doc": "A request to send a video notification.",
+     "discriminatorValue": "video",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "140",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is image.",
+       "type": {
+        "$id": "141",
+        "kind": "constant",
+        "valueType": {
+         "$id": "142",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "video",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.VideoNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "143",
+        "json": {
+         "$id": "144",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "145",
+       "kind": "property",
+       "name": "caption",
+       "serializedName": "caption",
+       "doc": "Optional text content.",
+       "type": {
+        "$id": "146",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "optional": true,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.VideoNotificationContent.caption",
+       "serializationOptions": {
+        "$id": "147",
+        "json": {
+         "$id": "148",
+         "name": "caption"
+        }
+       }
+      },
+      {
+       "$id": "149",
+       "kind": "property",
+       "name": "mediaUri",
+       "serializedName": "mediaUri",
+       "doc": "A media url for the file. Required if the type is one of the supported media types, e.g. image",
+       "type": {
+        "$id": "150",
+        "kind": "url",
+        "name": "url",
+        "crossLanguageDefinitionId": "TypeSpec.url",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.VideoNotificationContent.mediaUri",
+       "serializationOptions": {
+        "$id": "151",
+        "json": {
+         "$id": "152",
+         "name": "mediaUri"
+        }
+       }
+      }
+     ]
+    },
+    "audio": {
+     "$id": "153",
+     "kind": "model",
+     "name": "AudioNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.AudioNotificationContent",
+     "usage": "Input,Json",
+     "doc": "A request to send an audio notification.",
+     "discriminatorValue": "audio",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "154",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is audio.",
+       "type": {
+        "$id": "155",
+        "kind": "constant",
+        "valueType": {
+         "$id": "156",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "audio",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.AudioNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "157",
+        "json": {
+         "$id": "158",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "159",
+       "kind": "property",
+       "name": "mediaUri",
+       "serializedName": "mediaUri",
+       "doc": "A media url for the file. Required if the type is one of the supported media types, e.g. image",
+       "type": {
+        "$id": "160",
+        "kind": "url",
+        "name": "url",
+        "crossLanguageDefinitionId": "TypeSpec.url",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.AudioNotificationContent.mediaUri",
+       "serializationOptions": {
+        "$id": "161",
+        "json": {
+         "$id": "162",
+         "name": "mediaUri"
+        }
+       }
+      }
+     ]
+    },
+    "template": {
+     "$id": "163",
+     "kind": "model",
+     "name": "TemplateNotificationContent",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.TemplateNotificationContent",
+     "usage": "Input,Json",
+     "doc": "A request to send a template notification.",
+     "discriminatorValue": "template",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "68"
+     },
+     "properties": [
+      {
+       "$id": "164",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message notification type is template.",
+       "type": {
+        "$id": "165",
+        "kind": "constant",
+        "valueType": {
+         "$id": "166",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "template",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.TemplateNotificationContent.kind",
+       "serializationOptions": {
+        "$id": "167",
+        "json": {
+         "$id": "168",
+         "name": "kind"
+        }
+       }
+      },
+      {
+       "$id": "169",
+       "kind": "property",
+       "name": "template",
+       "serializedName": "template",
+       "doc": "The template object used to create templates.",
+       "type": {
+        "$id": "170",
+        "kind": "model",
+        "name": "MessageTemplate",
+        "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplate",
+        "usage": "Input,Json",
+        "doc": "The template object used to create templates.",
+        "decorators": [],
+        "properties": [
+         {
+          "$id": "171",
+          "kind": "property",
+          "name": "name",
+          "serializedName": "name",
+          "doc": "Name of the template.",
+          "type": {
+           "$id": "172",
+           "kind": "string",
+           "name": "string",
+           "crossLanguageDefinitionId": "TypeSpec.string",
+           "decorators": []
+          },
+          "optional": false,
+          "readOnly": false,
+          "discriminator": false,
+          "flatten": false,
+          "decorators": [],
+          "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplate.name",
+          "serializationOptions": {
+           "$id": "173",
+           "json": {
+            "$id": "174",
+            "name": "name"
+           }
+          }
+         },
+         {
+          "$id": "175",
+          "kind": "property",
+          "name": "language",
+          "serializedName": "language",
+          "doc": "The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.",
+          "type": {
+           "$id": "176",
+           "kind": "string",
+           "name": "string",
+           "crossLanguageDefinitionId": "TypeSpec.string",
+           "decorators": []
+          },
+          "optional": false,
+          "readOnly": false,
+          "discriminator": false,
+          "flatten": false,
+          "decorators": [],
+          "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplate.language",
+          "serializationOptions": {
+           "$id": "177",
+           "json": {
+            "$id": "178",
+            "name": "language"
+           }
+          }
+         },
+         {
+          "$id": "179",
+          "kind": "property",
+          "name": "values",
+          "serializedName": "values",
+          "doc": "The template values.",
+          "type": {
+           "$id": "180",
+           "kind": "array",
+           "name": "ArrayMessageTemplateValue",
+           "valueType": {
+            "$id": "181",
+            "kind": "model",
+            "name": "MessageTemplateValue",
+            "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateValue",
+            "usage": "Input,Json",
+            "doc": "The class describes a parameter of a template.",
+            "decorators": [],
+            "discriminatorProperty": {
+             "$id": "182",
+             "kind": "property",
+             "name": "kind",
+             "serializedName": "kind",
+             "doc": "The type discriminator describing a template parameter type.",
+             "type": {
+              "$ref": "18"
+             },
+             "optional": false,
+             "readOnly": false,
+             "discriminator": true,
+             "flatten": false,
+             "decorators": [],
+             "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateValue.kind",
+             "serializationOptions": {
+              "$id": "183",
+              "json": {
+               "$id": "184",
+               "name": "kind"
+              }
+             }
+            },
+            "properties": [
+             {
+              "$id": "185",
+              "kind": "property",
+              "name": "name",
+              "serializedName": "name",
+              "doc": "Template binding reference name",
+              "type": {
+               "$id": "186",
+               "kind": "string",
+               "name": "string",
+               "crossLanguageDefinitionId": "TypeSpec.string",
+               "decorators": []
+              },
+              "optional": false,
+              "readOnly": false,
+              "discriminator": false,
+              "flatten": false,
+              "decorators": [],
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateValue.name",
+              "serializationOptions": {
+               "$id": "187",
+               "json": {
+                "$id": "188",
+                "name": "name"
+               }
+              }
+             },
+             {
+              "$ref": "182"
+             }
+            ],
+            "discriminatedSubtypes": {
+             "$id": "189",
+             "text": {
+              "$id": "190",
+              "kind": "model",
+              "name": "MessageTemplateText",
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateText",
+              "usage": "Input,Json",
+              "doc": "The message template's text value information.",
+              "discriminatorValue": "text",
+              "decorators": [],
+              "baseModel": {
+               "$ref": "181"
+              },
+              "properties": [
+               {
+                "$id": "191",
+                "kind": "property",
+                "name": "kind",
+                "serializedName": "kind",
+                "doc": "Message parameter type is text.",
+                "type": {
+                 "$id": "192",
+                 "kind": "constant",
+                 "valueType": {
+                  "$id": "193",
+                  "kind": "string",
+                  "name": "string",
+                  "crossLanguageDefinitionId": "TypeSpec.string",
+                  "decorators": []
+                 },
+                 "value": "text",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": true,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateText.kind",
+                "serializationOptions": {
+                 "$id": "194",
+                 "json": {
+                  "$id": "195",
+                  "name": "kind"
+                 }
+                }
+               },
+               {
+                "$id": "196",
+                "kind": "property",
+                "name": "text",
+                "serializedName": "text",
+                "doc": "The text value.",
+                "type": {
+                 "$id": "197",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateText.text",
+                "serializationOptions": {
+                 "$id": "198",
+                 "json": {
+                  "$id": "199",
+                  "name": "text"
+                 }
+                }
+               }
+              ]
+             },
+             "image": {
+              "$id": "200",
+              "kind": "model",
+              "name": "MessageTemplateImage",
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateImage",
+              "usage": "Input,Json",
+              "doc": "The message template's image value information.",
+              "discriminatorValue": "image",
+              "decorators": [],
+              "baseModel": {
+               "$ref": "181"
+              },
+              "properties": [
+               {
+                "$id": "201",
+                "kind": "property",
+                "name": "kind",
+                "serializedName": "kind",
+                "doc": "Message parameter type is image.",
+                "type": {
+                 "$id": "202",
+                 "kind": "constant",
+                 "valueType": {
+                  "$id": "203",
+                  "kind": "string",
+                  "name": "string",
+                  "crossLanguageDefinitionId": "TypeSpec.string",
+                  "decorators": []
+                 },
+                 "value": "image",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": true,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateImage.kind",
+                "serializationOptions": {
+                 "$id": "204",
+                 "json": {
+                  "$id": "205",
+                  "name": "kind"
+                 }
+                }
+               },
+               {
+                "$id": "206",
+                "kind": "property",
+                "name": "uri",
+                "serializedName": "url",
+                "doc": "The (public) URL of the media.",
+                "type": {
+                 "$id": "207",
+                 "kind": "url",
+                 "name": "url",
+                 "crossLanguageDefinitionId": "TypeSpec.url",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateImage.url",
+                "serializationOptions": {
+                 "$id": "208",
+                 "json": {
+                  "$id": "209",
+                  "name": "url"
+                 }
+                }
+               },
+               {
+                "$id": "210",
+                "kind": "property",
+                "name": "caption",
+                "serializedName": "caption",
+                "doc": "The [optional] caption of the media object.",
+                "type": {
+                 "$id": "211",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateImage.caption",
+                "serializationOptions": {
+                 "$id": "212",
+                 "json": {
+                  "$id": "213",
+                  "name": "caption"
+                 }
+                }
+               },
+               {
+                "$id": "214",
+                "kind": "property",
+                "name": "fileName",
+                "serializedName": "fileName",
+                "doc": "The [optional] filename of the media file.",
+                "type": {
+                 "$id": "215",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateImage.fileName",
+                "serializationOptions": {
+                 "$id": "216",
+                 "json": {
+                  "$id": "217",
+                  "name": "fileName"
+                 }
+                }
+               }
+              ]
+             },
+             "document": {
+              "$id": "218",
+              "kind": "model",
+              "name": "MessageTemplateDocument",
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateDocument",
+              "usage": "Input,Json",
+              "doc": "The message template's document value information.",
+              "discriminatorValue": "document",
+              "decorators": [],
+              "baseModel": {
+               "$ref": "181"
+              },
+              "properties": [
+               {
+                "$id": "219",
+                "kind": "property",
+                "name": "kind",
+                "serializedName": "kind",
+                "doc": "Message parameter type is document.",
+                "type": {
+                 "$id": "220",
+                 "kind": "constant",
+                 "valueType": {
+                  "$id": "221",
+                  "kind": "string",
+                  "name": "string",
+                  "crossLanguageDefinitionId": "TypeSpec.string",
+                  "decorators": []
+                 },
+                 "value": "document",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": true,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateDocument.kind",
+                "serializationOptions": {
+                 "$id": "222",
+                 "json": {
+                  "$id": "223",
+                  "name": "kind"
+                 }
+                }
+               },
+               {
+                "$id": "224",
+                "kind": "property",
+                "name": "uri",
+                "serializedName": "url",
+                "doc": "The (public) URL of the media.",
+                "type": {
+                 "$id": "225",
+                 "kind": "url",
+                 "name": "url",
+                 "crossLanguageDefinitionId": "TypeSpec.url",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateDocument.url",
+                "serializationOptions": {
+                 "$id": "226",
+                 "json": {
+                  "$id": "227",
+                  "name": "url"
+                 }
+                }
+               },
+               {
+                "$id": "228",
+                "kind": "property",
+                "name": "caption",
+                "serializedName": "caption",
+                "doc": "The [optional] caption of the media object.",
+                "type": {
+                 "$id": "229",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateDocument.caption",
+                "serializationOptions": {
+                 "$id": "230",
+                 "json": {
+                  "$id": "231",
+                  "name": "caption"
+                 }
+                }
+               },
+               {
+                "$id": "232",
+                "kind": "property",
+                "name": "fileName",
+                "serializedName": "fileName",
+                "doc": "The [optional] filename of the media file.",
+                "type": {
+                 "$id": "233",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateDocument.fileName",
+                "serializationOptions": {
+                 "$id": "234",
+                 "json": {
+                  "$id": "235",
+                  "name": "fileName"
+                 }
+                }
+               }
+              ]
+             },
+             "video": {
+              "$id": "236",
+              "kind": "model",
+              "name": "MessageTemplateVideo",
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateVideo",
+              "usage": "Input,Json",
+              "doc": "The message template's video value information.",
+              "discriminatorValue": "video",
+              "decorators": [],
+              "baseModel": {
+               "$ref": "181"
+              },
+              "properties": [
+               {
+                "$id": "237",
+                "kind": "property",
+                "name": "kind",
+                "serializedName": "kind",
+                "doc": "Message parameter type is video.",
+                "type": {
+                 "$id": "238",
+                 "kind": "constant",
+                 "valueType": {
+                  "$id": "239",
+                  "kind": "string",
+                  "name": "string",
+                  "crossLanguageDefinitionId": "TypeSpec.string",
+                  "decorators": []
+                 },
+                 "value": "video",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": true,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateVideo.kind",
+                "serializationOptions": {
+                 "$id": "240",
+                 "json": {
+                  "$id": "241",
+                  "name": "kind"
+                 }
+                }
+               },
+               {
+                "$id": "242",
+                "kind": "property",
+                "name": "uri",
+                "serializedName": "url",
+                "doc": "The (public) URL of the media.",
+                "type": {
+                 "$id": "243",
+                 "kind": "url",
+                 "name": "url",
+                 "crossLanguageDefinitionId": "TypeSpec.url",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateVideo.url",
+                "serializationOptions": {
+                 "$id": "244",
+                 "json": {
+                  "$id": "245",
+                  "name": "url"
+                 }
+                }
+               },
+               {
+                "$id": "246",
+                "kind": "property",
+                "name": "caption",
+                "serializedName": "caption",
+                "doc": "The [optional] caption of the media object.",
+                "type": {
+                 "$id": "247",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateVideo.caption",
+                "serializationOptions": {
+                 "$id": "248",
+                 "json": {
+                  "$id": "249",
+                  "name": "caption"
+                 }
+                }
+               },
+               {
+                "$id": "250",
+                "kind": "property",
+                "name": "fileName",
+                "serializedName": "fileName",
+                "doc": "The [optional] filename of the media file.",
+                "type": {
+                 "$id": "251",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateVideo.fileName",
+                "serializationOptions": {
+                 "$id": "252",
+                 "json": {
+                  "$id": "253",
+                  "name": "fileName"
+                 }
+                }
+               }
+              ]
+             },
+             "location": {
+              "$id": "254",
+              "kind": "model",
+              "name": "MessageTemplateLocation",
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateLocation",
+              "usage": "Input,Json",
+              "doc": "The message template's location value information.",
+              "discriminatorValue": "location",
+              "decorators": [],
+              "baseModel": {
+               "$ref": "181"
+              },
+              "properties": [
+               {
+                "$id": "255",
+                "kind": "property",
+                "name": "kind",
+                "serializedName": "kind",
+                "doc": "Message parameter type is location.",
+                "type": {
+                 "$id": "256",
+                 "kind": "constant",
+                 "valueType": {
+                  "$id": "257",
+                  "kind": "string",
+                  "name": "string",
+                  "crossLanguageDefinitionId": "TypeSpec.string",
+                  "decorators": []
+                 },
+                 "value": "location",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": true,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateLocation.kind",
+                "serializationOptions": {
+                 "$id": "258",
+                 "json": {
+                  "$id": "259",
+                  "name": "kind"
+                 }
+                }
+               },
+               {
+                "$id": "260",
+                "kind": "property",
+                "name": "locationName",
+                "serializedName": "locationName",
+                "doc": "The [Optional] name of the location.",
+                "type": {
+                 "$id": "261",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateLocation.locationName",
+                "serializationOptions": {
+                 "$id": "262",
+                 "json": {
+                  "$id": "263",
+                  "name": "locationName"
+                 }
+                }
+               },
+               {
+                "$id": "264",
+                "kind": "property",
+                "name": "address",
+                "serializedName": "address",
+                "doc": "The [Optional] address of the location.",
+                "type": {
+                 "$id": "265",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateLocation.address",
+                "serializationOptions": {
+                 "$id": "266",
+                 "json": {
+                  "$id": "267",
+                  "name": "address"
+                 }
+                }
+               },
+               {
+                "$id": "268",
+                "kind": "property",
+                "name": "latitude",
+                "serializedName": "latitude",
+                "doc": "The latitude of the location.",
+                "type": {
+                 "$id": "269",
+                 "kind": "float64",
+                 "name": "float64",
+                 "crossLanguageDefinitionId": "TypeSpec.float64",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateLocation.latitude",
+                "serializationOptions": {
+                 "$id": "270",
+                 "json": {
+                  "$id": "271",
+                  "name": "latitude"
+                 }
+                }
+               },
+               {
+                "$id": "272",
+                "kind": "property",
+                "name": "longitude",
+                "serializedName": "longitude",
+                "doc": "The longitude of the location.",
+                "type": {
+                 "$id": "273",
+                 "kind": "float64",
+                 "name": "float64",
+                 "crossLanguageDefinitionId": "TypeSpec.float64",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateLocation.longitude",
+                "serializationOptions": {
+                 "$id": "274",
+                 "json": {
+                  "$id": "275",
+                  "name": "longitude"
+                 }
+                }
+               }
+              ]
+             },
+             "quickAction": {
+              "$id": "276",
+              "kind": "model",
+              "name": "MessageTemplateQuickAction",
+              "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateQuickAction",
+              "usage": "Input,Json",
+              "doc": "The message template's quick action value information.",
+              "discriminatorValue": "quickAction",
+              "decorators": [],
+              "baseModel": {
+               "$ref": "181"
+              },
+              "properties": [
+               {
+                "$id": "277",
+                "kind": "property",
+                "name": "kind",
+                "serializedName": "kind",
+                "doc": "Message parameter type is quick action.",
+                "type": {
+                 "$id": "278",
+                 "kind": "constant",
+                 "valueType": {
+                  "$id": "279",
+                  "kind": "string",
+                  "name": "string",
+                  "crossLanguageDefinitionId": "TypeSpec.string",
+                  "decorators": []
+                 },
+                 "value": "quickAction",
+                 "decorators": []
+                },
+                "optional": false,
+                "readOnly": false,
+                "discriminator": true,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateQuickAction.kind",
+                "serializationOptions": {
+                 "$id": "280",
+                 "json": {
+                  "$id": "281",
+                  "name": "kind"
+                 }
+                }
+               },
+               {
+                "$id": "282",
+                "kind": "property",
+                "name": "text",
+                "serializedName": "text",
+                "doc": "The [Optional] quick action text",
+                "type": {
+                 "$id": "283",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateQuickAction.text",
+                "serializationOptions": {
+                 "$id": "284",
+                 "json": {
+                  "$id": "285",
+                  "name": "text"
+                 }
+                }
+               },
+               {
+                "$id": "286",
+                "kind": "property",
+                "name": "payload",
+                "serializedName": "payload",
+                "doc": "The [Optional] quick action payload",
+                "type": {
+                 "$id": "287",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "optional": true,
+                "readOnly": false,
+                "discriminator": false,
+                "flatten": false,
+                "decorators": [],
+                "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateQuickAction.payload",
+                "serializationOptions": {
+                 "$id": "288",
+                 "json": {
+                  "$id": "289",
+                  "name": "payload"
+                 }
+                }
+               }
+              ]
+             }
+            }
+           },
+           "crossLanguageDefinitionId": "TypeSpec.Array",
+           "decorators": []
+          },
+          "optional": true,
+          "readOnly": false,
+          "discriminator": false,
+          "flatten": false,
+          "decorators": [],
+          "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplate.values",
+          "serializationOptions": {
+           "$id": "290",
+           "json": {
+            "$id": "291",
+            "name": "values"
+           }
+          }
+         },
+         {
+          "$id": "292",
+          "kind": "property",
+          "name": "bindings",
+          "serializedName": "bindings",
+          "doc": "The binding object to link values to the template specific locations",
+          "type": {
+           "$id": "293",
+           "kind": "model",
+           "name": "MessageTemplateBindings",
+           "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateBindings",
+           "usage": "Input,Json",
+           "doc": "The binding object to link values to the template specific locations",
+           "decorators": [],
+           "discriminatorProperty": {
+            "$id": "294",
+            "kind": "property",
+            "name": "kind",
+            "serializedName": "kind",
+            "doc": "The type discriminator describing a template bindings type.",
+            "type": {
+             "$ref": "32"
+            },
+            "optional": false,
+            "readOnly": false,
+            "discriminator": true,
+            "flatten": false,
+            "decorators": [],
+            "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateBindings.kind",
+            "serializationOptions": {
+             "$id": "295",
+             "json": {
+              "$id": "296",
+              "name": "kind"
+             }
+            }
+           },
+           "properties": [
+            {
+             "$ref": "294"
+            }
+           ],
+           "discriminatedSubtypes": {
+            "$id": "297",
+            "whatsApp": {
+             "$id": "298",
+             "kind": "model",
+             "name": "WhatsAppMessageTemplateBindings",
+             "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindings",
+             "usage": "Input,Json",
+             "doc": "The template bindings for WhatsApp",
+             "discriminatorValue": "whatsApp",
+             "decorators": [],
+             "baseModel": {
+              "$ref": "293"
+             },
+             "properties": [
+              {
+               "$id": "299",
+               "kind": "property",
+               "name": "kind",
+               "serializedName": "kind",
+               "doc": "MessageTemplateBindings is whatsApp",
+               "type": {
+                "$id": "300",
+                "kind": "constant",
+                "valueType": {
+                 "$id": "301",
+                 "kind": "string",
+                 "name": "string",
+                 "crossLanguageDefinitionId": "TypeSpec.string",
+                 "decorators": []
+                },
+                "value": "whatsApp",
+                "decorators": []
+               },
+               "optional": false,
+               "readOnly": false,
+               "discriminator": true,
+               "flatten": false,
+               "decorators": [],
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindings.kind",
+               "serializationOptions": {
+                "$id": "302",
+                "json": {
+                 "$id": "303",
+                 "name": "kind"
+                }
+               }
+              },
+              {
+               "$id": "304",
+               "kind": "property",
+               "name": "header",
+               "serializedName": "header",
+               "doc": "The header template bindings",
+               "type": {
+                "$id": "305",
+                "kind": "array",
+                "name": "ArrayWhatsAppMessageTemplateBindingsComponent",
+                "valueType": {
+                 "$id": "306",
+                 "kind": "model",
+                 "name": "WhatsAppMessageTemplateBindingsComponent",
+                 "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindingsComponent",
+                 "usage": "Input,Json",
+                 "doc": "The template bindings component for WhatsApp",
+                 "decorators": [],
+                 "properties": [
+                  {
+                   "$id": "307",
+                   "kind": "property",
+                   "name": "refValue",
+                   "serializedName": "refValue",
+                   "doc": "The name of the referenced item in the template values.",
+                   "type": {
+                    "$id": "308",
+                    "kind": "string",
+                    "name": "string",
+                    "crossLanguageDefinitionId": "TypeSpec.string",
+                    "decorators": []
+                   },
+                   "optional": false,
+                   "readOnly": false,
+                   "discriminator": false,
+                   "flatten": false,
+                   "decorators": [],
+                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindingsComponent.refValue",
+                   "serializationOptions": {
+                    "$id": "309",
+                    "json": {
+                     "$id": "310",
+                     "name": "refValue"
+                    }
+                   }
+                  }
+                 ]
+                },
+                "crossLanguageDefinitionId": "TypeSpec.Array",
+                "decorators": []
+               },
+               "optional": true,
+               "readOnly": false,
+               "discriminator": false,
+               "flatten": false,
+               "decorators": [],
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindings.header",
+               "serializationOptions": {
+                "$id": "311",
+                "json": {
+                 "$id": "312",
+                 "name": "header"
+                }
+               }
+              },
+              {
+               "$id": "313",
+               "kind": "property",
+               "name": "body",
+               "serializedName": "body",
+               "doc": "The body template bindings",
+               "type": {
+                "$id": "314",
+                "kind": "array",
+                "name": "ArrayWhatsAppMessageTemplateBindingsComponent",
+                "valueType": {
+                 "$ref": "306"
+                },
+                "crossLanguageDefinitionId": "TypeSpec.Array",
+                "decorators": []
+               },
+               "optional": true,
+               "readOnly": false,
+               "discriminator": false,
+               "flatten": false,
+               "decorators": [],
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindings.body",
+               "serializationOptions": {
+                "$id": "315",
+                "json": {
+                 "$id": "316",
+                 "name": "body"
+                }
+               }
+              },
+              {
+               "$id": "317",
+               "kind": "property",
+               "name": "footer",
+               "serializedName": "footer",
+               "doc": "The footer template bindings",
+               "type": {
+                "$id": "318",
+                "kind": "array",
+                "name": "ArrayWhatsAppMessageTemplateBindingsComponent",
+                "valueType": {
+                 "$ref": "306"
+                },
+                "crossLanguageDefinitionId": "TypeSpec.Array",
+                "decorators": []
+               },
+               "optional": true,
+               "readOnly": false,
+               "discriminator": false,
+               "flatten": false,
+               "decorators": [],
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindings.footer",
+               "serializationOptions": {
+                "$id": "319",
+                "json": {
+                 "$id": "320",
+                 "name": "footer"
+                }
+               }
+              },
+              {
+               "$id": "321",
+               "kind": "property",
+               "name": "buttons",
+               "serializedName": "buttons",
+               "doc": "The button template bindings",
+               "type": {
+                "$id": "322",
+                "kind": "array",
+                "name": "ArrayWhatsAppMessageTemplateBindingsButton",
+                "valueType": {
+                 "$id": "323",
+                 "kind": "model",
+                 "name": "WhatsAppMessageTemplateBindingsButton",
+                 "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindingsButton",
+                 "usage": "Input,Json",
+                 "doc": "The template bindings component button for WhatsApp",
+                 "decorators": [],
+                 "properties": [
+                  {
+                   "$id": "324",
+                   "kind": "property",
+                   "name": "subType",
+                   "serializedName": "subType",
+                   "doc": "The WhatsApp button sub type",
+                   "type": {
+                    "$ref": "36"
+                   },
+                   "optional": false,
+                   "readOnly": false,
+                   "discriminator": false,
+                   "flatten": false,
+                   "decorators": [],
+                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindingsButton.subType",
+                   "serializationOptions": {
+                    "$id": "325",
+                    "json": {
+                     "$id": "326",
+                     "name": "subType"
+                    }
+                   }
+                  },
+                  {
+                   "$id": "327",
+                   "kind": "property",
+                   "name": "refValue",
+                   "serializedName": "refValue",
+                   "doc": "The name of the referenced item in the template values.",
+                   "type": {
+                    "$id": "328",
+                    "kind": "string",
+                    "name": "string",
+                    "crossLanguageDefinitionId": "TypeSpec.string",
+                    "decorators": []
+                   },
+                   "optional": false,
+                   "readOnly": false,
+                   "discriminator": false,
+                   "flatten": false,
+                   "decorators": [],
+                   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindingsButton.refValue",
+                   "serializationOptions": {
+                    "$id": "329",
+                    "json": {
+                     "$id": "330",
+                     "name": "refValue"
+                    }
+                   }
+                  }
+                 ]
+                },
+                "crossLanguageDefinitionId": "TypeSpec.Array",
+                "decorators": []
+               },
+               "optional": true,
+               "readOnly": false,
+               "discriminator": false,
+               "flatten": false,
+               "decorators": [],
+               "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateBindings.buttons",
+               "serializationOptions": {
+                "$id": "331",
+                "json": {
+                 "$id": "332",
+                 "name": "buttons"
+                }
+               }
+              }
+             ]
+            }
+           }
+          },
+          "optional": true,
+          "readOnly": false,
+          "discriminator": false,
+          "flatten": false,
+          "decorators": [],
+          "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplate.bindings",
+          "serializationOptions": {
+           "$id": "333",
+           "json": {
+            "$id": "334",
+            "name": "bindings"
+           }
+          }
+         }
+        ]
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.TemplateNotificationContent.template",
+       "serializationOptions": {
+        "$id": "335",
+        "json": {
+         "$id": "336",
+         "name": "template"
+        }
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "$ref": "83"
+  },
+  {
+   "$ref": "93"
+  },
+  {
+   "$ref": "107"
+  },
+  {
+   "$ref": "121"
+  },
+  {
+   "$ref": "139"
+  },
+  {
+   "$ref": "153"
+  },
+  {
+   "$ref": "163"
+  },
+  {
+   "$ref": "170"
+  },
+  {
+   "$ref": "181"
+  },
+  {
+   "$ref": "190"
+  },
+  {
+   "$ref": "200"
+  },
+  {
+   "$ref": "218"
+  },
+  {
+   "$ref": "236"
+  },
+  {
+   "$ref": "254"
+  },
+  {
+   "$ref": "276"
+  },
+  {
+   "$ref": "293"
+  },
+  {
+   "$ref": "298"
+  },
+  {
+   "$ref": "306"
+  },
+  {
+   "$ref": "323"
+  },
+  {
+   "$id": "337",
+   "kind": "model",
+   "name": "SendMessageResult",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.SendMessageResult",
+   "usage": "Output,Json",
+   "doc": "Result of the send message operation.",
+   "decorators": [],
+   "properties": [
+    {
+     "$id": "338",
+     "kind": "property",
+     "name": "receipts",
+     "serializedName": "receipts",
+     "doc": "Receipts of the send message operation.",
+     "type": {
+      "$id": "339",
+      "kind": "array",
+      "name": "ArrayMessageReceipt",
+      "valueType": {
+       "$id": "340",
+       "kind": "model",
+       "name": "MessageReceipt",
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageReceipt",
+       "usage": "Output,Json",
+       "doc": "Receipt of the sending one message.",
+       "decorators": [],
+       "properties": [
+        {
+         "$id": "341",
+         "kind": "property",
+         "name": "messageId",
+         "serializedName": "messageId",
+         "doc": "The message id.",
+         "type": {
+          "$id": "342",
+          "kind": "string",
+          "name": "string",
+          "crossLanguageDefinitionId": "TypeSpec.string",
+          "decorators": []
+         },
+         "optional": false,
+         "readOnly": false,
+         "discriminator": false,
+         "flatten": false,
+         "decorators": [],
+         "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageReceipt.messageId",
+         "serializationOptions": {
+          "$id": "343",
+          "json": {
+           "$id": "344",
+           "name": "messageId"
+          }
+         }
+        },
+        {
+         "$id": "345",
+         "kind": "property",
+         "name": "to",
+         "serializedName": "to",
+         "doc": "The native external platform user identifier of the recipient.",
+         "type": {
+          "$id": "346",
+          "kind": "string",
+          "name": "string",
+          "crossLanguageDefinitionId": "TypeSpec.string",
+          "decorators": []
+         },
+         "optional": false,
+         "readOnly": false,
+         "discriminator": false,
+         "flatten": false,
+         "decorators": [],
+         "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageReceipt.to",
+         "serializationOptions": {
+          "$id": "347",
+          "json": {
+           "$id": "348",
+           "name": "to"
+          }
+         }
+        }
+       ]
+      },
+      "crossLanguageDefinitionId": "TypeSpec.Array",
+      "decorators": []
+     },
+     "optional": false,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.SendMessageResult.receipts",
+     "serializationOptions": {
+      "$id": "349",
+      "json": {
+       "$id": "350",
+       "name": "receipts"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "$ref": "340"
+  },
+  {
+   "$id": "351",
+   "kind": "model",
+   "name": "MessageTemplateItem",
+   "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateItem",
+   "usage": "Output,Json",
+   "doc": "The message template as returned from the service.",
+   "decorators": [],
+   "discriminatorProperty": {
+    "$id": "352",
+    "kind": "property",
+    "name": "kind",
+    "serializedName": "kind",
+    "doc": "The type discriminator describing a template type.",
+    "type": {
+     "$ref": "58"
+    },
+    "optional": false,
+    "readOnly": false,
+    "discriminator": true,
+    "flatten": false,
+    "decorators": [],
+    "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateItem.kind",
+    "serializationOptions": {
+     "$id": "353",
+     "json": {
+      "$id": "354",
+      "name": "kind"
+     }
+    }
+   },
+   "properties": [
+    {
+     "$id": "355",
+     "kind": "property",
+     "name": "name",
+     "serializedName": "name",
+     "doc": "The template's name.",
+     "type": {
+      "$id": "356",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "optional": false,
+     "readOnly": true,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateItem.name",
+     "serializationOptions": {
+      "$id": "357",
+      "json": {
+       "$id": "358",
+       "name": "name"
+      }
+     }
+    },
+    {
+     "$id": "359",
+     "kind": "property",
+     "name": "language",
+     "serializedName": "language",
+     "doc": "The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.",
+     "type": {
+      "$id": "360",
+      "kind": "string",
+      "name": "string",
+      "crossLanguageDefinitionId": "TypeSpec.string",
+      "decorators": []
+     },
+     "optional": false,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateItem.language",
+     "serializationOptions": {
+      "$id": "361",
+      "json": {
+       "$id": "362",
+       "name": "language"
+      }
+     }
+    },
+    {
+     "$id": "363",
+     "kind": "property",
+     "name": "status",
+     "serializedName": "status",
+     "doc": "The aggregated template status.",
+     "type": {
+      "$ref": "48"
+     },
+     "optional": false,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateItem.status",
+     "serializationOptions": {
+      "$id": "364",
+      "json": {
+       "$id": "365",
+       "name": "status"
+      }
+     }
+    },
+    {
+     "$ref": "352"
+    }
+   ],
+   "discriminatedSubtypes": {
+    "$id": "366",
+    "whatsApp": {
+     "$id": "367",
+     "kind": "model",
+     "name": "WhatsAppMessageTemplateItem",
+     "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateItem",
+     "usage": "Output,Json",
+     "doc": "The WhatsApp-specific template response contract",
+     "discriminatorValue": "whatsApp",
+     "decorators": [],
+     "baseModel": {
+      "$ref": "351"
+     },
+     "properties": [
+      {
+       "$id": "368",
+       "kind": "property",
+       "name": "content",
+       "serializedName": "content",
+       "doc": "WhatsApp platform's template content. This is the payload returned from WhatsApp API.",
+       "type": {
+        "$id": "369",
+        "kind": "unknown",
+        "name": "unknown",
+        "crossLanguageDefinitionId": "",
+        "decorators": []
+       },
+       "optional": true,
+       "readOnly": false,
+       "discriminator": false,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateItem.content",
+       "serializationOptions": {
+        "$id": "370",
+        "json": {
+         "$id": "371",
+         "name": "content"
+        }
+       }
+      },
+      {
+       "$id": "372",
+       "kind": "property",
+       "name": "kind",
+       "serializedName": "kind",
+       "doc": "Message template response type is whatsApp.",
+       "type": {
+        "$id": "373",
+        "kind": "constant",
+        "valueType": {
+         "$id": "374",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "whatsApp",
+        "decorators": []
+       },
+       "optional": false,
+       "readOnly": false,
+       "discriminator": true,
+       "flatten": false,
+       "decorators": [],
+       "crossLanguageDefinitionId": "Azure.Communication.MessagesService.WhatsAppMessageTemplateItem.kind",
+       "serializationOptions": {
+        "$id": "375",
+        "json": {
+         "$id": "376",
+         "name": "kind"
+        }
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "$ref": "367"
+  },
+  {
+   "$id": "377",
+   "kind": "model",
+   "name": "PagedMessageTemplateItem",
+   "crossLanguageDefinitionId": "Azure.Core.Foundations.CustomPage",
+   "usage": "Output,Json",
+   "doc": "Paged collection of MessageTemplateItem items",
+   "decorators": [],
+   "properties": [
+    {
+     "$id": "378",
+     "kind": "property",
+     "name": "value",
+     "serializedName": "value",
+     "doc": "The MessageTemplateItem items on this page",
+     "type": {
+      "$id": "379",
+      "kind": "array",
+      "name": "ArrayMessageTemplateItem",
+      "valueType": {
+       "$ref": "351"
+      },
+      "crossLanguageDefinitionId": "TypeSpec.Array",
+      "decorators": []
+     },
+     "optional": false,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Core.Foundations.CustomPage.value",
+     "serializationOptions": {
+      "$id": "380",
+      "json": {
+       "$id": "381",
+       "name": "value"
+      }
+     }
+    },
+    {
+     "$id": "382",
+     "kind": "property",
+     "name": "nextLink",
+     "serializedName": "nextLink",
+     "doc": "The link to the next page of items",
+     "type": {
+      "$id": "383",
+      "kind": "url",
+      "name": "ResourceLocation",
+      "crossLanguageDefinitionId": "TypeSpec.Rest.ResourceLocation",
+      "baseType": {
+       "$id": "384",
+       "kind": "url",
+       "name": "url",
+       "crossLanguageDefinitionId": "TypeSpec.url",
+       "decorators": []
+      },
+      "decorators": []
+     },
+     "optional": true,
+     "readOnly": false,
+     "discriminator": false,
+     "flatten": false,
+     "decorators": [],
+     "crossLanguageDefinitionId": "Azure.Core.Foundations.CustomPage.nextLink",
+     "serializationOptions": {
+      "$id": "385",
+      "json": {
+       "$id": "386",
+       "name": "nextLink"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "Clients": [
+  {
+   "$id": "387",
+   "Name": "NotificationMessagesClient",
+   "Operations": [
+    {
+     "$id": "388",
+     "Name": "send",
+     "ResourceName": "NotificationMessagesClient",
+     "Doc": "Sends a notification message from Business to User.",
+     "Accessibility": "public",
+     "Parameters": [
+      {
+       "$id": "389",
+       "Name": "apiVersion",
+       "NameInRequest": "api-version",
+       "Doc": "The API version to use for this operation.",
+       "Type": {
+        "$id": "390",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "Location": "Query",
+       "IsApiVersion": true,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Client",
+       "DefaultValue": {
+        "$id": "391",
+        "Type": {
+         "$id": "392",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string"
+        },
+        "Value": "2024-08-30"
+       },
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "393",
+       "Name": "repeatabilityRequestId",
+       "NameInRequest": "Repeatability-Request-ID",
+       "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+       "Type": {
+        "$id": "394",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": false,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "395",
+       "Name": "repeatabilityFirstSent",
+       "NameInRequest": "Repeatability-First-Sent",
+       "Doc": "Specifies the date and time at which the request was first created.",
+       "Type": {
+        "$id": "396",
+        "kind": "utcDateTime",
+        "name": "utcDateTime",
+        "encode": "rfc7231",
+        "wireType": {
+         "$id": "397",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "crossLanguageDefinitionId": "TypeSpec.utcDateTime",
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": false,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "398",
+       "Name": "clientRequestId",
+       "NameInRequest": "x-ms-client-request-id",
+       "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+       "Type": {
+        "$id": "399",
+        "kind": "string",
+        "name": "uuid",
+        "crossLanguageDefinitionId": "Azure.Core.uuid",
+        "baseType": {
+         "$id": "400",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": false,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "401",
+       "Name": "contentType",
+       "NameInRequest": "Content-Type",
+       "Doc": "Body parameter's content type. Known values are application/json",
+       "Type": {
+        "$id": "402",
+        "kind": "constant",
+        "valueType": {
+         "$id": "403",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "application/json",
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": true,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Constant",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "404",
+       "Name": "accept",
+       "NameInRequest": "Accept",
+       "Type": {
+        "$id": "405",
+        "kind": "constant",
+        "valueType": {
+         "$id": "406",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "application/json",
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Constant",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "407",
+       "Name": "notificationContent",
+       "NameInRequest": "notificationContent",
+       "Doc": "Details of the message to send.",
+       "Type": {
+        "$ref": "68"
+       },
+       "Location": "Body",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      }
+     ],
+     "Responses": [
+      {
+       "$id": "408",
+       "StatusCodes": [
+        202
+       ],
+       "BodyType": {
+        "$ref": "337"
+       },
+       "BodyMediaType": "Json",
+       "Headers": [
+        {
+         "$id": "409",
+         "Name": "repeatabilityResult",
+         "NameInResponse": "Repeatability-Result",
+         "Doc": "Indicates whether the repeatable request was accepted or rejected.",
+         "Type": {
+          "$ref": "62"
+         }
+        },
+        {
+         "$id": "410",
+         "Name": "clientRequestId",
+         "NameInResponse": "x-ms-client-request-id",
+         "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+         "Type": {
+          "$id": "411",
+          "kind": "string",
+          "name": "uuid",
+          "crossLanguageDefinitionId": "Azure.Core.uuid",
+          "baseType": {
+           "$id": "412",
+           "kind": "string",
+           "name": "string",
+           "crossLanguageDefinitionId": "TypeSpec.string",
+           "decorators": []
+          },
+          "decorators": []
+         }
+        }
+       ],
+       "IsErrorResponse": false,
+       "ContentTypes": [
+        "application/json"
+       ]
+      }
+     ],
+     "HttpMethod": "POST",
+     "RequestBodyMediaType": "Json",
+     "Uri": "{endpoint}",
+     "Path": "/messages/notifications:send",
+     "RequestMediaTypes": [
+      "application/json"
+     ],
+     "BufferResponse": true,
+     "GenerateProtocolMethod": true,
+     "GenerateConvenienceMethod": true,
+     "CrossLanguageDefinitionId": "Azure.Communication.MessagesService.NotificationMessagesClient.send",
+     "Decorators": []
+    },
+    {
+     "$id": "413",
+     "Name": "downloadMediaInternal",
+     "ResourceName": "MessageDataStream",
+     "Doc": "Download the Media payload from a User to Business message.",
+     "Accessibility": "internal",
+     "Parameters": [
+      {
+       "$id": "414",
+       "Name": "apiVersion",
+       "NameInRequest": "api-version",
+       "Doc": "The API version to use for this operation.",
+       "Type": {
+        "$id": "415",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "Location": "Query",
+       "IsApiVersion": true,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Client",
+       "DefaultValue": {
+        "$id": "416",
+        "Type": {
+         "$id": "417",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string"
+        },
+        "Value": "2024-08-30"
+       },
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "418",
+       "Name": "id",
+       "NameInRequest": "id",
+       "Doc": "The stream ID.",
+       "Type": {
+        "$id": "419",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "Location": "Path",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "420",
+       "Name": "clientRequestId",
+       "NameInRequest": "x-ms-client-request-id",
+       "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+       "Type": {
+        "$id": "421",
+        "kind": "string",
+        "name": "uuid",
+        "crossLanguageDefinitionId": "Azure.Core.uuid",
+        "baseType": {
+         "$id": "422",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": false,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "423",
+       "Name": "accept",
+       "NameInRequest": "Accept",
+       "Type": {
+        "$id": "424",
+        "kind": "constant",
+        "valueType": {
+         "$id": "425",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "application/octet-stream",
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Constant",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      }
+     ],
+     "Responses": [
+      {
+       "$id": "426",
+       "StatusCodes": [
+        200
+       ],
+       "BodyType": {
+        "$id": "427",
+        "kind": "bytes",
+        "name": "bytes",
+        "crossLanguageDefinitionId": "TypeSpec.bytes",
+        "decorators": []
+       },
+       "BodyMediaType": "Json",
+       "Headers": [
+        {
+         "$id": "428",
+         "Name": "clientRequestId",
+         "NameInResponse": "x-ms-client-request-id",
+         "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+         "Type": {
+          "$id": "429",
+          "kind": "string",
+          "name": "uuid",
+          "crossLanguageDefinitionId": "Azure.Core.uuid",
+          "baseType": {
+           "$id": "430",
+           "kind": "string",
+           "name": "string",
+           "crossLanguageDefinitionId": "TypeSpec.string",
+           "decorators": []
+          },
+          "decorators": []
+         }
+        },
+        {
+         "$id": "431",
+         "Name": "contentType",
+         "NameInResponse": "content-type",
+         "Doc": "The stream content type.",
+         "Type": {
+          "$id": "432",
+          "kind": "constant",
+          "valueType": {
+           "$id": "433",
+           "kind": "string",
+           "name": "string",
+           "crossLanguageDefinitionId": "TypeSpec.string",
+           "decorators": []
+          },
+          "value": "application/octet-stream",
+          "decorators": []
+         }
+        }
+       ],
+       "IsErrorResponse": false,
+       "ContentTypes": [
+        "application/octet-stream"
+       ]
+      }
+     ],
+     "HttpMethod": "GET",
+     "RequestBodyMediaType": "None",
+     "Uri": "{endpoint}",
+     "Path": "/messages/streams/{id}",
+     "BufferResponse": true,
+     "GenerateProtocolMethod": true,
+     "GenerateConvenienceMethod": true,
+     "CrossLanguageDefinitionId": "ClientForAcsMessages.NotificationMessagesClient.downloadMedia",
+     "Decorators": [],
+     "Examples": [
+      {
+       "$id": "434",
+       "kind": "http",
+       "name": "Download media",
+       "description": "Download media",
+       "filePath": "2024-08-30/Stream_GetMedia.json",
+       "parameters": [
+        {
+         "$id": "435",
+         "parameter": {
+          "$ref": "414"
+         },
+         "value": {
+          "$id": "436",
+          "kind": "string",
+          "type": {
+           "$ref": "415"
+          },
+          "value": "2024-08-30"
+         }
+        },
+        {
+         "$id": "437",
+         "parameter": {
+          "$ref": "418"
+         },
+         "value": {
+          "$id": "438",
+          "kind": "string",
+          "type": {
+           "$ref": "419"
+          },
+          "value": "d19e68ec-bdd6-4a50-8dfb-cbb1642df6ab"
+         }
+        }
+       ],
+       "responses": [
+        {
+         "$id": "439",
+         "response": {
+          "$ref": "426"
+         },
+         "statusCode": 200,
+         "bodyValue": {
+          "$id": "440",
+          "kind": "string",
+          "type": {
+           "$ref": "427"
+          },
+          "value": "<binary_media_data>"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "Protocol": {
+    "$id": "441"
+   },
+   "Parameters": [
+    {
+     "$id": "442",
+     "Name": "endpoint",
+     "NameInRequest": "endpoint",
+     "Doc": "The communication resource, for example https://my-resource.communication.azure.com",
+     "Type": {
+      "$id": "443",
+      "kind": "url",
+      "name": "url",
+      "crossLanguageDefinitionId": "TypeSpec.url"
+     },
+     "Location": "Uri",
+     "IsApiVersion": false,
+     "IsResourceParameter": false,
+     "IsContentType": false,
+     "IsRequired": true,
+     "IsEndpoint": true,
+     "SkipUrlEncoding": false,
+     "Explode": false,
+     "Kind": "Client"
+    }
+   ],
+   "Decorators": []
+  },
+  {
+   "$id": "444",
+   "Name": "MessageTemplateClient",
+   "Operations": [
+    {
+     "$id": "445",
+     "Name": "getTemplates",
+     "ResourceName": "MessageTemplateItem",
+     "Doc": "List all templates for given Azure Communication Services channel",
+     "Accessibility": "public",
+     "Parameters": [
+      {
+       "$id": "446",
+       "Name": "apiVersion",
+       "NameInRequest": "api-version",
+       "Doc": "The API version to use for this operation.",
+       "Type": {
+        "$id": "447",
+        "kind": "string",
+        "name": "string",
+        "crossLanguageDefinitionId": "TypeSpec.string",
+        "decorators": []
+       },
+       "Location": "Query",
+       "IsApiVersion": true,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Client",
+       "DefaultValue": {
+        "$id": "448",
+        "Type": {
+         "$id": "449",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string"
+        },
+        "Value": "2024-08-30"
+       },
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "450",
+       "Name": "channelId",
+       "NameInRequest": "channelId",
+       "Doc": "The registration ID of the channel.",
+       "Type": {
+        "$id": "451",
+        "kind": "string",
+        "name": "uuid",
+        "crossLanguageDefinitionId": "Azure.Core.uuid",
+        "baseType": {
+         "$id": "452",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "decorators": []
+       },
+       "Location": "Path",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "453",
+       "Name": "maxpagesize",
+       "NameInRequest": "maxpagesize",
+       "Doc": "Number of objects to return per page.",
+       "Type": {
+        "$id": "454",
+        "kind": "int32",
+        "name": "int32",
+        "crossLanguageDefinitionId": "TypeSpec.int32",
+        "decorators": []
+       },
+       "Location": "Query",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": false,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "455",
+       "Name": "clientRequestId",
+       "NameInRequest": "x-ms-client-request-id",
+       "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+       "Type": {
+        "$id": "456",
+        "kind": "string",
+        "name": "uuid",
+        "crossLanguageDefinitionId": "Azure.Core.uuid",
+        "baseType": {
+         "$id": "457",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": false,
+       "Kind": "Method",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      },
+      {
+       "$id": "458",
+       "Name": "accept",
+       "NameInRequest": "Accept",
+       "Type": {
+        "$id": "459",
+        "kind": "constant",
+        "valueType": {
+         "$id": "460",
+         "kind": "string",
+         "name": "string",
+         "crossLanguageDefinitionId": "TypeSpec.string",
+         "decorators": []
+        },
+        "value": "application/json",
+        "decorators": []
+       },
+       "Location": "Header",
+       "IsApiVersion": false,
+       "IsContentType": false,
+       "IsEndpoint": false,
+       "Explode": false,
+       "IsRequired": true,
+       "Kind": "Constant",
+       "Decorators": [],
+       "SkipUrlEncoding": false
+      }
+     ],
+     "Responses": [
+      {
+       "$id": "461",
+       "StatusCodes": [
+        200
+       ],
+       "BodyType": {
+        "$ref": "377"
+       },
+       "BodyMediaType": "Json",
+       "Headers": [
+        {
+         "$id": "462",
+         "Name": "clientRequestId",
+         "NameInResponse": "x-ms-client-request-id",
+         "Doc": "An opaque, globally-unique, client-generated string identifier for the request.",
+         "Type": {
+          "$id": "463",
+          "kind": "string",
+          "name": "uuid",
+          "crossLanguageDefinitionId": "Azure.Core.uuid",
+          "baseType": {
+           "$id": "464",
+           "kind": "string",
+           "name": "string",
+           "crossLanguageDefinitionId": "TypeSpec.string",
+           "decorators": []
+          },
+          "decorators": []
+         }
+        }
+       ],
+       "IsErrorResponse": false,
+       "ContentTypes": [
+        "application/json"
+       ]
+      }
+     ],
+     "HttpMethod": "GET",
+     "RequestBodyMediaType": "None",
+     "Uri": "{endpoint}",
+     "Path": "/messages/channels/{channelId}/templates",
+     "BufferResponse": true,
+     "Paging": {
+      "$id": "465",
+      "ItemName": "value",
+      "NextLinkName": "nextLink"
+     },
+     "GenerateProtocolMethod": true,
+     "GenerateConvenienceMethod": true,
+     "CrossLanguageDefinitionId": "Azure.Communication.MessagesService.MessageTemplateClient.listTemplates",
+     "Decorators": []
+    }
+   ],
+   "Protocol": {
+    "$id": "466"
+   },
+   "Parameters": [
+    {
+     "$id": "467",
+     "Name": "endpoint",
+     "NameInRequest": "endpoint",
+     "Doc": "The communication resource, for example https://my-resource.communication.azure.com",
+     "Type": {
+      "$id": "468",
+      "kind": "url",
+      "name": "url",
+      "crossLanguageDefinitionId": "TypeSpec.url"
+     },
+     "Location": "Uri",
+     "IsApiVersion": false,
+     "IsResourceParameter": false,
+     "IsContentType": false,
+     "IsRequired": true,
+     "IsEndpoint": true,
+     "SkipUrlEncoding": false,
+     "Explode": false,
+     "Kind": "Client"
+    }
+   ],
+   "Decorators": []
+  }
+ ],
+ "Auth": {
+  "$id": "469",
+  "OAuth2": {
+   "$id": "470",
+   "Scopes": [
+    "https://communication.azure.com/.default"
+   ]
+  },
+  "ApiKey": {
+   "$id": "471",
+   "Name": "Authorization",
+   "In": "header"
+  }
+ }
+}

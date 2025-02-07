@@ -5,6 +5,7 @@
 
 #nullable disable
 
+using System;
 using System.Collections.Generic;
 using Azure.Core;
 using Azure.ResourceManager.EventGrid.Models;
@@ -18,6 +19,38 @@ namespace Azure.ResourceManager.EventGrid
     /// </summary>
     public partial class NetworkSecurityPerimeterConfigurationData : ResourceData
     {
+        /// <summary>
+        /// Keeps track of any properties unknown to the library.
+        /// <para>
+        /// To assign an object to the value of this property use <see cref="BinaryData.FromObjectAsJson{T}(T, System.Text.Json.JsonSerializerOptions?)"/>.
+        /// </para>
+        /// <para>
+        /// To assign an already formatted json string to this property use <see cref="BinaryData.FromString(string)"/>.
+        /// </para>
+        /// <para>
+        /// Examples:
+        /// <list type="bullet">
+        /// <item>
+        /// <term>BinaryData.FromObjectAsJson("foo")</term>
+        /// <description>Creates a payload of "foo".</description>
+        /// </item>
+        /// <item>
+        /// <term>BinaryData.FromString("\"foo\"")</term>
+        /// <description>Creates a payload of "foo".</description>
+        /// </item>
+        /// <item>
+        /// <term>BinaryData.FromObjectAsJson(new { key = "value" })</term>
+        /// <description>Creates a payload of { "key": "value" }.</description>
+        /// </item>
+        /// <item>
+        /// <term>BinaryData.FromString("{\"key\": \"value\"}")</term>
+        /// <description>Creates a payload of { "key": "value" }.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        private IDictionary<string, BinaryData> _serializedAdditionalRawData;
+
         /// <summary> Initializes a new instance of <see cref="NetworkSecurityPerimeterConfigurationData"/>. </summary>
         public NetworkSecurityPerimeterConfigurationData()
         {
@@ -34,24 +67,31 @@ namespace Azure.ResourceManager.EventGrid
         /// <param name="networkSecurityPerimeter"> Perimeter info for nsp association. </param>
         /// <param name="resourceAssociation"> Nsp association name and access mode of association. </param>
         /// <param name="profile"> Nsp profile configuration, access rules and diagnostic settings. </param>
-        internal NetworkSecurityPerimeterConfigurationData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, NetworkSecurityPerimeterConfigProvisioningState? provisioningState, IList<NetworkSecurityPerimeterConfigurationIssues> provisioningIssues, NetworkSecurityPerimeterInfo networkSecurityPerimeter, ResourceAssociation resourceAssociation, NetworkSecurityPerimeterConfigurationProfile profile) : base(id, name, resourceType, systemData)
+        /// <param name="serializedAdditionalRawData"> Keeps track of any properties unknown to the library. </param>
+        internal NetworkSecurityPerimeterConfigurationData(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, NetworkSecurityPerimeterConfigProvisioningState? provisioningState, IList<NetworkSecurityPerimeterConfigurationIssues> provisioningIssues, NetworkSecurityPerimeterInfo networkSecurityPerimeter, ResourceAssociation resourceAssociation, NetworkSecurityPerimeterConfigurationProfile profile, IDictionary<string, BinaryData> serializedAdditionalRawData) : base(id, name, resourceType, systemData)
         {
             ProvisioningState = provisioningState;
             ProvisioningIssues = provisioningIssues;
             NetworkSecurityPerimeter = networkSecurityPerimeter;
             ResourceAssociation = resourceAssociation;
             Profile = profile;
+            _serializedAdditionalRawData = serializedAdditionalRawData;
         }
 
         /// <summary> Provisioning state to reflect configuration state and indicate status of nsp profile configuration retrieval. </summary>
+        [WirePath("properties.provisioningState")]
         public NetworkSecurityPerimeterConfigProvisioningState? ProvisioningState { get; set; }
         /// <summary> Provisioning issues to reflect status when attempting to retrieve nsp profile configuration. </summary>
+        [WirePath("properties.provisioningIssues")]
         public IList<NetworkSecurityPerimeterConfigurationIssues> ProvisioningIssues { get; }
         /// <summary> Perimeter info for nsp association. </summary>
+        [WirePath("properties.networkSecurityPerimeter")]
         public NetworkSecurityPerimeterInfo NetworkSecurityPerimeter { get; set; }
         /// <summary> Nsp association name and access mode of association. </summary>
+        [WirePath("properties.resourceAssociation")]
         public ResourceAssociation ResourceAssociation { get; set; }
         /// <summary> Nsp profile configuration, access rules and diagnostic settings. </summary>
+        [WirePath("properties.profile")]
         public NetworkSecurityPerimeterConfigurationProfile Profile { get; set; }
     }
 }

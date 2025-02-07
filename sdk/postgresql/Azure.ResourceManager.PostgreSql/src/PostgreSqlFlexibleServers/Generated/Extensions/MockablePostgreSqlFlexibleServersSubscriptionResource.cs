@@ -9,11 +9,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.PostgreSql.FlexibleServers;
 using Azure.ResourceManager.PostgreSql.FlexibleServers.Models;
 
 namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
@@ -74,7 +71,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -85,7 +82,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => LocationBasedCapabilitiesRestClient.CreateExecuteRequest(Id.SubscriptionId, locationName);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => LocationBasedCapabilitiesRestClient.CreateExecuteNextPageRequest(nextLink, Id.SubscriptionId, locationName);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, PostgreSqlFlexibleServerCapabilityProperties.DeserializePostgreSqlFlexibleServerCapabilityProperties, LocationBasedCapabilitiesClientDiagnostics, Pipeline, "MockablePostgreSqlFlexibleServersSubscriptionResource.ExecuteLocationBasedCapabilities", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => PostgreSqlFlexibleServerCapabilityProperties.DeserializePostgreSqlFlexibleServerCapabilityProperties(e), LocationBasedCapabilitiesClientDiagnostics, Pipeline, "MockablePostgreSqlFlexibleServersSubscriptionResource.ExecuteLocationBasedCapabilities", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -101,7 +98,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -112,7 +109,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => LocationBasedCapabilitiesRestClient.CreateExecuteRequest(Id.SubscriptionId, locationName);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => LocationBasedCapabilitiesRestClient.CreateExecuteNextPageRequest(nextLink, Id.SubscriptionId, locationName);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, PostgreSqlFlexibleServerCapabilityProperties.DeserializePostgreSqlFlexibleServerCapabilityProperties, LocationBasedCapabilitiesClientDiagnostics, Pipeline, "MockablePostgreSqlFlexibleServersSubscriptionResource.ExecuteLocationBasedCapabilities", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => PostgreSqlFlexibleServerCapabilityProperties.DeserializePostgreSqlFlexibleServerCapabilityProperties(e), LocationBasedCapabilitiesClientDiagnostics, Pipeline, "MockablePostgreSqlFlexibleServersSubscriptionResource.ExecuteLocationBasedCapabilities", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -128,7 +125,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -166,7 +163,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -204,7 +201,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -243,7 +240,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -282,7 +279,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -312,7 +309,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -342,7 +339,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -381,7 +378,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// </list>
         /// </summary>

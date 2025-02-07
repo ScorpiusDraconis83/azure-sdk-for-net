@@ -5,27 +5,35 @@
 
 #nullable disable
 
+using System;
+using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 
 namespace Azure.ResourceManager.HybridContainerService.Models
 {
-    public partial class ProvisionedClusterControlPlaneProfile : IUtf8JsonSerializable
+    public partial class ProvisionedClusterControlPlaneProfile : IUtf8JsonSerializable, IJsonModel<ProvisionedClusterControlPlaneProfile>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ProvisionedClusterControlPlaneProfile>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+
+        void IJsonModel<ProvisionedClusterControlPlaneProfile>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
-            if (Optional.IsDefined(ControlPlaneEndpoint))
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ProvisionedClusterControlPlaneProfile>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
             {
-                writer.WritePropertyName("controlPlaneEndpoint"u8);
-                writer.WriteObjectValue(ControlPlaneEndpoint);
+                throw new FormatException($"The model {nameof(ProvisionedClusterControlPlaneProfile)} does not support writing '{format}' format.");
             }
-            if (Optional.IsDefined(LinuxProfile))
-            {
-                writer.WritePropertyName("linuxProfile"u8);
-                writer.WriteObjectValue(LinuxProfile);
-            }
+
             if (Optional.IsDefined(Count))
             {
                 writer.WritePropertyName("count"u8);
@@ -36,74 +44,55 @@ namespace Azure.ResourceManager.HybridContainerService.Models
                 writer.WritePropertyName("vmSize"u8);
                 writer.WriteStringValue(VmSize);
             }
-            if (Optional.IsDefined(Name))
+            if (Optional.IsDefined(ControlPlaneEndpoint))
             {
-                writer.WritePropertyName("name"u8);
-                writer.WriteStringValue(Name);
+                writer.WritePropertyName("controlPlaneEndpoint"u8);
+                writer.WriteObjectValue(ControlPlaneEndpoint, options);
             }
-            if (Optional.IsCollectionDefined(AvailabilityZones))
+            if (options.Format != "W" && _serializedAdditionalRawData != null)
             {
-                writer.WritePropertyName("availabilityZones"u8);
-                writer.WriteStartArray();
-                foreach (var item in AvailabilityZones)
+                foreach (var item in _serializedAdditionalRawData)
                 {
-                    writer.WriteStringValue(item);
+                    writer.WritePropertyName(item.Key);
+#if NET6_0_OR_GREATER
+				writer.WriteRawValue(item.Value);
+#else
+                    using (JsonDocument document = JsonDocument.Parse(item.Value))
+                    {
+                        JsonSerializer.Serialize(writer, document.RootElement);
+                    }
+#endif
                 }
-                writer.WriteEndArray();
             }
-            if (Optional.IsDefined(OSType))
-            {
-                writer.WritePropertyName("osType"u8);
-                writer.WriteStringValue(OSType.Value.ToString());
-            }
-            if (Optional.IsDefined(OSSku))
-            {
-                writer.WritePropertyName("osSKU"u8);
-                writer.WriteStringValue(OSSku.Value.ToString());
-            }
-            if (Optional.IsDefined(NodeImageVersion))
-            {
-                writer.WritePropertyName("nodeImageVersion"u8);
-                writer.WriteStringValue(NodeImageVersion);
-            }
-            writer.WriteEndObject();
         }
 
-        internal static ProvisionedClusterControlPlaneProfile DeserializeProvisionedClusterControlPlaneProfile(JsonElement element)
+        ProvisionedClusterControlPlaneProfile IJsonModel<ProvisionedClusterControlPlaneProfile>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
+            var format = options.Format == "W" ? ((IPersistableModel<ProvisionedClusterControlPlaneProfile>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(ProvisionedClusterControlPlaneProfile)} does not support reading '{format}' format.");
+            }
+
+            using JsonDocument document = JsonDocument.ParseValue(ref reader);
+            return DeserializeProvisionedClusterControlPlaneProfile(document.RootElement, options);
+        }
+
+        internal static ProvisionedClusterControlPlaneProfile DeserializeProvisionedClusterControlPlaneProfile(JsonElement element, ModelReaderWriterOptions options = null)
+        {
+            options ??= ModelSerializationExtensions.WireOptions;
+
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<ProvisionedClusterControlPlaneEndpoint> controlPlaneEndpoint = default;
-            Optional<LinuxProfileProperties> linuxProfile = default;
-            Optional<int> count = default;
-            Optional<string> vmSize = default;
-            Optional<string> name = default;
-            Optional<IList<string>> availabilityZones = default;
-            Optional<HybridContainerServiceOSType> osType = default;
-            Optional<HybridContainerServiceOSSku> ossku = default;
-            Optional<string> nodeImageVersion = default;
+            int? count = default;
+            string vmSize = default;
+            ControlPlaneProfileControlPlaneEndpoint controlPlaneEndpoint = default;
+            IDictionary<string, BinaryData> serializedAdditionalRawData = default;
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("controlPlaneEndpoint"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    controlPlaneEndpoint = ProvisionedClusterControlPlaneEndpoint.DeserializeProvisionedClusterControlPlaneEndpoint(property.Value);
-                    continue;
-                }
-                if (property.NameEquals("linuxProfile"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    linuxProfile = LinuxProfileProperties.DeserializeLinuxProfileProperties(property.Value);
-                    continue;
-                }
                 if (property.NameEquals("count"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -118,50 +107,53 @@ namespace Azure.ResourceManager.HybridContainerService.Models
                     vmSize = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("name"u8))
-                {
-                    name = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("availabilityZones"u8))
+                if (property.NameEquals("controlPlaneEndpoint"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         continue;
                     }
-                    List<string> array = new List<string>();
-                    foreach (var item in property.Value.EnumerateArray())
-                    {
-                        array.Add(item.GetString());
-                    }
-                    availabilityZones = array;
+                    controlPlaneEndpoint = ControlPlaneProfileControlPlaneEndpoint.DeserializeControlPlaneProfileControlPlaneEndpoint(property.Value, options);
                     continue;
                 }
-                if (property.NameEquals("osType"u8))
+                if (options.Format != "W")
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    osType = new HybridContainerServiceOSType(property.Value.GetString());
-                    continue;
-                }
-                if (property.NameEquals("osSKU"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    ossku = new HybridContainerServiceOSSku(property.Value.GetString());
-                    continue;
-                }
-                if (property.NameEquals("nodeImageVersion"u8))
-                {
-                    nodeImageVersion = property.Value.GetString();
-                    continue;
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
                 }
             }
-            return new ProvisionedClusterControlPlaneProfile(Optional.ToList(availabilityZones), Optional.ToNullable(osType), Optional.ToNullable(ossku), nodeImageVersion.Value, Optional.ToNullable(count), vmSize.Value, name.Value, controlPlaneEndpoint.Value, linuxProfile.Value);
+            serializedAdditionalRawData = rawDataDictionary;
+            return new ProvisionedClusterControlPlaneProfile(count, vmSize, controlPlaneEndpoint, serializedAdditionalRawData);
         }
+
+        BinaryData IPersistableModel<ProvisionedClusterControlPlaneProfile>.Write(ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ProvisionedClusterControlPlaneProfile>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options);
+                default:
+                    throw new FormatException($"The model {nameof(ProvisionedClusterControlPlaneProfile)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        ProvisionedClusterControlPlaneProfile IPersistableModel<ProvisionedClusterControlPlaneProfile>.Create(BinaryData data, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ProvisionedClusterControlPlaneProfile>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    {
+                        using JsonDocument document = JsonDocument.Parse(data);
+                        return DeserializeProvisionedClusterControlPlaneProfile(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(ProvisionedClusterControlPlaneProfile)} does not support reading '{options.Format}' format.");
+            }
+        }
+
+        string IPersistableModel<ProvisionedClusterControlPlaneProfile>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

@@ -9,7 +9,6 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 
@@ -32,8 +31,19 @@ namespace Azure.ResourceManager.HybridContainerService
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2023-11-15-preview";
+            _apiVersion = apiVersion ?? "2024-01-01";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
+        }
+
+        internal RequestUriBuilder CreateGetKubernetesVersionsRequestUri(string customLocationResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(customLocationResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/kubernetesVersions/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateGetKubernetesVersionsRequest(string customLocationResourceUri)
@@ -53,8 +63,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Gets the supported kubernetes versions from the underlying custom location. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Lists the supported kubernetes versions for the specified custom location. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public async Task<Response<KubernetesVersionProfileData>> GetKubernetesVersionsAsync(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -79,8 +89,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Gets the supported kubernetes versions from the underlying custom location. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Lists the supported kubernetes versions for the specified custom location. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public Response<KubernetesVersionProfileData> GetKubernetesVersions(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -105,6 +115,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreatePutKubernetesVersionsRequestUri(string customLocationResourceUri, KubernetesVersionProfileData data)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(customLocationResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/kubernetesVersions/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreatePutKubernetesVersionsRequest(string customLocationResourceUri, KubernetesVersionProfileData data)
         {
             var message = _pipeline.CreateMessage();
@@ -120,14 +141,14 @@ namespace Azure.ResourceManager.HybridContainerService
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
             var content = new Utf8JsonRequestContent();
-            content.JsonWriter.WriteObjectValue(data);
+            content.JsonWriter.WriteObjectValue(data, ModelSerializationExtensions.WireOptions);
             request.Content = content;
             _userAgent.Apply(message);
             return message;
         }
 
-        /// <summary> Puts the kubernetes version resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions). </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="data"> Kubernetes Versions resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> or <paramref name="data"/> is null. </exception>
@@ -148,8 +169,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Puts the kubernetes version resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions). </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="data"> Kubernetes Versions resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> or <paramref name="data"/> is null. </exception>
@@ -170,6 +191,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreateDeleteKubernetesVersionsRequestUri(string customLocationResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(customLocationResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/kubernetesVersions/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateDeleteKubernetesVersionsRequest(string customLocationResourceUri)
         {
             var message = _pipeline.CreateMessage();
@@ -187,8 +219,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Delete the kubernetes versions resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Delete the default kubernetes versions resource type. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public async Task<Response> DeleteKubernetesVersionsAsync(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -207,8 +239,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Delete the kubernetes versions resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Delete the default kubernetes versions resource type. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public Response DeleteKubernetesVersions(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -225,6 +257,17 @@ namespace Azure.ResourceManager.HybridContainerService
                 default:
                     throw new RequestFailedException(message.Response);
             }
+        }
+
+        internal RequestUriBuilder CreateGetVmSkusRequestUri(string customLocationResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(customLocationResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/skus/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateGetVmSkusRequest(string customLocationResourceUri)
@@ -244,8 +287,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Gets the supported VM skus from the underlying custom location. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Lists the supported VM skus for the specified custom location. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public async Task<Response<HybridContainerServiceVmSkuData>> GetVmSkusAsync(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -270,8 +313,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Gets the supported VM skus from the underlying custom location. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Lists the supported VM skus for the specified custom location. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public Response<HybridContainerServiceVmSkuData> GetVmSkus(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -296,6 +339,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreatePutVmSkusRequestUri(string customLocationResourceUri, HybridContainerServiceVmSkuData data)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(customLocationResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/skus/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreatePutVmSkusRequest(string customLocationResourceUri, HybridContainerServiceVmSkuData data)
         {
             var message = _pipeline.CreateMessage();
@@ -311,14 +365,14 @@ namespace Azure.ResourceManager.HybridContainerService
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
             var content = new Utf8JsonRequestContent();
-            content.JsonWriter.WriteObjectValue(data);
+            content.JsonWriter.WriteObjectValue(data, ModelSerializationExtensions.WireOptions);
             request.Content = content;
             _userAgent.Apply(message);
             return message;
         }
 
-        /// <summary> Puts the VM SKUs resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Puts the default VM skus resource type (one time operation, before listing the VM skus). </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="data"> VM SKUs resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> or <paramref name="data"/> is null. </exception>
@@ -339,8 +393,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Puts the VM SKUs resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Puts the default VM skus resource type (one time operation, before listing the VM skus). </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="data"> VM SKUs resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> or <paramref name="data"/> is null. </exception>
@@ -361,6 +415,17 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
+        internal RequestUriBuilder CreateDeleteVmSkusRequestUri(string customLocationResourceUri)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/", false);
+            uri.AppendPath(customLocationResourceUri, false);
+            uri.AppendPath("/providers/Microsoft.HybridContainerService/skus/default", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateDeleteVmSkusRequest(string customLocationResourceUri)
         {
             var message = _pipeline.CreateMessage();
@@ -378,8 +443,8 @@ namespace Azure.ResourceManager.HybridContainerService
             return message;
         }
 
-        /// <summary> Deletes the Vm Sku resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Deletes the default VM skus resource type. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public async Task<Response> DeleteVmSkusAsync(string customLocationResourceUri, CancellationToken cancellationToken = default)
@@ -398,8 +463,8 @@ namespace Azure.ResourceManager.HybridContainerService
             }
         }
 
-        /// <summary> Deletes the Vm Sku resource type. </summary>
-        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource manager identifier of the custom location resource. </param>
+        /// <summary> Deletes the default VM skus resource type. </summary>
+        /// <param name="customLocationResourceUri"> The fully qualified Azure Resource Manager identifier of the custom location resource. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="customLocationResourceUri"/> is null. </exception>
         public Response DeleteVmSkus(string customLocationResourceUri, CancellationToken cancellationToken = default)
