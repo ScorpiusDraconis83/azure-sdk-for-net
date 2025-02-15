@@ -6,23 +6,19 @@
 #nullable disable
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.PolicyInsights;
 using Azure.ResourceManager.PolicyInsights.Models;
 using Azure.ResourceManager.Resources;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.PolicyInsights.Samples
 {
     public partial class Sample_ResourceGroupResourceExtensions
     {
-        // Query at resource group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetPolicyTrackedResourceQueryResults_QueryAtResourceGroupScope()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/preview/2018-07-01-preview/examples/PolicyTrackedResources_QueryResourceGroupScope.json
@@ -47,12 +43,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Query at resource group scope using query parameters
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetPolicyTrackedResourceQueryResults_QueryAtResourceGroupScopeUsingQueryParameters()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/preview/2018-07-01-preview/examples/PolicyTrackedResources_QueryResourceGroupScopeWithFilterAndTop.json
@@ -77,12 +72,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Query at resource group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetPolicyEventQueryResults_QueryAtResourceGroupScope()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupScope.json
@@ -107,12 +101,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Query at resource group scope with next link
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetPolicyEventQueryResults_QueryAtResourceGroupScopeWithNextLink()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupScopeNextLink.json
@@ -137,12 +130,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Query latest at resource group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetPolicyStateQueryResults_QueryLatestAtResourceGroupScope()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupScope.json
@@ -167,12 +159,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Query latest at resource group scope with next link
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetPolicyStateQueryResults_QueryLatestAtResourceGroupScopeWithNextLink()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupScopeNextLink.json
@@ -197,12 +188,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Summarize at resource group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task SummarizePolicyStates_SummarizeAtResourceGroupScope()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupScope.json
@@ -227,12 +217,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Trigger evaluations for all resources in a resource group
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task TriggerPolicyStateEvaluation_TriggerEvaluationsForAllResourcesInAResourceGroup()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerResourceGroupEvaluation.json
@@ -253,12 +242,11 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
             // invoke the operation
             await resourceGroupResource.TriggerPolicyStateEvaluationAsync(WaitUntil.Completed);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Check policy restrictions at resource group scope
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task CheckPolicyRestrictions_CheckPolicyRestrictionsAtResourceGroupScope()
         {
             // Generated from example definition: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/PolicyRestrictions_CheckAtResourceGroupScope.json
@@ -277,34 +265,25 @@ namespace Azure.ResourceManager.PolicyInsights.Samples
             ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
 
             // invoke the operation
-            CheckPolicyRestrictionsContent content = new CheckPolicyRestrictionsContent(new CheckRestrictionsResourceDetails(BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+            CheckPolicyRestrictionsContent content = new CheckPolicyRestrictionsContent(new CheckRestrictionsResourceDetails(BinaryData.FromObjectAsJson(new
             {
-                ["type"] = "Microsoft.Compute/virtualMachines",
-                ["properties"] = new Dictionary<string, object>()
+                type = "Microsoft.Compute/virtualMachines",
+                properties = new
                 {
-                    ["priority"] = "Spot"
-                }
+                    priority = "Spot",
+                },
             }))
             {
                 ApiVersion = "2019-12-01",
             })
             {
-                PendingFields =
+                PendingFields = {new PendingField("name")
 {
-new PendingField("name")
+Values = {"myVMName"},
+}, new PendingField("location")
 {
-Values =
-{
-"myVMName"
-},
-},new PendingField("location")
-{
-Values =
-{
-"eastus","westus","westus2","westeurope"
-},
-},new PendingField("tags")
-},
+Values = {"eastus", "westus", "westus2", "westeurope"},
+}, new PendingField("tags")},
             };
             CheckPolicyRestrictionsResult result = await resourceGroupResource.CheckPolicyRestrictionsAsync(content);
 

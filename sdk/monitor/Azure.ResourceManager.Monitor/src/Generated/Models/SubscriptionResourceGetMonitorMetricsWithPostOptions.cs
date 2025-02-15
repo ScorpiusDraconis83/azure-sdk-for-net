@@ -6,7 +6,6 @@
 #nullable disable
 
 using System;
-using Azure.Core;
 
 namespace Azure.ResourceManager.Monitor.Models
 {
@@ -23,6 +22,11 @@ namespace Azure.ResourceManager.Monitor.Models
             Region = region;
         }
 
+        /// <summary> Initializes a new instance of <see cref="SubscriptionResourceGetMonitorMetricsWithPostOptions"/> for deserialization. </summary>
+        internal SubscriptionResourceGetMonitorMetricsWithPostOptions()
+        {
+        }
+
         /// <summary> The region where the metrics you want reside. </summary>
         public string Region { get; }
         /// <summary> Parameters serialized in the body. </summary>
@@ -31,7 +35,7 @@ namespace Azure.ResourceManager.Monitor.Models
         public string Timespan { get; set; }
         /// <summary> The interval (i.e. timegrain) of the query. </summary>
         public TimeSpan? Interval { get; set; }
-        /// <summary> The names of the metrics (comma separated) to retrieve. </summary>
+        /// <summary> The names of the metrics (comma separated) to retrieve. Limit 20 metrics. </summary>
         public string Metricnames { get; set; }
         /// <summary> The list of aggregation types (comma separated) to retrieve. </summary>
         public string Aggregation { get; set; }

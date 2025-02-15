@@ -11,10 +11,8 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 using Azure.ResourceManager.AppConfiguration.Models;
 using Azure.ResourceManager.Resources;
 
@@ -113,7 +111,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -144,7 +142,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -182,7 +180,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -213,7 +211,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -239,7 +237,7 @@ namespace Azure.ResourceManager.AppConfiguration
         }
 
         /// <summary>
-        /// Gets the properties of the specified key-value.
+        /// Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios involving App Configuration key-values the data plane API should be used instead.
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -251,7 +249,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -270,7 +268,7 @@ namespace Azure.ResourceManager.AppConfiguration
         }
 
         /// <summary>
-        /// Gets the properties of the specified key-value.
+        /// Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios involving App Configuration key-values the data plane API should be used instead.
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -282,7 +280,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -300,6 +298,144 @@ namespace Azure.ResourceManager.AppConfiguration
             return GetAppConfigurationKeyValues().Get(keyValueName, cancellationToken);
         }
 
+        /// <summary> Gets a collection of AppConfigurationReplicaResources in the AppConfigurationStore. </summary>
+        /// <returns> An object representing collection of AppConfigurationReplicaResources and their operations over a AppConfigurationReplicaResource. </returns>
+        public virtual AppConfigurationReplicaCollection GetAppConfigurationReplicas()
+        {
+            return GetCachedClient(client => new AppConfigurationReplicaCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Gets the properties of the specified replica.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Replicas_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2024-05-01</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="AppConfigurationReplicaResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="replicaName"> The name of the replica. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="replicaName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="replicaName"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<AppConfigurationReplicaResource>> GetAppConfigurationReplicaAsync(string replicaName, CancellationToken cancellationToken = default)
+        {
+            return await GetAppConfigurationReplicas().GetAsync(replicaName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the properties of the specified replica.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Replicas_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2024-05-01</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="AppConfigurationReplicaResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="replicaName"> The name of the replica. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="replicaName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="replicaName"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<AppConfigurationReplicaResource> GetAppConfigurationReplica(string replicaName, CancellationToken cancellationToken = default)
+        {
+            return GetAppConfigurationReplicas().Get(replicaName, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of AppConfigurationSnapshotResources in the AppConfigurationStore. </summary>
+        /// <returns> An object representing collection of AppConfigurationSnapshotResources and their operations over a AppConfigurationSnapshotResource. </returns>
+        public virtual AppConfigurationSnapshotCollection GetAppConfigurationSnapshots()
+        {
+            return GetCachedClient(client => new AppConfigurationSnapshotCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Gets the properties of the specified snapshot. NOTE: This operation is intended for use in Azure Resource Manager (ARM) Template deployments. For all other scenarios involving App Configuration snapshots the data plane API should be used instead.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Snapshots_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2024-05-01</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="AppConfigurationSnapshotResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="snapshotName"> The name of the snapshot. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="snapshotName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="snapshotName"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<AppConfigurationSnapshotResource>> GetAppConfigurationSnapshotAsync(string snapshotName, CancellationToken cancellationToken = default)
+        {
+            return await GetAppConfigurationSnapshots().GetAsync(snapshotName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the properties of the specified snapshot. NOTE: This operation is intended for use in Azure Resource Manager (ARM) Template deployments. For all other scenarios involving App Configuration snapshots the data plane API should be used instead.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Snapshots_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2024-05-01</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="AppConfigurationSnapshotResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="snapshotName"> The name of the snapshot. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="snapshotName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="snapshotName"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<AppConfigurationSnapshotResource> GetAppConfigurationSnapshot(string snapshotName, CancellationToken cancellationToken = default)
+        {
+            return GetAppConfigurationSnapshots().Get(snapshotName, cancellationToken);
+        }
+
         /// <summary>
         /// Gets the properties of the specified configuration store.
         /// <list type="bullet">
@@ -313,7 +449,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -353,7 +489,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -393,7 +529,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -435,7 +571,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -477,7 +613,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -523,7 +659,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -569,7 +705,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -584,7 +720,7 @@ namespace Azure.ResourceManager.AppConfiguration
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _appConfigurationStoreConfigurationStoresRestClient.CreateListKeysRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, skipToken);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _appConfigurationStoreConfigurationStoresRestClient.CreateListKeysNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, skipToken);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, AppConfigurationStoreApiKey.DeserializeAppConfigurationStoreApiKey, _appConfigurationStoreConfigurationStoresClientDiagnostics, Pipeline, "AppConfigurationStoreResource.GetKeys", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => AppConfigurationStoreApiKey.DeserializeAppConfigurationStoreApiKey(e), _appConfigurationStoreConfigurationStoresClientDiagnostics, Pipeline, "AppConfigurationStoreResource.GetKeys", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -600,7 +736,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -615,7 +751,7 @@ namespace Azure.ResourceManager.AppConfiguration
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _appConfigurationStoreConfigurationStoresRestClient.CreateListKeysRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, skipToken);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _appConfigurationStoreConfigurationStoresRestClient.CreateListKeysNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, skipToken);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, AppConfigurationStoreApiKey.DeserializeAppConfigurationStoreApiKey, _appConfigurationStoreConfigurationStoresClientDiagnostics, Pipeline, "AppConfigurationStoreResource.GetKeys", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => AppConfigurationStoreApiKey.DeserializeAppConfigurationStoreApiKey(e), _appConfigurationStoreConfigurationStoresClientDiagnostics, Pipeline, "AppConfigurationStoreResource.GetKeys", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -631,7 +767,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -673,7 +809,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -715,7 +851,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -777,7 +913,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -839,7 +975,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -896,7 +1032,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -953,7 +1089,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1013,7 +1149,7 @@ namespace Azure.ResourceManager.AppConfiguration
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2022-05-01</description>
+        /// <description>2024-05-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>

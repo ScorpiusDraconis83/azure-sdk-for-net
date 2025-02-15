@@ -69,6 +69,30 @@ namespace Azure.Search.Documents.Indexes.Models
                     writer.WriteNull("maximumPagesToTake");
                 }
             }
+            if (Optional.IsDefined(Unit))
+            {
+                if (Unit != null)
+                {
+                    writer.WritePropertyName("unit"u8);
+                    writer.WriteStringValue(Unit.Value.ToString());
+                }
+                else
+                {
+                    writer.WriteNull("unit");
+                }
+            }
+            if (Optional.IsDefined(AzureOpenAITokenizerParameters))
+            {
+                if (AzureOpenAITokenizerParameters != null)
+                {
+                    writer.WritePropertyName("azureOpenAITokenizerParameters"u8);
+                    writer.WriteObjectValue(AzureOpenAITokenizerParameters);
+                }
+                else
+                {
+                    writer.WriteNull("azureOpenAITokenizerParameters");
+                }
+            }
             writer.WritePropertyName("@odata.type"u8);
             writer.WriteStringValue(ODataType);
             if (Optional.IsDefined(Name))
@@ -90,14 +114,14 @@ namespace Azure.Search.Documents.Indexes.Models
             writer.WriteStartArray();
             foreach (var item in Inputs)
             {
-                writer.WriteObjectValue(item);
+                writer.WriteObjectValue<InputFieldMappingEntry>(item);
             }
             writer.WriteEndArray();
             writer.WritePropertyName("outputs"u8);
             writer.WriteStartArray();
             foreach (var item in Outputs)
             {
-                writer.WriteObjectValue(item);
+                writer.WriteObjectValue<OutputFieldMappingEntry>(item);
             }
             writer.WriteEndArray();
             writer.WriteEndObject();
@@ -109,15 +133,17 @@ namespace Azure.Search.Documents.Indexes.Models
             {
                 return null;
             }
-            Optional<SplitSkillLanguage?> defaultLanguageCode = default;
-            Optional<TextSplitMode> textSplitMode = default;
-            Optional<int?> maximumPageLength = default;
-            Optional<int?> pageOverlapLength = default;
-            Optional<int?> maximumPagesToTake = default;
+            SplitSkillLanguage? defaultLanguageCode = default;
+            TextSplitMode? textSplitMode = default;
+            int? maximumPageLength = default;
+            int? pageOverlapLength = default;
+            int? maximumPagesToTake = default;
+            SplitSkillUnit? unit = default;
+            AzureOpenAITokenizerParameters azureOpenAITokenizerParameters = default;
             string odataType = default;
-            Optional<string> name = default;
-            Optional<string> description = default;
-            Optional<string> context = default;
+            string name = default;
+            string description = default;
+            string context = default;
             IList<InputFieldMappingEntry> inputs = default;
             IList<OutputFieldMappingEntry> outputs = default;
             foreach (var property in element.EnumerateObject())
@@ -171,6 +197,26 @@ namespace Azure.Search.Documents.Indexes.Models
                     maximumPagesToTake = property.Value.GetInt32();
                     continue;
                 }
+                if (property.NameEquals("unit"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        unit = null;
+                        continue;
+                    }
+                    unit = new SplitSkillUnit(property.Value.GetString());
+                    continue;
+                }
+                if (property.NameEquals("azureOpenAITokenizerParameters"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        azureOpenAITokenizerParameters = null;
+                        continue;
+                    }
+                    azureOpenAITokenizerParameters = AzureOpenAITokenizerParameters.DeserializeAzureOpenAITokenizerParameters(property.Value);
+                    continue;
+                }
                 if (property.NameEquals("@odata.type"u8))
                 {
                     odataType = property.Value.GetString();
@@ -212,7 +258,36 @@ namespace Azure.Search.Documents.Indexes.Models
                     continue;
                 }
             }
-            return new SplitSkill(odataType, name.Value, description.Value, context.Value, inputs, outputs, Optional.ToNullable(defaultLanguageCode), Optional.ToNullable(textSplitMode), Optional.ToNullable(maximumPageLength), Optional.ToNullable(pageOverlapLength), Optional.ToNullable(maximumPagesToTake));
+            return new SplitSkill(
+                odataType,
+                name,
+                description,
+                context,
+                inputs,
+                outputs,
+                defaultLanguageCode,
+                textSplitMode,
+                maximumPageLength,
+                pageOverlapLength,
+                maximumPagesToTake,
+                unit,
+                azureOpenAITokenizerParameters);
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static new SplitSkill FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeSplitSkill(document.RootElement);
+        }
+
+        /// <summary> Convert into a <see cref="RequestContent"/>. </summary>
+        internal override RequestContent ToRequestContent()
+        {
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(this);
+            return content;
         }
     }
 }

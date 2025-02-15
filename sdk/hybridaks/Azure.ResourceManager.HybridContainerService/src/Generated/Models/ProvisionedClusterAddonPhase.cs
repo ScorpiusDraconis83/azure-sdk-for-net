@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace Azure.ResourceManager.HybridContainerService.Models
 {
-    /// <summary> Observed phase of the addon on the target cluster. Possible values include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'. </summary>
+    /// <summary> Observed phase of the addon or component on the provisioned cluster. Possible values include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'. </summary>
     public readonly partial struct ProvisionedClusterAddonPhase : IEquatable<ProvisionedClusterAddonPhase>
     {
         private readonly string _value;
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.HybridContainerService.Models
         public static bool operator ==(ProvisionedClusterAddonPhase left, ProvisionedClusterAddonPhase right) => left.Equals(right);
         /// <summary> Determines if two <see cref="ProvisionedClusterAddonPhase"/> values are not the same. </summary>
         public static bool operator !=(ProvisionedClusterAddonPhase left, ProvisionedClusterAddonPhase right) => !left.Equals(right);
-        /// <summary> Converts a string to a <see cref="ProvisionedClusterAddonPhase"/>. </summary>
+        /// <summary> Converts a <see cref="string"/> to a <see cref="ProvisionedClusterAddonPhase"/>. </summary>
         public static implicit operator ProvisionedClusterAddonPhase(string value) => new ProvisionedClusterAddonPhase(value);
 
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace Azure.ResourceManager.HybridContainerService.Models
 
         /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override int GetHashCode() => _value != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(_value) : 0;
         /// <inheritdoc />
         public override string ToString() => _value;
     }

@@ -9,7 +9,6 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 using Azure.ResourceManager.Nginx.Models;
@@ -33,8 +32,24 @@ namespace Azure.ResourceManager.Nginx
         {
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
             _endpoint = endpoint ?? new Uri("https://management.azure.com");
-            _apiVersion = apiVersion ?? "2023-04-01";
+            _apiVersion = apiVersion ?? "2024-11-01-preview";
             _userAgent = new TelemetryDetails(GetType().Assembly, applicationId);
+        }
+
+        internal RequestUriBuilder CreateGetRequestUri(string subscriptionId, string resourceGroupName, string deploymentName, string certificateName)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Nginx.NginxPlus/nginxDeployments/", false);
+            uri.AppendPath(deploymentName, true);
+            uri.AppendPath("/certificates/", false);
+            uri.AppendPath(certificateName, true);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
         }
 
         internal HttpMessage CreateGetRequest(string subscriptionId, string resourceGroupName, string deploymentName, string certificateName)
@@ -60,7 +75,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> Get a certificate of given NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="certificateName"> The name of certificate. </param>
@@ -93,7 +108,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> Get a certificate of given NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="certificateName"> The name of certificate. </param>
@@ -125,6 +140,22 @@ namespace Azure.ResourceManager.Nginx
             }
         }
 
+        internal RequestUriBuilder CreateCreateOrUpdateRequestUri(string subscriptionId, string resourceGroupName, string deploymentName, string certificateName, NginxCertificateData data)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Nginx.NginxPlus/nginxDeployments/", false);
+            uri.AppendPath(deploymentName, true);
+            uri.AppendPath("/certificates/", false);
+            uri.AppendPath(certificateName, true);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateCreateOrUpdateRequest(string subscriptionId, string resourceGroupName, string deploymentName, string certificateName, NginxCertificateData data)
         {
             var message = _pipeline.CreateMessage();
@@ -145,14 +176,14 @@ namespace Azure.ResourceManager.Nginx
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Content-Type", "application/json");
             var content = new Utf8JsonRequestContent();
-            content.JsonWriter.WriteObjectValue(data);
+            content.JsonWriter.WriteObjectValue(data, ModelSerializationExtensions.WireOptions);
             request.Content = content;
             _userAgent.Apply(message);
             return message;
         }
 
         /// <summary> Create or update the NGINX certificates for given NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="certificateName"> The name of certificate. </param>
@@ -181,7 +212,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> Create or update the NGINX certificates for given NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="certificateName"> The name of certificate. </param>
@@ -209,6 +240,22 @@ namespace Azure.ResourceManager.Nginx
             }
         }
 
+        internal RequestUriBuilder CreateDeleteRequestUri(string subscriptionId, string resourceGroupName, string deploymentName, string certificateName)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Nginx.NginxPlus/nginxDeployments/", false);
+            uri.AppendPath(deploymentName, true);
+            uri.AppendPath("/certificates/", false);
+            uri.AppendPath(certificateName, true);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateDeleteRequest(string subscriptionId, string resourceGroupName, string deploymentName, string certificateName)
         {
             var message = _pipeline.CreateMessage();
@@ -232,7 +279,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> Deletes a certificate from the NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="certificateName"> The name of certificate. </param>
@@ -260,7 +307,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> Deletes a certificate from the NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="certificateName"> The name of certificate. </param>
@@ -287,6 +334,21 @@ namespace Azure.ResourceManager.Nginx
             }
         }
 
+        internal RequestUriBuilder CreateListRequestUri(string subscriptionId, string resourceGroupName, string deploymentName)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendPath("/subscriptions/", false);
+            uri.AppendPath(subscriptionId, true);
+            uri.AppendPath("/resourceGroups/", false);
+            uri.AppendPath(resourceGroupName, true);
+            uri.AppendPath("/providers/Nginx.NginxPlus/nginxDeployments/", false);
+            uri.AppendPath(deploymentName, true);
+            uri.AppendPath("/certificates", false);
+            uri.AppendQuery("api-version", _apiVersion, true);
+            return uri;
+        }
+
         internal HttpMessage CreateListRequest(string subscriptionId, string resourceGroupName, string deploymentName)
         {
             var message = _pipeline.CreateMessage();
@@ -309,7 +371,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> List all certificates of given NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -338,7 +400,7 @@ namespace Azure.ResourceManager.Nginx
         }
 
         /// <summary> List all certificates of given NGINX deployment. </summary>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -366,6 +428,14 @@ namespace Azure.ResourceManager.Nginx
             }
         }
 
+        internal RequestUriBuilder CreateListNextPageRequestUri(string nextLink, string subscriptionId, string resourceGroupName, string deploymentName)
+        {
+            var uri = new RawRequestUriBuilder();
+            uri.Reset(_endpoint);
+            uri.AppendRawNextLink(nextLink, false);
+            return uri;
+        }
+
         internal HttpMessage CreateListNextPageRequest(string nextLink, string subscriptionId, string resourceGroupName, string deploymentName)
         {
             var message = _pipeline.CreateMessage();
@@ -382,7 +452,7 @@ namespace Azure.ResourceManager.Nginx
 
         /// <summary> List all certificates of given NGINX deployment. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
@@ -413,7 +483,7 @@ namespace Azure.ResourceManager.Nginx
 
         /// <summary> List all certificates of given NGINX deployment. </summary>
         /// <param name="nextLink"> The URL to the next page of results. </param>
-        /// <param name="subscriptionId"> The ID of the target subscription. </param>
+        /// <param name="subscriptionId"> The ID of the target subscription. The value must be an UUID. </param>
         /// <param name="resourceGroupName"> The name of the resource group. The name is case insensitive. </param>
         /// <param name="deploymentName"> The name of targeted NGINX deployment. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>

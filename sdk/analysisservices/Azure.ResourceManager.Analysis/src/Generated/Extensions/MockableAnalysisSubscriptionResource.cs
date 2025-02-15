@@ -9,11 +9,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Analysis;
 using Azure.ResourceManager.Analysis.Models;
 
 namespace Azure.ResourceManager.Analysis.Mocking
@@ -129,7 +126,7 @@ namespace Azure.ResourceManager.Analysis.Mocking
         public virtual AsyncPageable<AnalysisResourceSku> GetEligibleSkusAsync(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => AnalysisServerServersRestClient.CreateListSkusForNewRequest(Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, AnalysisResourceSku.DeserializeAnalysisResourceSku, AnalysisServerServersClientDiagnostics, Pipeline, "MockableAnalysisSubscriptionResource.GetEligibleSkus", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => AnalysisResourceSku.DeserializeAnalysisResourceSku(e), AnalysisServerServersClientDiagnostics, Pipeline, "MockableAnalysisSubscriptionResource.GetEligibleSkus", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -158,7 +155,7 @@ namespace Azure.ResourceManager.Analysis.Mocking
         public virtual Pageable<AnalysisResourceSku> GetEligibleSkus(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => AnalysisServerServersRestClient.CreateListSkusForNewRequest(Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, AnalysisResourceSku.DeserializeAnalysisResourceSku, AnalysisServerServersClientDiagnostics, Pipeline, "MockableAnalysisSubscriptionResource.GetEligibleSkus", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => AnalysisResourceSku.DeserializeAnalysisResourceSku(e), AnalysisServerServersClientDiagnostics, Pipeline, "MockableAnalysisSubscriptionResource.GetEligibleSkus", "value", null, cancellationToken);
         }
 
         /// <summary>

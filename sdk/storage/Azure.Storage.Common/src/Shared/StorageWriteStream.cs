@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
 using Azure.Core.Pipeline;
+using Azure.Storage.Common;
 
 namespace Azure.Storage.Shared
 {
@@ -329,9 +330,15 @@ namespace Azure.Storage.Shared
 
             if (disposing)
             {
-                Flush();
-                ValidateCallerCrcIfAny();
-                _accumulatedDisposables.Dispose();
+                try
+                {
+                    Flush();
+                    ValidateCallerCrcIfAny();
+                }
+                finally
+                {
+                    _accumulatedDisposables.Dispose();
+                }
             }
 
             _disposed = true;

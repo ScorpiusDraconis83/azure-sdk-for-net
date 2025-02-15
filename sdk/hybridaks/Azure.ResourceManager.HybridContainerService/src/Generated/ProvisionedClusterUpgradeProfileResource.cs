@@ -9,10 +9,8 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 
 namespace Azure.ResourceManager.HybridContainerService
 {
@@ -88,7 +86,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Gets the upgrade profile of a provisioned cluster instance.
+        /// Gets the upgrade profile of a provisioned cluster
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -100,7 +98,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -128,7 +126,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Gets the upgrade profile of a provisioned cluster instance.
+        /// Gets the upgrade profile of a provisioned cluster
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -140,7 +138,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>

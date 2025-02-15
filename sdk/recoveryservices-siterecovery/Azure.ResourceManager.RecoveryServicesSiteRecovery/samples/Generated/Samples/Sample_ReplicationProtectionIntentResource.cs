@@ -7,23 +7,20 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.RecoveryServicesSiteRecovery;
 using Azure.ResourceManager.RecoveryServicesSiteRecovery.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
 {
     public partial class Sample_ReplicationProtectionIntentResource
     {
-        // Gets the details of a Replication protection intent item.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_GetsTheDetailsOfAReplicationProtectionIntentItem()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionIntents_Get.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionIntents_Get.json
             // this example is just showing the usage of "ReplicationProtectionIntents_Get" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -50,12 +47,11 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Create protection intent Resource.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_CreateProtectionIntentResource()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionIntents_Create.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionIntents_Create.json
             // this example is just showing the usage of "ReplicationProtectionIntents_Create" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -73,9 +69,15 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
             ReplicationProtectionIntentResource replicationProtectionIntent = client.GetReplicationProtectionIntentResource(replicationProtectionIntentResourceId);
 
             // invoke the operation
-            ReplicationProtectionIntentCreateOrUpdateContent content = new ReplicationProtectionIntentCreateOrUpdateContent()
+            ReplicationProtectionIntentCreateOrUpdateContent content = new ReplicationProtectionIntentCreateOrUpdateContent
             {
-                SiteRecoveryCreateProtectionIntentProviderSpecificDetails = new A2ACreateProtectionIntentContent(new ResourceIdentifier("/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne/providers/Microsoft.Compute/virtualMachines/vmPpgAv5"), new AzureLocation("eastUs2"), new AzureLocation("westus2"), "ed5bcdf6-d61e-47bd-8ea9-f2bd379a2640", A2ARecoveryAvailabilityType.Single, new ResourceIdentifier("/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne-asr")),
+                SiteRecoveryCreateProtectionIntentProviderSpecificDetails = new A2ACreateProtectionIntentContent(
+                new ResourceIdentifier("/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne/providers/Microsoft.Compute/virtualMachines/vmPpgAv5"),
+                new AzureLocation("eastUs2"),
+                new AzureLocation("westus2"),
+                "ed5bcdf6-d61e-47bd-8ea9-f2bd379a2640",
+                A2ARecoveryAvailabilityType.Single,
+                new ResourceIdentifier("/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne-asr")),
             };
             ArmOperation<ReplicationProtectionIntentResource> lro = await replicationProtectionIntent.UpdateAsync(WaitUntil.Completed, content);
             ReplicationProtectionIntentResource result = lro.Value;

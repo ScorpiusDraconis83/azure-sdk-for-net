@@ -19,6 +19,7 @@ namespace Azure.Identity.Tests
         private IdentityTestClient _client;
 
         [RecordedTest]
+        [PlaybackOnly("Requires ephemeral tenant")]
         public async Task CallGraphWithClientSecret()
         {
             var tenantId = TestEnvironment.MultiTenantAppTenantId;
@@ -39,6 +40,7 @@ namespace Azure.Identity.Tests
         }
 
         [RecordedTest]
+        [PlaybackOnly("Entra policy requires MFA")]
         public async Task GraphWithUsernamePassword()
         {
             var tenantId = TestEnvironment.MultiTenantAppTenantId;

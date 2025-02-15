@@ -15,17 +15,25 @@ namespace Azure.ResourceManager.ManagementGroups.Models
 {
     public partial class ManagementGroupNameAvailabilityContent : IUtf8JsonSerializable, IJsonModel<ManagementGroupNameAvailabilityContent>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ManagementGroupNameAvailabilityContent>)this).Write(writer, new ModelReaderWriterOptions("W"));
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ManagementGroupNameAvailabilityContent>)this).Write(writer, ModelSerializationExtensions.WireOptions);
 
         void IJsonModel<ManagementGroupNameAvailabilityContent>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             var format = options.Format == "W" ? ((IPersistableModel<ManagementGroupNameAvailabilityContent>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support writing '{format}' format.");
             }
 
-            writer.WriteStartObject();
             if (Optional.IsDefined(Name))
             {
                 writer.WritePropertyName("name"u8);
@@ -51,7 +59,6 @@ namespace Azure.ResourceManager.ManagementGroups.Models
 #endif
                 }
             }
-            writer.WriteEndObject();
         }
 
         ManagementGroupNameAvailabilityContent IJsonModel<ManagementGroupNameAvailabilityContent>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
@@ -59,7 +66,7 @@ namespace Azure.ResourceManager.ManagementGroups.Models
             var format = options.Format == "W" ? ((IPersistableModel<ManagementGroupNameAvailabilityContent>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support reading '{format}' format.");
             }
 
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
@@ -68,16 +75,16 @@ namespace Azure.ResourceManager.ManagementGroups.Models
 
         internal static ManagementGroupNameAvailabilityContent DeserializeManagementGroupNameAvailabilityContent(JsonElement element, ModelReaderWriterOptions options = null)
         {
-            options ??= new ModelReaderWriterOptions("W");
+            options ??= ModelSerializationExtensions.WireOptions;
 
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<string> name = default;
-            Optional<ResourceType> type = default;
+            string name = default;
+            ResourceType? type = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
-            Dictionary<string, BinaryData> additionalPropertiesDictionary = new Dictionary<string, BinaryData>();
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("name"u8))
@@ -96,11 +103,11 @@ namespace Azure.ResourceManager.ManagementGroups.Models
                 }
                 if (options.Format != "W")
                 {
-                    additionalPropertiesDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
                 }
             }
-            serializedAdditionalRawData = additionalPropertiesDictionary;
-            return new ManagementGroupNameAvailabilityContent(name.Value, Optional.ToNullable(type), serializedAdditionalRawData);
+            serializedAdditionalRawData = rawDataDictionary;
+            return new ManagementGroupNameAvailabilityContent(name, type, serializedAdditionalRawData);
         }
 
         BinaryData IPersistableModel<ManagementGroupNameAvailabilityContent>.Write(ModelReaderWriterOptions options)
@@ -112,7 +119,7 @@ namespace Azure.ResourceManager.ManagementGroups.Models
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support writing '{options.Format}' format.");
             }
         }
 
@@ -128,7 +135,7 @@ namespace Azure.ResourceManager.ManagementGroups.Models
                         return DeserializeManagementGroupNameAvailabilityContent(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ManagementGroupNameAvailabilityContent)} does not support reading '{options.Format}' format.");
             }
         }
 

@@ -5,20 +5,35 @@ using System.ClientModel.Internal;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace System.ClientModel.Primitives;
 
+/// <summary>
+/// Represents an extensible pipeline used by clients that call cloud services
+/// to send and receive HTTP request and responses. Creators of
+/// <see cref="ClientPipeline"/> can modify how it process a
+/// <see cref="PipelineMessage"/> by adding <see cref="PipelinePolicy"/>
+/// instances at various points in the default pipeline.
+/// </summary>
 public sealed partial class ClientPipeline
 {
+    internal static TimeSpan DefaultNetworkTimeout { get; } = TimeSpan.FromSeconds(100);
+
     private readonly int _perCallIndex;
     private readonly int _perTryIndex;
     private readonly int _beforeTransportIndex;
 
     private readonly ReadOnlyMemory<PipelinePolicy> _policies;
     private readonly PipelineTransport _transport;
+    private readonly bool _enableLogging;
 
-    private ClientPipeline(ReadOnlyMemory<PipelinePolicy> policies, int perCallIndex, int perTryIndex, int beforeTransportIndex)
+    private readonly TimeSpan _networkTimeout;
+
+    private ClientPipeline(ReadOnlyMemory<PipelinePolicy> policies, TimeSpan networkTimeout, int perCallIndex, int perTryIndex, int beforeTransportIndex, bool enableLogging)
     {
         if (policies.Span[policies.Length - 1] is not PipelineTransport)
         {
@@ -26,6 +41,7 @@ public sealed partial class ClientPipeline
         }
 
         Debug.Assert(perCallIndex <= perTryIndex);
+        Debug.Assert(perTryIndex <= beforeTransportIndex);
 
         _transport = (PipelineTransport)policies.Span[policies.Length - 1];
         _policies = policies;
@@ -33,20 +49,54 @@ public sealed partial class ClientPipeline
         _perCallIndex = perCallIndex;
         _perTryIndex = perTryIndex;
         _beforeTransportIndex = beforeTransportIndex;
+
+        _networkTimeout = networkTimeout;
+        _enableLogging = enableLogging;
     }
 
-    public static ClientPipeline Create()
-        => Create(ClientPipelineOptions.Default,
+    #region Factory methods for creating a pipeline instance
+
+    /// <summary>
+    /// Create an instance of a <see cref="ClientPipeline"/> from the provided
+    /// <see cref="ClientPipelineOptions"/>.
+    /// </summary>
+    /// <param name="options">If provided, the
+    /// <see cref="ClientPipelineOptions"/> to use to construct the
+    /// <see cref="ClientPipeline"/>.</param>
+    /// <returns>The created <see cref="ClientPipeline"/> instance.</returns>
+    public static ClientPipeline Create(ClientPipelineOptions? options = default)
+        => Create(options ?? ClientPipelineOptions.Default,
             ReadOnlySpan<PipelinePolicy>.Empty,
             ReadOnlySpan<PipelinePolicy>.Empty,
             ReadOnlySpan<PipelinePolicy>.Empty);
 
-    public static ClientPipeline Create(ClientPipelineOptions options, params PipelinePolicy[] perCallPolicies)
-        => Create(options,
-            perCallPolicies,
-            ReadOnlySpan<PipelinePolicy>.Empty,
-            ReadOnlySpan<PipelinePolicy>.Empty);
-
+    /// <summary>
+    /// Create an instance of a <see cref="ClientPipeline"/> from the provided
+    /// <see cref="ClientPipelineOptions"/> and <see cref="PipelinePolicy"/>
+    /// collections.
+    /// </summary>
+    /// <param name="options"> The <see cref="ClientPipelineOptions"/> to use to
+    /// construct the <see cref="ClientPipeline"/>.</param>
+    /// <param name="perCallPolicies">A collection of <see cref="PipelinePolicy"/>
+    /// instances to add to the default pipeline before the pipeline's retry
+    /// policy.</param>
+    /// <param name="perTryPolicies">A collection of <see cref="PipelinePolicy"/>
+    /// instances to add to the default pipeline after the pipeline's retry
+    /// policy.</param>
+    /// <param name="beforeTransportPolicies">A collection of
+    /// <see cref="PipelinePolicy"/> instances to add to the default pipeline
+    /// before the pipeline's transport.</param>
+    /// <returns>The created <see cref="ClientPipeline"/> instance.</returns>
+    /// <remarks>Policies provided in <paramref name="options"/> are intended
+    /// to come from the end-user of a client who has passed the
+    /// <see cref="ClientPipelineOptions"/> instance to the client's
+    /// constructor. The client constructor implementation is intended to pass
+    /// client-specific policies using the <paramref name="perCallPolicies"/>,
+    /// <paramref name="perTryPolicies"/>, and
+    /// <paramref name="beforeTransportPolicies"/> parameters and should not
+    /// modify the <see cref="ClientPipelineOptions"/> provided by the client
+    /// user.
+    /// </remarks>
     public static ClientPipeline Create(
         ClientPipelineOptions options,
         ReadOnlySpan<PipelinePolicy> perCallPolicies,
@@ -54,6 +104,9 @@ public sealed partial class ClientPipeline
         ReadOnlySpan<PipelinePolicy> beforeTransportPolicies)
     {
         Argument.AssertNotNull(options, nameof(options));
+
+        options.Freeze();
+        options.ClientLoggingOptions?.ValidateOptions();
 
         // Add length of client-specific policies.
         int pipelineLength = perCallPolicies.Length + perTryPolicies.Length + beforeTransportPolicies.Length;
@@ -63,15 +116,15 @@ public sealed partial class ClientPipeline
         pipelineLength += options.PerCallPolicies?.Length ?? 0;
         pipelineLength += options.BeforeTransportPolicies?.Length ?? 0;
 
-        // TODO: Retry and buffering policies will come in a later PR.
-        //pipelineLength++; // for retry policy
-        //pipelineLength++; // for response buffering policy
+        pipelineLength++; // for retry policy
+        pipelineLength += options.AddMessageLoggingPolicy ? 1 : 0; // for message logging policy
         pipelineLength++; // for transport
 
         PipelinePolicy[] policies = new PipelinePolicy[pipelineLength];
 
         int index = 0;
 
+        // Per call policies come before the retry policy.
         perCallPolicies.CopyTo(policies.AsSpan(index));
         index += perCallPolicies.Length;
 
@@ -83,16 +136,10 @@ public sealed partial class ClientPipeline
 
         int perCallIndex = index;
 
-        // TODO: RetryPolicy will come in a later PR.
-        //if (options.RetryPolicy != null)
-        //{
-        //    policies[index++] = options.RetryPolicy;
-        //}
-        //else
-        //{
-        //    policies[index++] = new RequestRetryPolicy();
-        //}
+        // Add retry policy.
+        policies[index++] = options.RetryPolicy ?? options.GetClientRetryPolicy();
 
+        // Per try policies come after the retry policy.
         perTryPolicies.CopyTo(policies.AsSpan(index));
         index += perTryPolicies.Length;
 
@@ -104,11 +151,14 @@ public sealed partial class ClientPipeline
 
         int perTryIndex = index;
 
-        // TODO: Buffering policy will come in a later PR.
-        //TimeSpan networkTimeout = options.NetworkTimeout ?? PipelineResponse.DefaultNetworkTimeout;
-        //ResponseBufferingPolicy bufferingPolicy = new(networkTimeout);
-        //policies[index++] = bufferingPolicy;
+        // Add logging policy just before the transport.
 
+        if (options.AddMessageLoggingPolicy)
+        {
+            policies[index++] = options.MessageLoggingPolicy ?? options.GetMessageLoggingPolicy();
+        }
+
+        // Before transport policies come before the transport.
         beforeTransportPolicies.CopyTo(policies.AsSpan(index));
         index += beforeTransportPolicies.Length;
 
@@ -120,47 +170,88 @@ public sealed partial class ClientPipeline
 
         int beforeTransportIndex = index;
 
-        if (options.Transport != null)
-        {
-            policies[index++] = options.Transport;
-        }
-        else
-        {
-            // TODO: Transport implementation will come in a later PR.
-            //// Add default transport.
-            //policies[index++] = HttpClientPipelineTransport.Shared;
-        }
+        // Add the transport.
+        policies[index++] = options.Transport ?? options.GetHttpClientPipelineTransport();
 
-        return new ClientPipeline(policies, perCallIndex, perTryIndex, beforeTransportIndex); ;
+        bool enableLogging = options.ClientLoggingOptions?.EnableLogging ?? ClientLoggingOptions.DefaultEnableLogging;
+
+        return new ClientPipeline(policies,
+            options.NetworkTimeout ?? DefaultNetworkTimeout,
+            perCallIndex, perTryIndex, beforeTransportIndex, enableLogging);
     }
 
-    public PipelineMessage CreateMessage() => _transport.CreateMessage();
+    #endregion
 
+    /// <summary>
+    /// Creates a <see cref="PipelineMessage"/> that can be sent using this
+    /// pipeline instance.
+    /// </summary>
+    /// <returns>The created <see cref="PipelineMessage"/>.</returns>
+    public PipelineMessage CreateMessage()
+    {
+        PipelineMessage message = _transport.CreateMessage();
+        message.NetworkTimeout = _networkTimeout;
+        return message;
+    }
+
+    /// <summary>
+    /// Send the provided <see cref="PipelineMessage"/>.
+    /// </summary>
+    /// <param name="message">The <see cref="PipelineMessage"/> to send.</param>
+    /// <exception cref="ClientResultException">Thrown if an error other than
+    /// the service responding with an error response occurred while sending
+    /// the HTTP request.</exception>
+    /// <remarks>
+    /// All necessary values on <see cref="PipelineMessage.Request"/> should be
+    /// set prior to calling <see cref="Send(PipelineMessage)"/>.  After the
+    /// method returns, <see cref="PipelineMessage.Response"/> will be populated
+    /// with the details of the service response.
+    /// </remarks>
     public void Send(PipelineMessage message)
     {
+        Argument.AssertNotNull(message, nameof(message));
+        message.Request.ClientRequestId = Activity.Current?.Id ?? Guid.NewGuid().ToString();
+
         IReadOnlyList<PipelinePolicy> policies = GetProcessor(message);
+
         policies[0].Process(message, policies, 0);
     }
 
+    /// <summary>
+    /// Send the provided <see cref="PipelineMessage"/>.
+    /// </summary>
+    /// <param name="message">The <see cref="PipelineMessage"/> to send.</param>
+    /// <exception cref="ClientResultException">Thrown if an error other than
+    /// the service responding with an error response occurred while sending
+    /// the HTTP request.</exception>
+    /// <remarks>
+    /// All necessary values on <see cref="PipelineMessage.Request"/> should be
+    /// set prior to calling <see cref="Send(PipelineMessage)"/>.  After the
+    /// method returns, <see cref="PipelineMessage.Response"/> will be populated
+    /// with the details of the service response.
+    /// </remarks>
     public async ValueTask SendAsync(PipelineMessage message)
     {
+        Argument.AssertNotNull(message, nameof(message));
+        message.Request.ClientRequestId = Activity.Current?.Id ?? Guid.NewGuid().ToString();
+
         IReadOnlyList<PipelinePolicy> policies = GetProcessor(message);
+
         await policies[0].ProcessAsync(message, policies, 0).ConfigureAwait(false);
     }
 
     private IReadOnlyList<PipelinePolicy> GetProcessor(PipelineMessage message)
     {
-        // TODO: RequestOptions will come in a later PR.
-        //if (message.CustomRequestPipeline)
-        //{
-        //    return new RequestOptionsProcessor(_policies,
-        //        message.PerCallPolicies,
-        //        message.PerTryPolicies,
-        //        message.BeforeTransportPolicies,
-        //        _perCallIndex,
-        //        _perTryIndex,
-        //        _beforeTransportIndex);
-        //}
+        if (message.UseCustomRequestPipeline)
+        {
+            return new RequestOptionsProcessor(_policies,
+                message.PerCallPolicies,
+                message.PerTryPolicies,
+                message.BeforeTransportPolicies,
+                _perCallIndex,
+                _perTryIndex,
+                _beforeTransportIndex);
+        }
 
         return new PipelineProcessor(_policies);
     }

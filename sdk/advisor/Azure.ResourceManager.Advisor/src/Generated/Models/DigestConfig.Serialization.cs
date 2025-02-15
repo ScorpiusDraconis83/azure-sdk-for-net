@@ -15,17 +15,25 @@ namespace Azure.ResourceManager.Advisor.Models
 {
     public partial class DigestConfig : IUtf8JsonSerializable, IJsonModel<DigestConfig>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<DigestConfig>)this).Write(writer, new ModelReaderWriterOptions("W"));
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<DigestConfig>)this).Write(writer, ModelSerializationExtensions.WireOptions);
 
         void IJsonModel<DigestConfig>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             var format = options.Format == "W" ? ((IPersistableModel<DigestConfig>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(DigestConfig)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(DigestConfig)} does not support writing '{format}' format.");
             }
 
-            writer.WriteStartObject();
             if (Optional.IsDefined(Name))
             {
                 writer.WritePropertyName("name"u8);
@@ -76,7 +84,6 @@ namespace Azure.ResourceManager.Advisor.Models
 #endif
                 }
             }
-            writer.WriteEndObject();
         }
 
         DigestConfig IJsonModel<DigestConfig>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
@@ -84,7 +91,7 @@ namespace Azure.ResourceManager.Advisor.Models
             var format = options.Format == "W" ? ((IPersistableModel<DigestConfig>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(DigestConfig)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(DigestConfig)} does not support reading '{format}' format.");
             }
 
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
@@ -93,20 +100,20 @@ namespace Azure.ResourceManager.Advisor.Models
 
         internal static DigestConfig DeserializeDigestConfig(JsonElement element, ModelReaderWriterOptions options = null)
         {
-            options ??= new ModelReaderWriterOptions("W");
+            options ??= ModelSerializationExtensions.WireOptions;
 
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<string> name = default;
-            Optional<string> actionGroupResourceId = default;
-            Optional<int> frequency = default;
-            Optional<IList<Category>> categories = default;
-            Optional<string> language = default;
-            Optional<DigestConfigState> state = default;
+            string name = default;
+            string actionGroupResourceId = default;
+            int? frequency = default;
+            IList<Category> categories = default;
+            string language = default;
+            DigestConfigState? state = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
-            Dictionary<string, BinaryData> additionalPropertiesDictionary = new Dictionary<string, BinaryData>();
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("name"u8))
@@ -158,11 +165,18 @@ namespace Azure.ResourceManager.Advisor.Models
                 }
                 if (options.Format != "W")
                 {
-                    additionalPropertiesDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
                 }
             }
-            serializedAdditionalRawData = additionalPropertiesDictionary;
-            return new DigestConfig(name.Value, actionGroupResourceId.Value, Optional.ToNullable(frequency), Optional.ToList(categories), language.Value, Optional.ToNullable(state), serializedAdditionalRawData);
+            serializedAdditionalRawData = rawDataDictionary;
+            return new DigestConfig(
+                name,
+                actionGroupResourceId,
+                frequency,
+                categories ?? new ChangeTrackingList<Category>(),
+                language,
+                state,
+                serializedAdditionalRawData);
         }
 
         BinaryData IPersistableModel<DigestConfig>.Write(ModelReaderWriterOptions options)
@@ -174,7 +188,7 @@ namespace Azure.ResourceManager.Advisor.Models
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(DigestConfig)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(DigestConfig)} does not support writing '{options.Format}' format.");
             }
         }
 
@@ -190,7 +204,7 @@ namespace Azure.ResourceManager.Advisor.Models
                         return DeserializeDigestConfig(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(DigestConfig)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(DigestConfig)} does not support reading '{options.Format}' format.");
             }
         }
 

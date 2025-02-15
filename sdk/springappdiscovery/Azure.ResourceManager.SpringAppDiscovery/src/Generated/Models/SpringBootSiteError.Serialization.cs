@@ -6,16 +6,34 @@
 #nullable disable
 
 using System;
+using System.ClientModel.Primitives;
+using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 
 namespace Azure.ResourceManager.SpringAppDiscovery.Models
 {
-    public partial class SpringBootSiteError : IUtf8JsonSerializable
+    public partial class SpringBootSiteError : IUtf8JsonSerializable, IJsonModel<SpringBootSiteError>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<SpringBootSiteError>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+
+        void IJsonModel<SpringBootSiteError>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<SpringBootSiteError>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(SpringBootSiteError)} does not support writing '{format}' format.");
+            }
+
             if (Optional.IsDefined(Id))
             {
                 writer.WritePropertyName("id"u8);
@@ -61,24 +79,54 @@ namespace Azure.ResourceManager.SpringAppDiscovery.Models
                 writer.WritePropertyName("updatedTimeStamp"u8);
                 writer.WriteStringValue(UpdatedTimeStamp.Value, "O");
             }
-            writer.WriteEndObject();
+            if (options.Format != "W" && _serializedAdditionalRawData != null)
+            {
+                foreach (var item in _serializedAdditionalRawData)
+                {
+                    writer.WritePropertyName(item.Key);
+#if NET6_0_OR_GREATER
+				writer.WriteRawValue(item.Value);
+#else
+                    using (JsonDocument document = JsonDocument.Parse(item.Value))
+                    {
+                        JsonSerializer.Serialize(writer, document.RootElement);
+                    }
+#endif
+                }
+            }
         }
 
-        internal static SpringBootSiteError DeserializeSpringBootSiteError(JsonElement element)
+        SpringBootSiteError IJsonModel<SpringBootSiteError>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
+            var format = options.Format == "W" ? ((IPersistableModel<SpringBootSiteError>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(SpringBootSiteError)} does not support reading '{format}' format.");
+            }
+
+            using JsonDocument document = JsonDocument.ParseValue(ref reader);
+            return DeserializeSpringBootSiteError(document.RootElement, options);
+        }
+
+        internal static SpringBootSiteError DeserializeSpringBootSiteError(JsonElement element, ModelReaderWriterOptions options = null)
+        {
+            options ??= ModelSerializationExtensions.WireOptions;
+
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<long> id = default;
-            Optional<string> code = default;
-            Optional<string> summaryMessage = default;
-            Optional<string> runAsAccountId = default;
-            Optional<string> message = default;
-            Optional<string> possibleCauses = default;
-            Optional<string> recommendedAction = default;
-            Optional<string> severity = default;
-            Optional<DateTimeOffset> updatedTimeStamp = default;
+            long? id = default;
+            string code = default;
+            string summaryMessage = default;
+            string runAsAccountId = default;
+            string message = default;
+            string possibleCauses = default;
+            string recommendedAction = default;
+            string severity = default;
+            DateTimeOffset? updatedTimeStamp = default;
+            IDictionary<string, BinaryData> serializedAdditionalRawData = default;
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
@@ -134,8 +182,54 @@ namespace Azure.ResourceManager.SpringAppDiscovery.Models
                     updatedTimeStamp = property.Value.GetDateTimeOffset("O");
                     continue;
                 }
+                if (options.Format != "W")
+                {
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                }
             }
-            return new SpringBootSiteError(Optional.ToNullable(id), code.Value, summaryMessage.Value, runAsAccountId.Value, message.Value, possibleCauses.Value, recommendedAction.Value, severity.Value, Optional.ToNullable(updatedTimeStamp));
+            serializedAdditionalRawData = rawDataDictionary;
+            return new SpringBootSiteError(
+                id,
+                code,
+                summaryMessage,
+                runAsAccountId,
+                message,
+                possibleCauses,
+                recommendedAction,
+                severity,
+                updatedTimeStamp,
+                serializedAdditionalRawData);
         }
+
+        BinaryData IPersistableModel<SpringBootSiteError>.Write(ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<SpringBootSiteError>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options);
+                default:
+                    throw new FormatException($"The model {nameof(SpringBootSiteError)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        SpringBootSiteError IPersistableModel<SpringBootSiteError>.Create(BinaryData data, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<SpringBootSiteError>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    {
+                        using JsonDocument document = JsonDocument.Parse(data);
+                        return DeserializeSpringBootSiteError(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(SpringBootSiteError)} does not support reading '{options.Format}' format.");
+            }
+        }
+
+        string IPersistableModel<SpringBootSiteError>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

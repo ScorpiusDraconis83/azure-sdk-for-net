@@ -15,17 +15,25 @@ namespace Azure.ResourceManager.Resources.Models
 {
     public partial class ResourceGroupPatch : IUtf8JsonSerializable, IJsonModel<ResourceGroupPatch>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ResourceGroupPatch>)this).Write(writer, new ModelReaderWriterOptions("W"));
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ResourceGroupPatch>)this).Write(writer, ModelSerializationExtensions.WireOptions);
 
         void IJsonModel<ResourceGroupPatch>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             var format = options.Format == "W" ? ((IPersistableModel<ResourceGroupPatch>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support writing '{format}' format.");
             }
 
-            writer.WriteStartObject();
             if (Optional.IsDefined(Name))
             {
                 writer.WritePropertyName("name"u8);
@@ -34,7 +42,7 @@ namespace Azure.ResourceManager.Resources.Models
             if (Optional.IsDefined(Properties))
             {
                 writer.WritePropertyName("properties"u8);
-                writer.WriteObjectValue(Properties);
+                writer.WriteObjectValue(Properties, options);
             }
             if (Optional.IsDefined(ManagedBy))
             {
@@ -67,7 +75,6 @@ namespace Azure.ResourceManager.Resources.Models
 #endif
                 }
             }
-            writer.WriteEndObject();
         }
 
         ResourceGroupPatch IJsonModel<ResourceGroupPatch>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
@@ -75,7 +82,7 @@ namespace Azure.ResourceManager.Resources.Models
             var format = options.Format == "W" ? ((IPersistableModel<ResourceGroupPatch>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support reading '{format}' format.");
             }
 
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
@@ -84,18 +91,18 @@ namespace Azure.ResourceManager.Resources.Models
 
         internal static ResourceGroupPatch DeserializeResourceGroupPatch(JsonElement element, ModelReaderWriterOptions options = null)
         {
-            options ??= new ModelReaderWriterOptions("W");
+            options ??= ModelSerializationExtensions.WireOptions;
 
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<string> name = default;
-            Optional<ResourceGroupProperties> properties = default;
-            Optional<string> managedBy = default;
-            Optional<IDictionary<string, string>> tags = default;
+            string name = default;
+            ResourceGroupProperties properties = default;
+            string managedBy = default;
+            IDictionary<string, string> tags = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
-            Dictionary<string, BinaryData> additionalPropertiesDictionary = new Dictionary<string, BinaryData>();
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("name"u8))
@@ -109,7 +116,7 @@ namespace Azure.ResourceManager.Resources.Models
                     {
                         continue;
                     }
-                    properties = ResourceGroupProperties.DeserializeResourceGroupProperties(property.Value);
+                    properties = ResourceGroupProperties.DeserializeResourceGroupProperties(property.Value, options);
                     continue;
                 }
                 if (property.NameEquals("managedBy"u8))
@@ -133,11 +140,11 @@ namespace Azure.ResourceManager.Resources.Models
                 }
                 if (options.Format != "W")
                 {
-                    additionalPropertiesDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
                 }
             }
-            serializedAdditionalRawData = additionalPropertiesDictionary;
-            return new ResourceGroupPatch(name.Value, properties.Value, managedBy.Value, Optional.ToDictionary(tags), serializedAdditionalRawData);
+            serializedAdditionalRawData = rawDataDictionary;
+            return new ResourceGroupPatch(name, properties, managedBy, tags ?? new ChangeTrackingDictionary<string, string>(), serializedAdditionalRawData);
         }
 
         BinaryData IPersistableModel<ResourceGroupPatch>.Write(ModelReaderWriterOptions options)
@@ -149,7 +156,7 @@ namespace Azure.ResourceManager.Resources.Models
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support writing '{options.Format}' format.");
             }
         }
 
@@ -165,7 +172,7 @@ namespace Azure.ResourceManager.Resources.Models
                         return DeserializeResourceGroupPatch(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ResourceGroupPatch)} does not support reading '{options.Format}' format.");
             }
         }
 

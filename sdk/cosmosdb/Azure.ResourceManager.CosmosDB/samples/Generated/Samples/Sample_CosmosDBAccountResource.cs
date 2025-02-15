@@ -7,25 +7,21 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.CosmosDB;
 using Azure.ResourceManager.CosmosDB.Models;
 using Azure.ResourceManager.Models;
-using Azure.ResourceManager.Resources;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.CosmosDB.Samples
 {
     public partial class Sample_CosmosDBAccountResource
     {
-        // CosmosDBDatabaseAccountGet
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_CosmosDBDatabaseAccountGet()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountGet.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountGet.json
             // this example is just showing the usage of "DatabaseAccounts_Get" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -51,108 +47,11 @@ namespace Azure.ResourceManager.CosmosDB.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // CosmosDBDatabaseAccountPatch
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task Update_CosmosDBDatabaseAccountPatch()
-        {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountPatch.json
-            // this example is just showing the usage of "DatabaseAccounts_Update" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this CosmosDBAccountResource created on azure
-            // for more information of creating CosmosDBAccountResource, please refer to the document of CosmosDBAccountResource
-            string subscriptionId = "subid";
-            string resourceGroupName = "rg1";
-            string accountName = "ddb1";
-            ResourceIdentifier cosmosDBAccountResourceId = CosmosDBAccountResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, accountName);
-            CosmosDBAccountResource cosmosDBAccount = client.GetCosmosDBAccountResource(cosmosDBAccountResourceId);
-
-            // invoke the operation
-            CosmosDBAccountPatch patch = new CosmosDBAccountPatch()
-            {
-                Tags =
-{
-["dept"] = "finance",
-},
-                Location = new AzureLocation("westus"),
-                Identity = new ManagedServiceIdentity("SystemAssigned,UserAssigned")
-                {
-                    UserAssignedIdentities =
-{
-[new ResourceIdentifier("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")] = new UserAssignedIdentity(),
-},
-                },
-                ConsistencyPolicy = new ConsistencyPolicy(DefaultConsistencyLevel.BoundedStaleness)
-                {
-                    MaxStalenessPrefix = 200,
-                    MaxIntervalInSeconds = 10,
-                },
-                IPRules =
-{
-new CosmosDBIPAddressOrRange()
-{
-IPAddressOrRange = "23.43.230.120",
-},new CosmosDBIPAddressOrRange()
-{
-IPAddressOrRange = "110.12.240.0/12",
-}
-},
-                IsVirtualNetworkFilterEnabled = true,
-                VirtualNetworkRules =
-{
-new CosmosDBVirtualNetworkRule()
-{
-Id = new ResourceIdentifier("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-IgnoreMissingVnetServiceEndpoint = false,
-}
-},
-                DefaultIdentity = "FirstPartyIdentity",
-                IsFreeTierEnabled = false,
-                IsAnalyticalStorageEnabled = true,
-                AnalyticalStorageSchemaType = AnalyticalStorageSchemaType.WellDefined,
-                BackupPolicy = new PeriodicModeBackupPolicy()
-                {
-                    PeriodicModeProperties = new PeriodicModeProperties()
-                    {
-                        BackupIntervalInMinutes = 240,
-                        BackupRetentionIntervalInHours = 720,
-                        BackupStorageRedundancy = CosmosDBBackupStorageRedundancy.Geo,
-                    },
-                },
-                NetworkAclBypass = NetworkAclBypass.AzureServices,
-                NetworkAclBypassResourceIds =
-{
-new ResourceIdentifier("/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName")
-},
-                DiagnosticLogEnableFullTextQuery = EnableFullTextQuery.True,
-                CapacityTotalThroughputLimit = 2000,
-                EnablePartitionMerge = true,
-                EnableBurstCapacity = true,
-                MinimalTlsVersion = CosmosDBMinimalTlsVersion.Tls,
-                EnablePriorityBasedExecution = true,
-                DefaultPriorityLevel = DefaultPriorityLevel.Low,
-            };
-            ArmOperation<CosmosDBAccountResource> lro = await cosmosDBAccount.UpdateAsync(WaitUntil.Completed, patch);
-            CosmosDBAccountResource result = lro.Value;
-
-            // the variable result is a resource, you could call other operations on this instance as well
-            // but just for demo, we get its data from this resource instance
-            CosmosDBAccountData resourceData = result.Data;
-            // for demo we just print out the id
-            Console.WriteLine($"Succeeded on id: {resourceData.Id}");
-        }
-
-        // CosmosDBDatabaseAccountDelete
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Delete_CosmosDBDatabaseAccountDelete()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountDelete.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountDelete.json
             // this example is just showing the usage of "DatabaseAccounts_Delete" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -171,15 +70,102 @@ new ResourceIdentifier("/subscriptions/subId/resourcegroups/rgName/providers/Mic
             // invoke the operation
             await cosmosDBAccount.DeleteAsync(WaitUntil.Completed);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountFailoverPriorityChange
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
+        public async Task Update_CosmosDBDatabaseAccountPatch()
+        {
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountPatch.json
+            // this example is just showing the usage of "DatabaseAccounts_Update" operation, for the dependent resources, they will have to be created separately.
+
+            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
+            TokenCredential cred = new DefaultAzureCredential();
+            // authenticate your client
+            ArmClient client = new ArmClient(cred);
+
+            // this example assumes you already have this CosmosDBAccountResource created on azure
+            // for more information of creating CosmosDBAccountResource, please refer to the document of CosmosDBAccountResource
+            string subscriptionId = "subid";
+            string resourceGroupName = "rg1";
+            string accountName = "ddb1";
+            ResourceIdentifier cosmosDBAccountResourceId = CosmosDBAccountResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, accountName);
+            CosmosDBAccountResource cosmosDBAccount = client.GetCosmosDBAccountResource(cosmosDBAccountResourceId);
+
+            // invoke the operation
+            CosmosDBAccountPatch patch = new CosmosDBAccountPatch
+            {
+                Tags =
+{
+["dept"] = "finance"
+},
+                Location = new AzureLocation("westus"),
+                Identity = new ManagedServiceIdentity("SystemAssigned,UserAssigned")
+                {
+                    UserAssignedIdentities =
+{
+[new ResourceIdentifier("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")] = new UserAssignedIdentity()
+},
+                },
+                ConsistencyPolicy = new ConsistencyPolicy(DefaultConsistencyLevel.BoundedStaleness)
+                {
+                    MaxStalenessPrefix = 200L,
+                    MaxIntervalInSeconds = 10,
+                },
+                IPRules = {new CosmosDBIPAddressOrRange
+{
+IPAddressOrRange = "23.43.230.120",
+}, new CosmosDBIPAddressOrRange
+{
+IPAddressOrRange = "110.12.240.0/12",
+}},
+                IsVirtualNetworkFilterEnabled = true,
+                VirtualNetworkRules = {new CosmosDBVirtualNetworkRule
+{
+Id = new ResourceIdentifier("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+IgnoreMissingVnetServiceEndpoint = false,
+}},
+                DefaultIdentity = "FirstPartyIdentity",
+                IsFreeTierEnabled = false,
+                IsAnalyticalStorageEnabled = true,
+                AnalyticalStorageSchemaType = AnalyticalStorageSchemaType.WellDefined,
+                BackupPolicy = new PeriodicModeBackupPolicy
+                {
+                    PeriodicModeProperties = new PeriodicModeProperties
+                    {
+                        BackupIntervalInMinutes = 240,
+                        BackupRetentionIntervalInHours = 720,
+                        BackupStorageRedundancy = CosmosDBBackupStorageRedundancy.Geo,
+                    },
+                },
+                NetworkAclBypass = NetworkAclBypass.AzureServices,
+                NetworkAclBypassResourceIds = { new ResourceIdentifier("/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName") },
+                DiagnosticLogEnableFullTextQuery = EnableFullTextQuery.True,
+                CapacityTotalThroughputLimit = 2000,
+                CapacityMode = CapacityMode.Provisioned,
+                EnablePartitionMerge = true,
+                EnableBurstCapacity = true,
+                MinimalTlsVersion = CosmosDBMinimalTlsVersion.Tls,
+                EnablePriorityBasedExecution = true,
+                DefaultPriorityLevel = DefaultPriorityLevel.Low,
+                EnablePerRegionPerPartitionAutoscale = true,
+            };
+            ArmOperation<CosmosDBAccountResource> lro = await cosmosDBAccount.UpdateAsync(WaitUntil.Completed, patch);
+            CosmosDBAccountResource result = lro.Value;
+
+            // the variable result is a resource, you could call other operations on this instance as well
+            // but just for demo, we get its data from this resource instance
+            CosmosDBAccountData resourceData = result.Data;
+            // for demo we just print out the id
+            Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+        }
+
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task FailoverPriorityChange_CosmosDBDatabaseAccountFailoverPriorityChange()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
             // this example is just showing the usage of "DatabaseAccounts_FailoverPriorityChange" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -198,11 +184,12 @@ new ResourceIdentifier("/subscriptions/subId/resourcegroups/rgName/providers/Mic
             // invoke the operation
             CosmosDBFailoverPolicies failoverParameters = new CosmosDBFailoverPolicies(new CosmosDBFailoverPolicy[]
             {
-new CosmosDBFailoverPolicy()
+new CosmosDBFailoverPolicy
 {
 LocationName = new AzureLocation("eastus"),
 FailoverPriority = 0,
-},new CosmosDBFailoverPolicy()
+},
+new CosmosDBFailoverPolicy
 {
 LocationName = new AzureLocation("westus"),
 FailoverPriority = 1,
@@ -210,47 +197,14 @@ FailoverPriority = 1,
             });
             await cosmosDBAccount.FailoverPriorityChangeAsync(WaitUntil.Completed, failoverParameters);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountList
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task GetCosmosDBAccounts_CosmosDBDatabaseAccountList()
-        {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountList.json
-            // this example is just showing the usage of "DatabaseAccounts_List" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this SubscriptionResource created on azure
-            // for more information of creating SubscriptionResource, please refer to the document of SubscriptionResource
-            string subscriptionId = "subid";
-            ResourceIdentifier subscriptionResourceId = SubscriptionResource.CreateResourceIdentifier(subscriptionId);
-            SubscriptionResource subscriptionResource = client.GetSubscriptionResource(subscriptionResourceId);
-
-            // invoke the operation and iterate over the result
-            await foreach (CosmosDBAccountResource item in subscriptionResource.GetCosmosDBAccountsAsync())
-            {
-                // the variable item is a resource, you could call other operations on this instance as well
-                // but just for demo, we get its data from this resource instance
-                CosmosDBAccountData resourceData = item.Data;
-                // for demo we just print out the id
-                Console.WriteLine($"Succeeded on id: {resourceData.Id}");
-            }
-
-            Console.WriteLine($"Succeeded");
-        }
-
-        // CosmosDBDatabaseAccountListKeys
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetKeys_CosmosDBDatabaseAccountListKeys()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountListKeys.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountListKeys.json
             // this example is just showing the usage of "DatabaseAccounts_ListKeys" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -272,12 +226,11 @@ FailoverPriority = 1,
             Console.WriteLine($"Succeeded: {result}");
         }
 
-        // CosmosDBDatabaseAccountListConnectionStrings
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetConnectionStrings_CosmosDBDatabaseAccountListConnectionStrings()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountListConnectionStrings.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountListConnectionStrings.json
             // this example is just showing the usage of "DatabaseAccounts_ListConnectionStrings" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -299,15 +252,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountListConnectionStringsMongo
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetConnectionStrings_CosmosDBDatabaseAccountListConnectionStringsMongo()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
             // this example is just showing the usage of "DatabaseAccounts_ListConnectionStrings" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -329,15 +281,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountOfflineRegion
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task OfflineRegion_CosmosDBDatabaseAccountOfflineRegion()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountOfflineRegion.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountOfflineRegion.json
             // this example is just showing the usage of "DatabaseAccounts_OfflineRegion" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -357,15 +308,14 @@ FailoverPriority = 1,
             RegionForOnlineOffline regionParameterForOffline = new RegionForOnlineOffline("North Europe");
             await cosmosDBAccount.OfflineRegionAsync(WaitUntil.Completed, regionParameterForOffline);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountOnlineRegion
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task OnlineRegion_CosmosDBDatabaseAccountOnlineRegion()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountOnlineRegion.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountOnlineRegion.json
             // this example is just showing the usage of "DatabaseAccounts_OnlineRegion" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -385,15 +335,14 @@ FailoverPriority = 1,
             RegionForOnlineOffline regionParameterForOnline = new RegionForOnlineOffline("North Europe");
             await cosmosDBAccount.OnlineRegionAsync(WaitUntil.Completed, regionParameterForOnline);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountListReadOnlyKeys
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetReadOnlyKeys_CosmosDBDatabaseAccountListReadOnlyKeys()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
             // this example is just showing the usage of "DatabaseAccounts_ListReadOnlyKeys" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -415,12 +364,11 @@ FailoverPriority = 1,
             Console.WriteLine($"Succeeded: {result}");
         }
 
-        // CosmosDBDatabaseAccountRegenerateKey
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task RegenerateKey_CosmosDBDatabaseAccountRegenerateKey()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountRegenerateKey.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountRegenerateKey.json
             // this example is just showing the usage of "DatabaseAccounts_RegenerateKey" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -440,39 +388,14 @@ FailoverPriority = 1,
             CosmosDBAccountRegenerateKeyContent content = new CosmosDBAccountRegenerateKeyContent(CosmosDBAccountKeyKind.Primary);
             await cosmosDBAccount.RegenerateKeyAsync(WaitUntil.Completed, content);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountCheckNameExists
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task CheckNameExistsDatabaseAccount_CosmosDBDatabaseAccountCheckNameExists()
-        {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountCheckNameExists.json
-            // this example is just showing the usage of "DatabaseAccounts_CheckNameExists" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this TenantResource created on azure
-            // for more information of creating TenantResource, please refer to the document of TenantResource
-            var tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
-
-            // invoke the operation
-            string accountName = "ddb1";
-            bool result = await tenantResource.CheckNameExistsDatabaseAccountAsync(accountName);
-
-            Console.WriteLine($"Succeeded: {result}");
-        }
-
-        // CosmosDBDatabaseAccountGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetrics_CosmosDBDatabaseAccountGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountGetMetrics.json
             // this example is just showing the usage of "DatabaseAccounts_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -495,15 +418,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountGetUsages
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetUsages_CosmosDBDatabaseAccountGetUsages()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountGetUsages.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountGetUsages.json
             // this example is just showing the usage of "DatabaseAccounts_ListUsages" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -526,15 +448,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountGetMetricDefinitions
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricDefinitions_CosmosDBDatabaseAccountGetMetricDefinitions()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
             // this example is just showing the usage of "DatabaseAccounts_ListMetricDefinitions" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -556,15 +477,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsDatabases_CosmosDBDatabaseGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseGetMetrics.json
             // this example is just showing the usage of "Database_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -588,15 +508,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseGetUsages
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetUsagesDatabases_CosmosDBDatabaseGetUsages()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseGetUsages.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseGetUsages.json
             // this example is just showing the usage of "Database_ListUsages" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -620,15 +539,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseGetMetricDefinitions
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricDefinitionsDatabases_CosmosDBDatabaseGetMetricDefinitions()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseGetMetricDefinitions.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseGetMetricDefinitions.json
             // this example is just showing the usage of "Database_ListMetricDefinitions" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -651,15 +569,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBCollectionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsCollections_CosmosDBCollectionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBCollectionGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCollectionGetMetrics.json
             // this example is just showing the usage of "Collection_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -684,15 +601,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBCollectionGetUsages
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetUsagesCollections_CosmosDBCollectionGetUsages()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBCollectionGetUsages.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCollectionGetUsages.json
             // this example is just showing the usage of "Collection_ListUsages" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -717,15 +633,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBCollectionGetMetricDefinitions
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricDefinitionsCollections_CosmosDBCollectionGetMetricDefinitions()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBCollectionGetMetricDefinitions.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCollectionGetMetricDefinitions.json
             // this example is just showing the usage of "Collection_ListMetricDefinitions" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -749,15 +664,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBRegionCollectionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsCollectionRegions_CosmosDBRegionCollectionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBRegionCollectionGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBRegionCollectionGetMetrics.json
             // this example is just showing the usage of "CollectionRegion_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -783,15 +697,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsDatabaseAccountRegions_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountRegionGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBDatabaseAccountRegionGetMetrics.json
             // this example is just showing the usage of "DatabaseAccountRegion_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -815,15 +728,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsPercentileSourceTargets_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBPercentileSourceTargetGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBPercentileSourceTargetGetMetrics.json
             // this example is just showing the usage of "PercentileSourceTarget_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -848,15 +760,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsPercentileTargets_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBPercentileTargetGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBPercentileTargetGetMetrics.json
             // this example is just showing the usage of "PercentileTarget_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -880,15 +791,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsPercentiles_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBPercentileGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBPercentileGetMetrics.json
             // this example is just showing the usage of "Percentile_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -911,15 +821,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsCollectionPartitionRegions_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBCollectionPartitionRegionGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCollectionPartitionRegionGetMetrics.json
             // this example is just showing the usage of "CollectionPartitionRegion_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -945,15 +854,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsCollectionPartitions_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBCollectionPartitionGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCollectionPartitionGetMetrics.json
             // this example is just showing the usage of "CollectionPartition_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -978,15 +886,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBCollectionGetUsages
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetUsagesCollectionPartitions_CosmosDBCollectionGetUsages()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBCollectionPartitionGetUsages.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCollectionPartitionGetUsages.json
             // this example is just showing the usage of "CollectionPartition_ListUsages" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -1011,15 +918,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsPartitionKeyRangeIds_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBPKeyRangeIdGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBPKeyRangeIdGetMetrics.json
             // this example is just showing the usage of "PartitionKeyRangeId_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -1045,15 +951,14 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // CosmosDBDatabaseAccountRegionGetMetrics
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetMetricsPartitionKeyRangeIdRegions_CosmosDBDatabaseAccountRegionGetMetrics()
         {
-            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBPKeyRangeIdRegionGetMetrics.json
+            // Generated from example definition: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBPKeyRangeIdRegionGetMetrics.json
             // this example is just showing the usage of "PartitionKeyRangeIdRegion_ListMetrics" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -1080,7 +985,7 @@ FailoverPriority = 1,
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
     }
 }
