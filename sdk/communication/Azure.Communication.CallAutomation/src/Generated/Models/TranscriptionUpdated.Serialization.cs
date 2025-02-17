@@ -6,7 +6,6 @@
 #nullable disable
 
 using System.Text.Json;
-using Azure.Core;
 
 namespace Azure.Communication.CallAutomation
 {
@@ -18,28 +17,14 @@ namespace Azure.Communication.CallAutomation
             {
                 return null;
             }
-            Optional<string> operationContext = default;
-            Optional<ResultInformation> resultInformation = default;
-            Optional<TranscriptionUpdate> transcriptionUpdate = default;
-            Optional<string> callConnectionId = default;
-            Optional<string> serverCallId = default;
-            Optional<string> correlationId = default;
+            TranscriptionUpdate transcriptionUpdate = default;
+            string callConnectionId = default;
+            string serverCallId = default;
+            string correlationId = default;
+            string operationContext = default;
+            ResultInformation resultInformation = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("operationContext"u8))
-                {
-                    operationContext = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("resultInformation"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    resultInformation = ResultInformation.DeserializeResultInformation(property.Value);
-                    continue;
-                }
                 if (property.NameEquals("transcriptionUpdate"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -64,8 +49,36 @@ namespace Azure.Communication.CallAutomation
                     correlationId = property.Value.GetString();
                     continue;
                 }
+                if (property.NameEquals("operationContext"u8))
+                {
+                    operationContext = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("resultInformation"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    resultInformation = ResultInformation.DeserializeResultInformation(property.Value);
+                    continue;
+                }
             }
-            return new TranscriptionUpdated(operationContext.Value, resultInformation.Value, transcriptionUpdate.Value, callConnectionId.Value, serverCallId.Value, correlationId.Value);
+            return new TranscriptionUpdated(
+                transcriptionUpdate,
+                callConnectionId,
+                serverCallId,
+                correlationId,
+                operationContext,
+                resultInformation);
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static TranscriptionUpdated FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeTranscriptionUpdated(document.RootElement);
         }
     }
 }

@@ -9,10 +9,8 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 
 namespace Azure.ResourceManager.HybridContainerService
 {
@@ -100,7 +98,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -140,7 +138,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -180,7 +178,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -222,7 +220,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -264,7 +262,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -273,7 +271,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </list>
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="data"> The <see cref="HybridIdentityMetadataData"/> to use. </param>
+        /// <param name="data"> Hybrid Identity Metadata resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
         public virtual async Task<ArmOperation<HybridIdentityMetadataResource>> CreateOrUpdateAsync(WaitUntil waitUntil, HybridIdentityMetadataData data, CancellationToken cancellationToken = default)
@@ -285,7 +283,9 @@ namespace Azure.ResourceManager.HybridContainerService
             try
             {
                 var response = await _hybridIdentityMetadataHybridIdentityMetadataRestClient.PutAsync(Id.Parent.Parent, data, cancellationToken).ConfigureAwait(false);
-                var operation = new HybridContainerServiceArmOperation<HybridIdentityMetadataResource>(Response.FromValue(new HybridIdentityMetadataResource(Client, response), response.GetRawResponse()));
+                var uri = _hybridIdentityMetadataHybridIdentityMetadataRestClient.CreatePutRequestUri(Id.Parent.Parent, data);
+                var rehydrationToken = NextLinkOperationImplementation.GetRehydrationToken(RequestMethod.Put, uri.ToUri(), uri.ToString(), "None", null, OperationFinalStateVia.OriginalUri.ToString());
+                var operation = new HybridContainerServiceArmOperation<HybridIdentityMetadataResource>(Response.FromValue(new HybridIdentityMetadataResource(Client, response), response.GetRawResponse()), rehydrationToken);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -310,7 +310,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -319,7 +319,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </list>
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="data"> The <see cref="HybridIdentityMetadataData"/> to use. </param>
+        /// <param name="data"> Hybrid Identity Metadata resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
         public virtual ArmOperation<HybridIdentityMetadataResource> CreateOrUpdate(WaitUntil waitUntil, HybridIdentityMetadataData data, CancellationToken cancellationToken = default)
@@ -331,7 +331,9 @@ namespace Azure.ResourceManager.HybridContainerService
             try
             {
                 var response = _hybridIdentityMetadataHybridIdentityMetadataRestClient.Put(Id.Parent.Parent, data, cancellationToken);
-                var operation = new HybridContainerServiceArmOperation<HybridIdentityMetadataResource>(Response.FromValue(new HybridIdentityMetadataResource(Client, response), response.GetRawResponse()));
+                var uri = _hybridIdentityMetadataHybridIdentityMetadataRestClient.CreatePutRequestUri(Id.Parent.Parent, data);
+                var rehydrationToken = NextLinkOperationImplementation.GetRehydrationToken(RequestMethod.Put, uri.ToUri(), uri.ToString(), "None", null, OperationFinalStateVia.OriginalUri.ToString());
+                var operation = new HybridContainerServiceArmOperation<HybridIdentityMetadataResource>(Response.FromValue(new HybridIdentityMetadataResource(Client, response), response.GetRawResponse()), rehydrationToken);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;

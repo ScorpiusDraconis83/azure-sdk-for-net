@@ -8,13 +8,15 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Models;
+using Azure.Storage.Files.Shares.Specialized;
 
 namespace Azure.Storage.DataMovement.Files.Shares
 {
     internal class ShareDirectoryStorageResourceContainer : StorageResourceContainerInternal
     {
         internal ShareFileStorageResourceOptions ResourceOptions { get; set; }
-        internal PathScanner PathScanner { get; set; } = PathScanner.Singleton.Value;
+        internal SharesPathScanner PathScanner { get; set; } = SharesPathScanner.Singleton.Value;
 
         internal ShareDirectoryClient ShareDirectoryClient { get; }
 
@@ -28,7 +30,7 @@ namespace Azure.Storage.DataMovement.Files.Shares
             ResourceOptions = options;
         }
 
-        protected override StorageResourceItem GetStorageResourceReference(string path)
+        protected override StorageResourceItem GetStorageResourceReference(string path, string resourceId)
         {
             List<string> pathSegments = path.Split('/').Where(s => !string.IsNullOrEmpty(s)).ToList();
             ShareDirectoryClient dir = ShareDirectoryClient;
@@ -41,30 +43,64 @@ namespace Azure.Storage.DataMovement.Files.Shares
         }
 
         protected override async IAsyncEnumerable<StorageResource> GetStorageResourcesAsync(
+            StorageResourceContainer destinationContainer = default,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            await foreach ((ShareDirectoryClient dir, ShareFileClient file) in PathScanner.ScanAsync(
-                ShareDirectoryClient, cancellationToken).ConfigureAwait(false))
+            // Set the ShareFileTraits to send when listing.
+            ShareFileTraits traits = ShareFileTraits.Attributes;
+            if (ResourceOptions?.FilePermissions ?? false)
             {
-                if (file != default)
-                {
-                    yield return new ShareFileStorageResource(file, ResourceOptions);
-                }
-                else
-                {
-                    yield return new ShareDirectoryStorageResourceContainer(dir, ResourceOptions);
-                }
+                traits |= ShareFileTraits.PermissionKey;
+            }
+            ShareClient parentDestinationShare = default;
+            if (destinationContainer != default)
+            {
+                parentDestinationShare = (destinationContainer as ShareDirectoryStorageResourceContainer)?.ShareDirectoryClient.GetParentShareClient();
+            }
+            await foreach (StorageResource resource in PathScanner.ScanAsync(
+                sourceDirectory: ShareDirectoryClient,
+                destinationShare: parentDestinationShare,
+                sourceOptions: ResourceOptions,
+                traits: traits,
+                cancellationToken: cancellationToken).ConfigureAwait(false))
+            {
+                yield return resource;
             }
         }
 
-        protected override StorageResourceCheckpointData GetSourceCheckpointData()
+        protected override StorageResourceCheckpointDetails GetSourceCheckpointDetails()
         {
-            return new ShareFileSourceCheckpointData();
+            return new ShareFileSourceCheckpointDetails();
         }
 
-        protected override StorageResourceCheckpointData GetDestinationCheckpointData()
+        protected override StorageResourceCheckpointDetails GetDestinationCheckpointDetails()
         {
-            return new ShareFileDestinationCheckpointData(null, null, null, null);
+            return new ShareFileDestinationCheckpointDetails(
+                isContentTypeSet: ResourceOptions?._isContentTypeSet ?? false,
+                contentType: ResourceOptions?.ContentType,
+                isContentEncodingSet: ResourceOptions?._isContentEncodingSet ?? false,
+                contentEncoding: ResourceOptions?.ContentEncoding,
+                isContentLanguageSet: ResourceOptions?._isContentLanguageSet ?? false,
+                contentLanguage: ResourceOptions?.ContentLanguage,
+                isContentDispositionSet: ResourceOptions?._isContentDispositionSet ?? false,
+                contentDisposition: ResourceOptions?.ContentDisposition,
+                isCacheControlSet: ResourceOptions?._isCacheControlSet ?? false,
+                cacheControl: ResourceOptions?.CacheControl,
+                isFileAttributesSet: ResourceOptions?._isFileAttributesSet ?? false,
+                fileAttributes: ResourceOptions?.FileAttributes,
+                filePermissions: ResourceOptions?.FilePermissions,
+                isFileCreatedOnSet: ResourceOptions?._isFileChangedOnSet ?? false,
+                fileCreatedOn: ResourceOptions?.FileCreatedOn,
+                isFileLastWrittenOnSet: ResourceOptions?._isFileLastWrittenOnSet ?? false,
+                fileLastWrittenOn: ResourceOptions?.FileLastWrittenOn,
+                isFileChangedOnSet: ResourceOptions?._isFileChangedOnSet ?? false,
+                fileChangedOn: ResourceOptions?.FileChangedOn,
+                isFileMetadataSet: ResourceOptions?._isFileMetadataSet ?? false,
+                fileMetadata: ResourceOptions?.FileMetadata,
+                isDirectoryMetadataSet: ResourceOptions?._isDirectoryMetadataSet ?? false,
+                directoryMetadata: ResourceOptions?.DirectoryMetadata)
+            {
+            };
         }
 
         protected override async Task CreateIfNotExistsAsync(CancellationToken cancellationToken = default)

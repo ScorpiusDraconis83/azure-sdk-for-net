@@ -10,10 +10,8 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 using Azure.ResourceManager.Automation.Models;
 
 namespace Azure.ResourceManager.Automation
@@ -213,7 +211,9 @@ namespace Azure.ResourceManager.Automation
             try
             {
                 var response = await _automationJobJobRestClient.CreateAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content, clientRequestId, cancellationToken).ConfigureAwait(false);
-                var operation = new AutomationArmOperation<AutomationJobResource>(Response.FromValue(new AutomationJobResource(Client, response), response.GetRawResponse()));
+                var uri = _automationJobJobRestClient.CreateCreateRequestUri(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content, clientRequestId);
+                var rehydrationToken = NextLinkOperationImplementation.GetRehydrationToken(RequestMethod.Put, uri.ToUri(), uri.ToString(), "None", null, OperationFinalStateVia.OriginalUri.ToString());
+                var operation = new AutomationArmOperation<AutomationJobResource>(Response.FromValue(new AutomationJobResource(Client, response), response.GetRawResponse()), rehydrationToken);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -260,7 +260,9 @@ namespace Azure.ResourceManager.Automation
             try
             {
                 var response = _automationJobJobRestClient.Create(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content, clientRequestId, cancellationToken);
-                var operation = new AutomationArmOperation<AutomationJobResource>(Response.FromValue(new AutomationJobResource(Client, response), response.GetRawResponse()));
+                var uri = _automationJobJobRestClient.CreateCreateRequestUri(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, content, clientRequestId);
+                var rehydrationToken = NextLinkOperationImplementation.GetRehydrationToken(RequestMethod.Put, uri.ToUri(), uri.ToString(), "None", null, OperationFinalStateVia.OriginalUri.ToString());
+                var operation = new AutomationArmOperation<AutomationJobResource>(Response.FromValue(new AutomationJobResource(Client, response), response.GetRawResponse()), rehydrationToken);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -767,7 +769,7 @@ namespace Azure.ResourceManager.Automation
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _jobStreamRestClient.CreateListByJobRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, filter, clientRequestId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _jobStreamRestClient.CreateListByJobNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, filter, clientRequestId);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, AutomationJobStream.DeserializeAutomationJobStream, _jobStreamClientDiagnostics, Pipeline, "AutomationJobResource.GetJobStreams", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => AutomationJobStream.DeserializeAutomationJobStream(e), _jobStreamClientDiagnostics, Pipeline, "AutomationJobResource.GetJobStreams", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -795,7 +797,7 @@ namespace Azure.ResourceManager.Automation
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _jobStreamRestClient.CreateListByJobRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, filter, clientRequestId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _jobStreamRestClient.CreateListByJobNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, filter, clientRequestId);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, AutomationJobStream.DeserializeAutomationJobStream, _jobStreamClientDiagnostics, Pipeline, "AutomationJobResource.GetJobStreams", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => AutomationJobStream.DeserializeAutomationJobStream(e), _jobStreamClientDiagnostics, Pipeline, "AutomationJobResource.GetJobStreams", "value", "nextLink", cancellationToken);
         }
     }
 }

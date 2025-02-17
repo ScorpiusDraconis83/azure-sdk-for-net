@@ -21,9 +21,27 @@ namespace Azure.Communication.CallAutomation
             writer.WriteStringValue(TransportType.ToString());
             writer.WritePropertyName("locale"u8);
             writer.WriteStringValue(Locale);
+            if (Optional.IsDefined(SpeechRecognitionModelEndpointId))
+            {
+                writer.WritePropertyName("speechRecognitionModelEndpointId"u8);
+                writer.WriteStringValue(SpeechRecognitionModelEndpointId);
+            }
             writer.WritePropertyName("startTranscription"u8);
             writer.WriteBooleanValue(StartTranscription);
+            if (Optional.IsDefined(EnableIntermediateResults))
+            {
+                writer.WritePropertyName("enableIntermediateResults"u8);
+                writer.WriteBooleanValue(EnableIntermediateResults.Value);
+            }
             writer.WriteEndObject();
+        }
+
+        /// <summary> Convert into a <see cref="RequestContent"/>. </summary>
+        internal virtual RequestContent ToRequestContent()
+        {
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(this);
+            return content;
         }
     }
 }

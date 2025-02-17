@@ -229,7 +229,7 @@ await chatThreadClient.UpdateTopicAsync(topic: "new topic !");
 Use `SendMessage` to send a message to a thread.
 
 - Use `content` to provide the content for the message, it is required.
-- Use `type` for the content type of the message such as 'Text' or 'Html'. If not speficied, 'Text' will be set.
+- Use `type` for the content type of the message such as 'Text' or 'Html'. If not specified, 'Text' will be set.
 - Use `senderDisplayName` to specify the display name of the sender. If not specified, empty string will be set.
 
 ```C# Snippet:Azure_Communication_Chat_Tests_Samples_SendMessage
@@ -376,12 +376,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_contact]: mailto:opencode@microsoft.com
 [nuget]: https://www.nuget.org/
 [netstandars2mappings]:https://github.com/dotnet/standard/blob/master/docs/versions.md
-[useraccesstokens]:https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-csharp
-[communication_resource_docs]: https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
-[communication_resource_create_portal]:  https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
-[communication_resource_create_power_shell]: https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
-[communication_resource_create_net]: https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
-[nextsteps]:https://docs.microsoft.com/azure/communication-services/quickstarts/chat/get-started?pivots=programming-language-csharp
+[useraccesstokens]:https://learn.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-csharp
+[communication_resource_docs]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_create_portal]:  https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp
+[communication_resource_create_power_shell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
+[communication_resource_create_net]: https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-net
+[nextsteps]:https://learn.microsoft.com/azure/communication-services/quickstarts/chat/get-started?pivots=programming-language-csharp
 [source]: https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/communication/Azure.Communication.Chat/src
-[product_docs]: https://docs.microsoft.com/azure/communication-services/overview
+[product_docs]: https://learn.microsoft.com/azure/communication-services/overview
 [package]: https://www.nuget.org/packages/Azure.Communication.Chat

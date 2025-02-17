@@ -7,24 +7,20 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.ConfidentialLedger;
 using Azure.ResourceManager.ConfidentialLedger.Models;
-using Azure.ResourceManager.Resources;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.ConfidentialLedger.Samples
 {
     public partial class Sample_ManagedCcfResource
     {
-        // ManagedCCFGet
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_ManagedCCFGet()
         {
-            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ManagedCCF_Get.json
+            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Get.json
             // this example is just showing the usage of "ManagedCCF_Get" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -50,12 +46,11 @@ namespace Azure.ResourceManager.ConfidentialLedger.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // ConfidentialLedgerDelete
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Delete_ConfidentialLedgerDelete()
         {
-            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ManagedCCF_Delete.json
+            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Delete.json
             // this example is just showing the usage of "ManagedCCF_Delete" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -74,15 +69,14 @@ namespace Azure.ResourceManager.ConfidentialLedger.Samples
             // invoke the operation
             await managedCcf.DeleteAsync(WaitUntil.Completed);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // ManagedCCFUpdate
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_ManagedCCFUpdate()
         {
-            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ManagedCCF_Update.json
+            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Update.json
             // this example is just showing the usage of "ManagedCCF_Update" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -101,9 +95,9 @@ namespace Azure.ResourceManager.ConfidentialLedger.Samples
             // invoke the operation
             ManagedCcfData data = new ManagedCcfData(new AzureLocation("EastUS"))
             {
-                Properties = new ManagedCcfProperties()
+                Properties = new ManagedCcfProperties
                 {
-                    DeploymentType = new ConfidentialLedgerDeploymentType()
+                    DeploymentType = new ConfidentialLedgerDeploymentType
                     {
                         LanguageRuntime = ConfidentialLedgerLanguageRuntime.CPP,
                         AppSourceUri = new Uri("https://myaccount.blob.core.windows.net/storage/mccfsource?sv=2022-02-11%st=2022-03-11"),
@@ -111,44 +105,76 @@ namespace Azure.ResourceManager.ConfidentialLedger.Samples
                 },
                 Tags =
 {
-["additionalProps1"] = "additional properties",
+["additionalProps1"] = "additional properties"
 },
             };
-            await managedCcf.UpdateAsync(WaitUntil.Completed, data);
+            ArmOperation<ManagedCcfResource> lro = await managedCcf.UpdateAsync(WaitUntil.Completed, data);
+            ManagedCcfResource result = lro.Value;
 
-            Console.WriteLine($"Succeeded");
+            // the variable result is a resource, you could call other operations on this instance as well
+            // but just for demo, we get its data from this resource instance
+            ManagedCcfData resourceData = result.Data;
+            // for demo we just print out the id
+            Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // ManagedCCFListBySub
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task GetManagedCcfs_ManagedCCFListBySub()
+        [Test]
+        [Ignore("Only validating compilation of examples")]
+        public async Task Backup_ManagedCCFBackup()
         {
-            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ManagedCCF_ListBySub.json
-            // this example is just showing the usage of "ManagedCCF_ListBySubscription" operation, for the dependent resources, they will have to be created separately.
+            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Backup.json
+            // this example is just showing the usage of "ManagedCCF_Backup" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
             TokenCredential cred = new DefaultAzureCredential();
             // authenticate your client
             ArmClient client = new ArmClient(cred);
 
-            // this example assumes you already have this SubscriptionResource created on azure
-            // for more information of creating SubscriptionResource, please refer to the document of SubscriptionResource
+            // this example assumes you already have this ManagedCcfResource created on azure
+            // for more information of creating ManagedCcfResource, please refer to the document of ManagedCcfResource
             string subscriptionId = "0000000-0000-0000-0000-000000000001";
-            ResourceIdentifier subscriptionResourceId = SubscriptionResource.CreateResourceIdentifier(subscriptionId);
-            SubscriptionResource subscriptionResource = client.GetSubscriptionResource(subscriptionResourceId);
+            string resourceGroupName = "DummyResourceGroupName";
+            string appName = "DummyMccfAppName";
+            ResourceIdentifier managedCcfResourceId = ManagedCcfResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, appName);
+            ManagedCcfResource managedCcf = client.GetManagedCcfResource(managedCcfResourceId);
 
-            // invoke the operation and iterate over the result
-            await foreach (ManagedCcfResource item in subscriptionResource.GetManagedCcfsAsync())
+            // invoke the operation
+            ManagedCcfBackupContent content = new ManagedCcfBackupContent(new Uri("DummySASUri"))
             {
-                // the variable item is a resource, you could call other operations on this instance as well
-                // but just for demo, we get its data from this resource instance
-                ManagedCcfData resourceData = item.Data;
-                // for demo we just print out the id
-                Console.WriteLine($"Succeeded on id: {resourceData.Id}");
-            }
+                RestoreRegion = "EastUS",
+            };
+            ArmOperation<ManagedCcfBackupResult> lro = await managedCcf.BackupAsync(WaitUntil.Completed, content);
+            ManagedCcfBackupResult result = lro.Value;
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine($"Succeeded: {result}");
+        }
+
+        [Test]
+        [Ignore("Only validating compilation of examples")]
+        public async Task Restore_ManagedCCFRestore()
+        {
+            // Generated from example definition: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Restore.json
+            // this example is just showing the usage of "ManagedCCF_Restore" operation, for the dependent resources, they will have to be created separately.
+
+            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
+            TokenCredential cred = new DefaultAzureCredential();
+            // authenticate your client
+            ArmClient client = new ArmClient(cred);
+
+            // this example assumes you already have this ManagedCcfResource created on azure
+            // for more information of creating ManagedCcfResource, please refer to the document of ManagedCcfResource
+            string subscriptionId = "0000000-0000-0000-0000-000000000001";
+            string resourceGroupName = "DummyResourceGroupName";
+            string appName = "DummyMccfAppName";
+            ResourceIdentifier managedCcfResourceId = ManagedCcfResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, appName);
+            ManagedCcfResource managedCcf = client.GetManagedCcfResource(managedCcfResourceId);
+
+            // invoke the operation
+            ManagedCcfRestoreContent content = new ManagedCcfRestoreContent("DummyFileShareName", "EastUS", new Uri("DummySASUri"));
+            ArmOperation<ManagedCcfRestoreResult> lro = await managedCcf.RestoreAsync(WaitUntil.Completed, content);
+            ManagedCcfRestoreResult result = lro.Value;
+
+            Console.WriteLine($"Succeeded: {result}");
         }
     }
 }

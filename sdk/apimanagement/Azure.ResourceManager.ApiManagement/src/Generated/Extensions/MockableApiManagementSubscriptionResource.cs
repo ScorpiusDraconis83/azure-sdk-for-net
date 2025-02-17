@@ -9,11 +9,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.ApiManagement;
 using Azure.ResourceManager.ApiManagement.Models;
 
 namespace Azure.ResourceManager.ApiManagement.Mocking
@@ -73,7 +70,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -105,7 +102,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -137,7 +134,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -167,7 +164,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -197,7 +194,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -227,7 +224,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -257,7 +254,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -299,7 +296,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -341,7 +338,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -379,7 +376,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -417,7 +414,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -427,7 +424,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => ApiManagementSkusRestClient.CreateListRequest(Id.SubscriptionId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => ApiManagementSkusRestClient.CreateListNextPageRequest(nextLink, Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ApiManagementSku.DeserializeApiManagementSku, ApiManagementSkusClientDiagnostics, Pipeline, "MockableApiManagementSubscriptionResource.GetApiManagementSkus", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ApiManagementSku.DeserializeApiManagementSku(e), ApiManagementSkusClientDiagnostics, Pipeline, "MockableApiManagementSubscriptionResource.GetApiManagementSkus", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -443,7 +440,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -453,7 +450,7 @@ namespace Azure.ResourceManager.ApiManagement.Mocking
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => ApiManagementSkusRestClient.CreateListRequest(Id.SubscriptionId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => ApiManagementSkusRestClient.CreateListNextPageRequest(nextLink, Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ApiManagementSku.DeserializeApiManagementSku, ApiManagementSkusClientDiagnostics, Pipeline, "MockableApiManagementSubscriptionResource.GetApiManagementSkus", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ApiManagementSku.DeserializeApiManagementSku(e), ApiManagementSkusClientDiagnostics, Pipeline, "MockableApiManagementSubscriptionResource.GetApiManagementSkus", "value", "nextLink", cancellationToken);
         }
     }
 }

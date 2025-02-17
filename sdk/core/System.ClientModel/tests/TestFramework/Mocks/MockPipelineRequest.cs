@@ -12,43 +12,37 @@ public class MockPipelineRequest : PipelineRequest
     private string _method;
     private Uri? _uri;
     private BinaryContent? _content;
-    private readonly PipelineMessageHeaders _headers;
+    private readonly PipelineRequestHeaders _headers;
 
     private bool _disposed;
 
     public MockPipelineRequest()
     {
-        _headers = new MockMessageHeaders();
+        _headers = new MockRequestHeaders();
         _method = "GET";
+        _uri = new Uri("https://www.example.com");
     }
 
-    protected override BinaryContent? GetContentCore()
-        => _content;
+    protected override BinaryContent? ContentCore
+    {
+        get => _content;
+        set => _content = value;
+    }
 
-    protected override PipelineMessageHeaders GetHeadersCore()
+    protected override PipelineRequestHeaders HeadersCore
         => _headers;
 
-    protected override string GetMethodCore()
-        => _method;
-
-    protected override Uri GetUriCore()
+    protected override string MethodCore
     {
-        if (_uri is null)
-        {
-            throw new InvalidOperationException("Uri has not be set on HttpMessageRequest instance.");
-        }
-
-        return _uri;
+        get => _method;
+        set => _method = value;
     }
 
-    protected override void SetContentCore(BinaryContent? content)
-        => _content = content;
-
-    protected override void SetMethodCore(string method)
-        => _method = method;
-
-    protected override void SetUriCore(Uri uri)
-        => _uri = uri;
+    protected override Uri? UriCore
+    {
+        get => _uri;
+        set => _uri = value;
+    }
 
     public sealed override void Dispose()
     {

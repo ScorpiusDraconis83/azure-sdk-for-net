@@ -7,56 +7,103 @@
 
 using System;
 using System.Collections.Generic;
-using Azure.Core;
 
 namespace Azure.AI.DocumentIntelligence
 {
     /// <summary> Document model info. </summary>
     public partial class DocumentModelDetails
     {
+        /// <summary>
+        /// Keeps track of any properties unknown to the library.
+        /// <para>
+        /// To assign an object to the value of this property use <see cref="BinaryData.FromObjectAsJson{T}(T, System.Text.Json.JsonSerializerOptions?)"/>.
+        /// </para>
+        /// <para>
+        /// To assign an already formatted json string to this property use <see cref="BinaryData.FromString(string)"/>.
+        /// </para>
+        /// <para>
+        /// Examples:
+        /// <list type="bullet">
+        /// <item>
+        /// <term>BinaryData.FromObjectAsJson("foo")</term>
+        /// <description>Creates a payload of "foo".</description>
+        /// </item>
+        /// <item>
+        /// <term>BinaryData.FromString("\"foo\"")</term>
+        /// <description>Creates a payload of "foo".</description>
+        /// </item>
+        /// <item>
+        /// <term>BinaryData.FromObjectAsJson(new { key = "value" })</term>
+        /// <description>Creates a payload of { "key": "value" }.</description>
+        /// </item>
+        /// <item>
+        /// <term>BinaryData.FromString("{\"key\": \"value\"}")</term>
+        /// <description>Creates a payload of { "key": "value" }.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        private IDictionary<string, BinaryData> _serializedAdditionalRawData;
+
         /// <summary> Initializes a new instance of <see cref="DocumentModelDetails"/>. </summary>
         /// <param name="modelId"> Unique document model name. </param>
-        /// <param name="createdDateTime"> Date and time (UTC) when the document model was created. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="modelId"/> is null. </exception>
-        internal DocumentModelDetails(string modelId, DateTimeOffset createdDateTime)
+        internal DocumentModelDetails(string modelId)
         {
             Argument.AssertNotNull(modelId, nameof(modelId));
 
             ModelId = modelId;
-            CreatedDateTime = createdDateTime;
             Tags = new ChangeTrackingDictionary<string, string>();
-            DocTypes = new ChangeTrackingDictionary<string, DocumentTypeDetails>();
+            DocumentTypes = new ChangeTrackingDictionary<string, DocumentTypeDetails>();
+            Warnings = new ChangeTrackingList<DocumentIntelligenceWarning>();
         }
 
         /// <summary> Initializes a new instance of <see cref="DocumentModelDetails"/>. </summary>
         /// <param name="modelId"> Unique document model name. </param>
         /// <param name="description"> Document model description. </param>
-        /// <param name="createdDateTime"> Date and time (UTC) when the document model was created. </param>
-        /// <param name="expirationDateTime"> Date and time (UTC) when the document model will expire. </param>
+        /// <param name="createdOn"> Date and time (UTC) when the document model was created. </param>
+        /// <param name="expiresOn"> Date and time (UTC) when the document model will expire. </param>
+        /// <param name="modifiedOn"> Date and time (UTC) when the document model was last modified. </param>
         /// <param name="apiVersion"> API version used to create this document model. </param>
         /// <param name="tags"> List of key-value tag attributes associated with the document model. </param>
         /// <param name="buildMode"> Custom document model build mode. </param>
-        /// <param name="azureBlobSource">
+        /// <param name="blobSource">
         /// Azure Blob Storage location containing the training data.  Either
         /// azureBlobSource or azureBlobFileListSource must be specified.
         /// </param>
-        /// <param name="azureBlobFileListSource">
+        /// <param name="blobFileListSource">
         /// Azure Blob Storage file list specifying the training data.  Either
         /// azureBlobSource or azureBlobFileListSource must be specified.
         /// </param>
-        /// <param name="docTypes"> Supported document types. </param>
-        internal DocumentModelDetails(string modelId, string description, DateTimeOffset createdDateTime, DateTimeOffset? expirationDateTime, string apiVersion, IReadOnlyDictionary<string, string> tags, DocumentBuildMode? buildMode, AzureBlobContentSource azureBlobSource, AzureBlobFileListContentSource azureBlobFileListSource, IReadOnlyDictionary<string, DocumentTypeDetails> docTypes)
+        /// <param name="classifierId"> For composed models, the custom classifier to split and classify the input file. </param>
+        /// <param name="split"> For composed models, the file splitting behavior. </param>
+        /// <param name="documentTypes"> Supported document types. </param>
+        /// <param name="warnings"> List of warnings encountered while building the model. </param>
+        /// <param name="trainingHours"> Number of V100-equivalent GPU hours consumed for model training. </param>
+        /// <param name="serializedAdditionalRawData"> Keeps track of any properties unknown to the library. </param>
+        internal DocumentModelDetails(string modelId, string description, DateTimeOffset createdOn, DateTimeOffset? expiresOn, DateTimeOffset? modifiedOn, string apiVersion, IReadOnlyDictionary<string, string> tags, DocumentBuildMode? buildMode, BlobContentSource blobSource, BlobFileListContentSource blobFileListSource, string classifierId, SplitMode? split, IReadOnlyDictionary<string, DocumentTypeDetails> documentTypes, IReadOnlyList<DocumentIntelligenceWarning> warnings, float? trainingHours, IDictionary<string, BinaryData> serializedAdditionalRawData)
         {
             ModelId = modelId;
             Description = description;
-            CreatedDateTime = createdDateTime;
-            ExpirationDateTime = expirationDateTime;
+            CreatedOn = createdOn;
+            ExpiresOn = expiresOn;
+            ModifiedOn = modifiedOn;
             ApiVersion = apiVersion;
             Tags = tags;
             BuildMode = buildMode;
-            AzureBlobSource = azureBlobSource;
-            AzureBlobFileListSource = azureBlobFileListSource;
-            DocTypes = docTypes;
+            BlobSource = blobSource;
+            BlobFileListSource = blobFileListSource;
+            ClassifierId = classifierId;
+            Split = split;
+            DocumentTypes = documentTypes;
+            Warnings = warnings;
+            TrainingHours = trainingHours;
+            _serializedAdditionalRawData = serializedAdditionalRawData;
+        }
+
+        /// <summary> Initializes a new instance of <see cref="DocumentModelDetails"/> for deserialization. </summary>
+        internal DocumentModelDetails()
+        {
         }
 
         /// <summary> Unique document model name. </summary>
@@ -64,9 +111,11 @@ namespace Azure.AI.DocumentIntelligence
         /// <summary> Document model description. </summary>
         public string Description { get; }
         /// <summary> Date and time (UTC) when the document model was created. </summary>
-        public DateTimeOffset CreatedDateTime { get; }
+        public DateTimeOffset CreatedOn { get; }
         /// <summary> Date and time (UTC) when the document model will expire. </summary>
-        public DateTimeOffset? ExpirationDateTime { get; }
+        public DateTimeOffset? ExpiresOn { get; }
+        /// <summary> Date and time (UTC) when the document model was last modified. </summary>
+        public DateTimeOffset? ModifiedOn { get; }
         /// <summary> API version used to create this document model. </summary>
         public string ApiVersion { get; }
         /// <summary> List of key-value tag attributes associated with the document model. </summary>
@@ -77,13 +126,21 @@ namespace Azure.AI.DocumentIntelligence
         /// Azure Blob Storage location containing the training data.  Either
         /// azureBlobSource or azureBlobFileListSource must be specified.
         /// </summary>
-        public AzureBlobContentSource AzureBlobSource { get; }
+        public BlobContentSource BlobSource { get; }
         /// <summary>
         /// Azure Blob Storage file list specifying the training data.  Either
         /// azureBlobSource or azureBlobFileListSource must be specified.
         /// </summary>
-        public AzureBlobFileListContentSource AzureBlobFileListSource { get; }
+        public BlobFileListContentSource BlobFileListSource { get; }
+        /// <summary> For composed models, the custom classifier to split and classify the input file. </summary>
+        public string ClassifierId { get; }
+        /// <summary> For composed models, the file splitting behavior. </summary>
+        public SplitMode? Split { get; }
         /// <summary> Supported document types. </summary>
-        public IReadOnlyDictionary<string, DocumentTypeDetails> DocTypes { get; }
+        public IReadOnlyDictionary<string, DocumentTypeDetails> DocumentTypes { get; }
+        /// <summary> List of warnings encountered while building the model. </summary>
+        public IReadOnlyList<DocumentIntelligenceWarning> Warnings { get; }
+        /// <summary> Number of V100-equivalent GPU hours consumed for model training. </summary>
+        public float? TrainingHours { get; }
     }
 }

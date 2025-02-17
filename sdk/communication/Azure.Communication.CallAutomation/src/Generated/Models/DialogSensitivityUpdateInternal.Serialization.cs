@@ -6,7 +6,6 @@
 #nullable disable
 
 using System.Text.Json;
-using Azure.Core;
 
 namespace Azure.Communication.CallAutomation
 {
@@ -18,39 +17,16 @@ namespace Azure.Communication.CallAutomation
             {
                 return null;
             }
-            Optional<bool> sensitiveMask = default;
-            Optional<string> operationContext = default;
-            Optional<ResultInformation> resultInformation = default;
-            Optional<DialogInputType> dialogInputType = default;
-            Optional<string> dialogId = default;
-            Optional<string> callConnectionId = default;
-            Optional<string> serverCallId = default;
-            Optional<string> correlationId = default;
+            DialogInputType? dialogInputType = default;
+            string dialogId = default;
+            bool? sensitiveMask = default;
+            string callConnectionId = default;
+            string serverCallId = default;
+            string correlationId = default;
+            string operationContext = default;
+            ResultInformation resultInformation = default;
             foreach (var property in element.EnumerateObject())
             {
-                if (property.NameEquals("sensitiveMask"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    sensitiveMask = property.Value.GetBoolean();
-                    continue;
-                }
-                if (property.NameEquals("operationContext"u8))
-                {
-                    operationContext = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("resultInformation"u8))
-                {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    resultInformation = ResultInformation.DeserializeResultInformation(property.Value);
-                    continue;
-                }
                 if (property.NameEquals("dialogInputType"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
@@ -63,6 +39,15 @@ namespace Azure.Communication.CallAutomation
                 if (property.NameEquals("dialogId"u8))
                 {
                     dialogId = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("sensitiveMask"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    sensitiveMask = property.Value.GetBoolean();
                     continue;
                 }
                 if (property.NameEquals("callConnectionId"u8))
@@ -80,8 +65,38 @@ namespace Azure.Communication.CallAutomation
                     correlationId = property.Value.GetString();
                     continue;
                 }
+                if (property.NameEquals("operationContext"u8))
+                {
+                    operationContext = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("resultInformation"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    resultInformation = ResultInformation.DeserializeResultInformation(property.Value);
+                    continue;
+                }
             }
-            return new DialogSensitivityUpdateInternal(Optional.ToNullable(sensitiveMask), operationContext.Value, resultInformation.Value, Optional.ToNullable(dialogInputType), dialogId.Value, callConnectionId.Value, serverCallId.Value, correlationId.Value);
+            return new DialogSensitivityUpdateInternal(
+                dialogInputType,
+                dialogId,
+                sensitiveMask,
+                callConnectionId,
+                serverCallId,
+                correlationId,
+                operationContext,
+                resultInformation);
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static DialogSensitivityUpdateInternal FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeDialogSensitivityUpdateInternal(document.RootElement);
         }
     }
 }

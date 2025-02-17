@@ -11,10 +11,8 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 using Azure.ResourceManager.ApiManagement.Models;
 using Azure.ResourceManager.Resources;
 
@@ -180,7 +178,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -211,7 +209,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -249,7 +247,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -279,7 +277,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -316,7 +314,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -347,7 +345,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -385,7 +383,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -416,7 +414,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -454,7 +452,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -485,7 +483,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -523,7 +521,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -554,7 +552,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -570,6 +568,75 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Response<ApiVersionSetResource> GetApiVersionSet(string versionSetId, CancellationToken cancellationToken = default)
         {
             return GetApiVersionSets().Get(versionSetId, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of AuthorizationProviderContractResources in the ApiManagementService. </summary>
+        /// <returns> An object representing collection of AuthorizationProviderContractResources and their operations over a AuthorizationProviderContractResource. </returns>
+        public virtual AuthorizationProviderContractCollection GetAuthorizationProviderContracts()
+        {
+            return GetCachedClient(client => new AuthorizationProviderContractCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Gets the details of the authorization provider specified by its identifier.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>AuthorizationProvider_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="AuthorizationProviderContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="authorizationProviderId"> Identifier of the authorization provider. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="authorizationProviderId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="authorizationProviderId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<AuthorizationProviderContractResource>> GetAuthorizationProviderContractAsync(string authorizationProviderId, CancellationToken cancellationToken = default)
+        {
+            return await GetAuthorizationProviderContracts().GetAsync(authorizationProviderId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the details of the authorization provider specified by its identifier.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>AuthorizationProvider_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="AuthorizationProviderContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="authorizationProviderId"> Identifier of the authorization provider. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="authorizationProviderId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="authorizationProviderId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<AuthorizationProviderContractResource> GetAuthorizationProviderContract(string authorizationProviderId, CancellationToken cancellationToken = default)
+        {
+            return GetAuthorizationProviderContracts().Get(authorizationProviderId, cancellationToken);
         }
 
         /// <summary> Gets a collection of ApiManagementAuthorizationServerResources in the ApiManagementService. </summary>
@@ -592,7 +659,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -623,7 +690,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -661,7 +728,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -692,7 +759,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -730,7 +797,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -761,7 +828,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -799,7 +866,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -830,7 +897,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -846,6 +913,75 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Response<ApiManagementCertificateResource> GetApiManagementCertificate(string certificateId, CancellationToken cancellationToken = default)
         {
             return GetApiManagementCertificates().Get(certificateId, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of DocumentationContractResources in the ApiManagementService. </summary>
+        /// <returns> An object representing collection of DocumentationContractResources and their operations over a DocumentationContractResource. </returns>
+        public virtual DocumentationContractCollection GetDocumentationContracts()
+        {
+            return GetCachedClient(client => new DocumentationContractCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Gets the details of the Documentation specified by its identifier.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/documentations/{documentationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Documentation_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="DocumentationContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="documentationId"> Documentation identifier. Must be unique in the current API Management service instance. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="documentationId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="documentationId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<DocumentationContractResource>> GetDocumentationContractAsync(string documentationId, CancellationToken cancellationToken = default)
+        {
+            return await GetDocumentationContracts().GetAsync(documentationId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the details of the Documentation specified by its identifier.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/documentations/{documentationId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Documentation_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="DocumentationContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="documentationId"> Documentation identifier. Must be unique in the current API Management service instance. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="documentationId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="documentationId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<DocumentationContractResource> GetDocumentationContract(string documentationId, CancellationToken cancellationToken = default)
+        {
+            return GetDocumentationContracts().Get(documentationId, cancellationToken);
         }
 
         /// <summary> Gets a collection of ApiManagementEmailTemplateResources in the ApiManagementService. </summary>
@@ -868,7 +1004,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -897,7 +1033,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -933,7 +1069,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -964,7 +1100,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1002,7 +1138,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1033,7 +1169,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1071,7 +1207,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1100,7 +1236,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1136,7 +1272,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1167,7 +1303,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1205,7 +1341,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1236,7 +1372,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1274,7 +1410,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1303,7 +1439,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1339,7 +1475,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1370,7 +1506,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1386,6 +1522,146 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Response<ApiManagementOpenIdConnectProviderResource> GetApiManagementOpenIdConnectProvider(string openId, CancellationToken cancellationToken = default)
         {
             return GetApiManagementOpenIdConnectProviders().Get(openId, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of PolicyFragmentContractResources in the ApiManagementService. </summary>
+        /// <returns> An object representing collection of PolicyFragmentContractResources and their operations over a PolicyFragmentContractResource. </returns>
+        public virtual PolicyFragmentContractCollection GetPolicyFragmentContracts()
+        {
+            return GetCachedClient(client => new PolicyFragmentContractCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Gets a policy fragment.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>PolicyFragment_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="PolicyFragmentContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="id"> A resource identifier. </param>
+        /// <param name="format"> Policy fragment content format. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="id"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<PolicyFragmentContractResource>> GetPolicyFragmentContractAsync(string id, PolicyFragmentContentFormat? format = null, CancellationToken cancellationToken = default)
+        {
+            return await GetPolicyFragmentContracts().GetAsync(id, format, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a policy fragment.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>PolicyFragment_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="PolicyFragmentContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="id"> A resource identifier. </param>
+        /// <param name="format"> Policy fragment content format. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="id"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<PolicyFragmentContractResource> GetPolicyFragmentContract(string id, PolicyFragmentContentFormat? format = null, CancellationToken cancellationToken = default)
+        {
+            return GetPolicyFragmentContracts().Get(id, format, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of PortalConfigContractResources in the ApiManagementService. </summary>
+        /// <returns> An object representing collection of PortalConfigContractResources and their operations over a PortalConfigContractResource. </returns>
+        public virtual PortalConfigContractCollection GetPortalConfigContracts()
+        {
+            return GetCachedClient(client => new PortalConfigContractCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Get the developer portal configuration.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalconfigs/{portalConfigId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>PortalConfig_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="PortalConfigContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="portalConfigId"> Portal configuration identifier. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="portalConfigId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="portalConfigId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<PortalConfigContractResource>> GetPortalConfigContractAsync(string portalConfigId, CancellationToken cancellationToken = default)
+        {
+            return await GetPortalConfigContracts().GetAsync(portalConfigId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get the developer portal configuration.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalconfigs/{portalConfigId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>PortalConfig_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="PortalConfigContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="portalConfigId"> Portal configuration identifier. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="portalConfigId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="portalConfigId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<PortalConfigContractResource> GetPortalConfigContract(string portalConfigId, CancellationToken cancellationToken = default)
+        {
+            return GetPortalConfigContracts().Get(portalConfigId, cancellationToken);
         }
 
         /// <summary> Gets a collection of ApiManagementPortalRevisionResources in the ApiManagementService. </summary>
@@ -1408,7 +1684,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1439,7 +1715,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1498,7 +1774,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1529,7 +1805,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1567,7 +1843,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1598,7 +1874,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1636,7 +1912,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1667,7 +1943,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1705,7 +1981,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1736,7 +2012,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1774,7 +2050,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1803,7 +2079,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1839,7 +2115,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1870,7 +2146,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1908,7 +2184,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1937,7 +2213,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -1973,7 +2249,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2004,7 +2280,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2022,6 +2298,75 @@ namespace Azure.ResourceManager.ApiManagement
             return GetApiManagementUsers().Get(userId, cancellationToken);
         }
 
+        /// <summary> Gets a collection of WorkspaceContractResources in the ApiManagementService. </summary>
+        /// <returns> An object representing collection of WorkspaceContractResources and their operations over a WorkspaceContractResource. </returns>
+        public virtual WorkspaceContractCollection GetWorkspaceContracts()
+        {
+            return GetCachedClient(client => new WorkspaceContractCollection(client, Id));
+        }
+
+        /// <summary>
+        /// Gets the details of the workspace specified by its identifier.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Workspace_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="WorkspaceContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="workspaceId"> Workspace identifier. Must be unique in the current API Management service instance. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<WorkspaceContractResource>> GetWorkspaceContractAsync(string workspaceId, CancellationToken cancellationToken = default)
+        {
+            return await GetWorkspaceContracts().GetAsync(workspaceId, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the details of the workspace specified by its identifier.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/workspaces/{workspaceId}</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>Workspace_Get</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="WorkspaceContractResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="workspaceId"> Workspace identifier. Must be unique in the current API Management service instance. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="workspaceId"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="workspaceId"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<WorkspaceContractResource> GetWorkspaceContract(string workspaceId, CancellationToken cancellationToken = default)
+        {
+            return GetWorkspaceContracts().Get(workspaceId, cancellationToken);
+        }
+
         /// <summary>
         /// Gets an API Management service resource description.
         /// <list type="bullet">
@@ -2035,7 +2380,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2075,7 +2420,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2115,7 +2460,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2157,7 +2502,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2199,7 +2544,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2245,7 +2590,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2291,7 +2636,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2309,7 +2654,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiRestClient.CreateListByTagsRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedApis);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _apiRestClient.CreateListByTagsNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedApis);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, TagResourceContractDetails.DeserializeTagResourceContractDetails, _apiClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetApisByTags", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => TagResourceContractDetails.DeserializeTagResourceContractDetails(e), _apiClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetApisByTags", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -2325,7 +2670,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -2343,7 +2688,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiRestClient.CreateListByTagsRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedApis);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _apiRestClient.CreateListByTagsNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedApis);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, TagResourceContractDetails.DeserializeTagResourceContractDetails, _apiClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetApisByTags", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => TagResourceContractDetails.DeserializeTagResourceContractDetails(e), _apiClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetApisByTags", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -2359,7 +2704,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2401,7 +2746,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2443,7 +2788,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2453,7 +2798,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _contentTypeRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _contentTypeRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ApiManagementContentType.DeserializeApiManagementContentType, _contentTypeClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentTypes", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ApiManagementContentType.DeserializeApiManagementContentType(e), _contentTypeClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentTypes", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -2469,7 +2814,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2479,7 +2824,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _contentTypeRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _contentTypeRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ApiManagementContentType.DeserializeApiManagementContentType, _contentTypeClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentTypes", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ApiManagementContentType.DeserializeApiManagementContentType(e), _contentTypeClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentTypes", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -2495,7 +2840,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2534,7 +2879,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2573,7 +2918,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2613,7 +2958,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2653,7 +2998,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2693,7 +3038,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2733,7 +3078,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2748,7 +3093,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _contentItemRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, contentTypeId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _contentItemRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, contentTypeId);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ApiManagementContentItem.DeserializeApiManagementContentItem, _contentItemClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentItems", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ApiManagementContentItem.DeserializeApiManagementContentItem(e), _contentItemClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentItems", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -2764,7 +3109,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2779,7 +3124,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _contentItemRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, contentTypeId);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _contentItemRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, contentTypeId);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ApiManagementContentItem.DeserializeApiManagementContentItem, _contentItemClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentItems", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ApiManagementContentItem.DeserializeApiManagementContentItem(e), _contentItemClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetContentItems", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -2795,7 +3140,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2836,7 +3181,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2877,7 +3222,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2918,7 +3263,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -2959,7 +3304,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3001,7 +3346,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3043,7 +3388,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3085,7 +3430,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3127,7 +3472,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3137,7 +3482,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiManagementServiceSkusRestClient.CreateListAvailableServiceSkusRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _apiManagementServiceSkusRestClient.CreateListAvailableServiceSkusNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, AvailableApiManagementServiceSkuResult.DeserializeAvailableApiManagementServiceSkuResult, _apiManagementServiceSkusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetAvailableApiManagementServiceSkus", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => AvailableApiManagementServiceSkuResult.DeserializeAvailableApiManagementServiceSkuResult(e), _apiManagementServiceSkusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetAvailableApiManagementServiceSkus", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -3153,7 +3498,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3163,7 +3508,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiManagementServiceSkusRestClient.CreateListAvailableServiceSkusRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _apiManagementServiceSkusRestClient.CreateListAvailableServiceSkusNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, AvailableApiManagementServiceSkuResult.DeserializeAvailableApiManagementServiceSkuResult, _apiManagementServiceSkusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetAvailableApiManagementServiceSkus", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => AvailableApiManagementServiceSkuResult.DeserializeAvailableApiManagementServiceSkuResult(e), _apiManagementServiceSkusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetAvailableApiManagementServiceSkus", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -3179,7 +3524,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3225,7 +3570,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3271,7 +3616,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3317,7 +3662,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3351,6 +3696,92 @@ namespace Azure.ResourceManager.ApiManagement
         }
 
         /// <summary>
+        /// Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2. This change is not reversible. This is long running operation and could take several minutes to complete.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/migrateToStv2</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>ApiManagementService_MigrateToStv2</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="ApiManagementServiceResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="migrateToStv2Contract"> Optional parameters supplied to migrate service. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<ArmOperation<ApiManagementServiceResource>> MigrateToStv2Async(WaitUntil waitUntil, MigrateToStv2Contract migrateToStv2Contract = null, CancellationToken cancellationToken = default)
+        {
+            using var scope = _apiManagementServiceClientDiagnostics.CreateScope("ApiManagementServiceResource.MigrateToStv2");
+            scope.Start();
+            try
+            {
+                var response = await _apiManagementServiceRestClient.MigrateToStv2Async(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrateToStv2Contract, cancellationToken).ConfigureAwait(false);
+                var operation = new ApiManagementArmOperation<ApiManagementServiceResource>(new ApiManagementServiceOperationSource(Client), _apiManagementServiceClientDiagnostics, Pipeline, _apiManagementServiceRestClient.CreateMigrateToStv2Request(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrateToStv2Contract).Request, response, OperationFinalStateVia.Location);
+                if (waitUntil == WaitUntil.Completed)
+                    await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
+                return operation;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2. This change is not reversible. This is long running operation and could take several minutes to complete.
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Request Path</term>
+        /// <description>/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/migrateToStv2</description>
+        /// </item>
+        /// <item>
+        /// <term>Operation Id</term>
+        /// <description>ApiManagementService_MigrateToStv2</description>
+        /// </item>
+        /// <item>
+        /// <term>Default Api Version</term>
+        /// <description>2023-03-01-preview</description>
+        /// </item>
+        /// <item>
+        /// <term>Resource</term>
+        /// <description><see cref="ApiManagementServiceResource"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
+        /// <param name="migrateToStv2Contract"> Optional parameters supplied to migrate service. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual ArmOperation<ApiManagementServiceResource> MigrateToStv2(WaitUntil waitUntil, MigrateToStv2Contract migrateToStv2Contract = null, CancellationToken cancellationToken = default)
+        {
+            using var scope = _apiManagementServiceClientDiagnostics.CreateScope("ApiManagementServiceResource.MigrateToStv2");
+            scope.Start();
+            try
+            {
+                var response = _apiManagementServiceRestClient.MigrateToStv2(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrateToStv2Contract, cancellationToken);
+                var operation = new ApiManagementArmOperation<ApiManagementServiceResource>(new ApiManagementServiceOperationSource(Client), _apiManagementServiceClientDiagnostics, Pipeline, _apiManagementServiceRestClient.CreateMigrateToStv2Request(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrateToStv2Contract).Request, response, OperationFinalStateVia.Location);
+                if (waitUntil == WaitUntil.Completed)
+                    operation.WaitForCompletion(cancellationToken);
+                return operation;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
         /// <list type="bullet">
         /// <item>
@@ -3363,7 +3794,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3401,7 +3832,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3439,7 +3870,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3482,7 +3913,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3525,7 +3956,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3534,7 +3965,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual AsyncPageable<NetworkStatusContractWithLocation> GetNetworkStatusesAsync(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _networkStatusRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, NetworkStatusContractWithLocation.DeserializeNetworkStatusContractWithLocation, _networkStatusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetNetworkStatuses", "", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => NetworkStatusContractWithLocation.DeserializeNetworkStatusContractWithLocation(e), _networkStatusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetNetworkStatuses", "", null, cancellationToken);
         }
 
         /// <summary>
@@ -3550,7 +3981,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3559,7 +3990,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Pageable<NetworkStatusContractWithLocation> GetNetworkStatuses(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _networkStatusRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, NetworkStatusContractWithLocation.DeserializeNetworkStatusContractWithLocation, _networkStatusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetNetworkStatuses", "", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => NetworkStatusContractWithLocation.DeserializeNetworkStatusContractWithLocation(e), _networkStatusClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetNetworkStatuses", "", null, cancellationToken);
         }
 
         /// <summary>
@@ -3575,7 +4006,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3610,7 +4041,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3645,7 +4076,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3654,7 +4085,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual AsyncPageable<OutboundEnvironmentEndpoint> GetOutboundNetworkDependenciesEndpointsAsync(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _outboundNetworkDependenciesEndpointsRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, OutboundEnvironmentEndpoint.DeserializeOutboundEnvironmentEndpoint, _outboundNetworkDependenciesEndpointsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetOutboundNetworkDependenciesEndpoints", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => OutboundEnvironmentEndpoint.DeserializeOutboundEnvironmentEndpoint(e), _outboundNetworkDependenciesEndpointsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetOutboundNetworkDependenciesEndpoints", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3670,7 +4101,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3679,7 +4110,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Pageable<OutboundEnvironmentEndpoint> GetOutboundNetworkDependenciesEndpoints(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _outboundNetworkDependenciesEndpointsRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, OutboundEnvironmentEndpoint.DeserializeOutboundEnvironmentEndpoint, _outboundNetworkDependenciesEndpointsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetOutboundNetworkDependenciesEndpoints", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => OutboundEnvironmentEndpoint.DeserializeOutboundEnvironmentEndpoint(e), _outboundNetworkDependenciesEndpointsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetOutboundNetworkDependenciesEndpoints", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3695,7 +4126,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3705,7 +4136,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual AsyncPageable<PolicyDescriptionContractData> GetPolicyDescriptionsAsync(PolicyScopeContract? scope = null, CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _policyDescriptionRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, scope);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, PolicyDescriptionContractData.DeserializePolicyDescriptionContractData, _policyDescriptionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPolicyDescriptions", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => PolicyDescriptionContractData.DeserializePolicyDescriptionContractData(e), _policyDescriptionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPolicyDescriptions", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3721,7 +4152,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3731,7 +4162,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Pageable<PolicyDescriptionContractData> GetPolicyDescriptions(PolicyScopeContract? scope = null, CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _policyDescriptionRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, scope);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, PolicyDescriptionContractData.DeserializePolicyDescriptionContractData, _policyDescriptionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPolicyDescriptions", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => PolicyDescriptionContractData.DeserializePolicyDescriptionContractData(e), _policyDescriptionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPolicyDescriptions", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3747,7 +4178,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3760,7 +4191,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual AsyncPageable<PortalSettingsContractData> GetPortalSettingsAsync(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiManagementServicePortalSettingsRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, PortalSettingsContractData.DeserializePortalSettingsContractData, _apiManagementServicePortalSettingsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPortalSettings", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => PortalSettingsContractData.DeserializePortalSettingsContractData(e), _apiManagementServicePortalSettingsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPortalSettings", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3776,7 +4207,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3789,7 +4220,7 @@ namespace Azure.ResourceManager.ApiManagement
         public virtual Pageable<PortalSettingsContractData> GetPortalSettings(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiManagementServicePortalSettingsRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, PortalSettingsContractData.DeserializePortalSettingsContractData, _apiManagementServicePortalSettingsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPortalSettings", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => PortalSettingsContractData.DeserializePortalSettingsContractData(e), _apiManagementServicePortalSettingsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetPortalSettings", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3805,7 +4236,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3823,7 +4254,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiManagementProductProductRestClient.CreateListByTagsRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedProducts);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _apiManagementProductProductRestClient.CreateListByTagsNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedProducts);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, TagResourceContractDetails.DeserializeTagResourceContractDetails, _apiManagementProductProductClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetProductsByTags", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => TagResourceContractDetails.DeserializeTagResourceContractDetails(e), _apiManagementProductProductClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetProductsByTags", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -3839,7 +4270,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -3857,7 +4288,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _apiManagementProductProductRestClient.CreateListByTagsRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedProducts);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _apiManagementProductProductRestClient.CreateListByTagsNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, includeNotTaggedProducts);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, TagResourceContractDetails.DeserializeTagResourceContractDetails, _apiManagementProductProductClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetProductsByTags", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => TagResourceContractDetails.DeserializeTagResourceContractDetails(e), _apiManagementProductProductClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetProductsByTags", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -3873,7 +4304,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3887,7 +4318,7 @@ namespace Azure.ResourceManager.ApiManagement
             Argument.AssertNotNullOrEmpty(quotaCounterKey, nameof(quotaCounterKey));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _quotaByCounterKeysRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, quotaCounterKey);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, QuotaCounterContract.DeserializeQuotaCounterContract, _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetQuotaByCounterKeys", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => QuotaCounterContract.DeserializeQuotaCounterContract(e), _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetQuotaByCounterKeys", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3903,7 +4334,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3917,7 +4348,7 @@ namespace Azure.ResourceManager.ApiManagement
             Argument.AssertNotNullOrEmpty(quotaCounterKey, nameof(quotaCounterKey));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _quotaByCounterKeysRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, quotaCounterKey);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, QuotaCounterContract.DeserializeQuotaCounterContract, _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetQuotaByCounterKeys", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => QuotaCounterContract.DeserializeQuotaCounterContract(e), _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetQuotaByCounterKeys", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3933,7 +4364,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3949,7 +4380,7 @@ namespace Azure.ResourceManager.ApiManagement
             Argument.AssertNotNull(content, nameof(content));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _quotaByCounterKeysRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, quotaCounterKey, content);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, QuotaCounterContract.DeserializeQuotaCounterContract, _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.UpdateQuotaByCounterKeys", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => QuotaCounterContract.DeserializeQuotaCounterContract(e), _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.UpdateQuotaByCounterKeys", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3965,7 +4396,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -3981,7 +4412,7 @@ namespace Azure.ResourceManager.ApiManagement
             Argument.AssertNotNull(content, nameof(content));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _quotaByCounterKeysRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, quotaCounterKey, content);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, QuotaCounterContract.DeserializeQuotaCounterContract, _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.UpdateQuotaByCounterKeys", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => QuotaCounterContract.DeserializeQuotaCounterContract(e), _quotaByCounterKeysClientDiagnostics, Pipeline, "ApiManagementServiceResource.UpdateQuotaByCounterKeys", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -3997,7 +4428,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4038,7 +4469,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4079,7 +4510,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4122,7 +4553,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4165,7 +4596,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4175,7 +4606,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _regionRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _regionRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, RegionContract.DeserializeRegionContract, _regionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetRegions", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => RegionContract.DeserializeRegionContract(e), _regionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetRegions", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4191,7 +4622,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4201,7 +4632,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _regionRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _regionRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, RegionContract.DeserializeRegionContract, _regionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetRegions", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => RegionContract.DeserializeRegionContract(e), _regionClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetRegions", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4217,7 +4648,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4234,7 +4665,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByApiRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByApiNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByApi", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByApi", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4250,7 +4681,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4267,7 +4698,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByApiRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByApiNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByApi", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByApi", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4283,7 +4714,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4300,7 +4731,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByUserRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByUserNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByUser", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByUser", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4316,7 +4747,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4333,7 +4764,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByUserRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByUserNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByUser", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByUser", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4349,7 +4780,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4366,7 +4797,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByOperationRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByOperationNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByOperation", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByOperation", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4382,7 +4813,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4399,7 +4830,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByOperationRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByOperationNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByOperation", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByOperation", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4415,7 +4846,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4432,7 +4863,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByProductRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByProductNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByProduct", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByProduct", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4448,7 +4879,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4465,7 +4896,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByProductRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByProductNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByProduct", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByProduct", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4481,7 +4912,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4497,7 +4928,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByGeoRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByGeoNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByGeo", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByGeo", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4513,7 +4944,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4529,7 +4960,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByGeoRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByGeoNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByGeo", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByGeo", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4545,7 +4976,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4562,7 +4993,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListBySubscriptionNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsBySubscription", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsBySubscription", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4578,7 +5009,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4595,7 +5026,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListBySubscriptionNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsBySubscription", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsBySubscription", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4611,7 +5042,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4629,7 +5060,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByTimeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, interval, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByTimeNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, interval, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByTime", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByTime", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4645,7 +5076,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4663,7 +5094,7 @@ namespace Azure.ResourceManager.ApiManagement
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByTimeRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, interval, top, skip, orderBy);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _reportsRestClient.CreateListByTimeNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, interval, top, skip, orderBy);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, ReportRecordContract.DeserializeReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByTime", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => ReportRecordContract.DeserializeReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByTime", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4679,7 +5110,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4694,7 +5125,7 @@ namespace Azure.ResourceManager.ApiManagement
             Argument.AssertNotNull(filter, nameof(filter));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByRequestRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, RequestReportRecordContract.DeserializeRequestReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByRequest", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => RequestReportRecordContract.DeserializeRequestReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByRequest", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -4710,7 +5141,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4725,7 +5156,7 @@ namespace Azure.ResourceManager.ApiManagement
             Argument.AssertNotNull(filter, nameof(filter));
 
             HttpMessage FirstPageRequest(int? pageSizeHint) => _reportsRestClient.CreateListByRequestRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, RequestReportRecordContract.DeserializeRequestReportRecordContract, _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByRequest", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => RequestReportRecordContract.DeserializeRequestReportRecordContract(e), _reportsClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetReportsByRequest", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -4741,7 +5172,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4754,7 +5185,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _tagResourceRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _tagResourceRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, TagResourceContractDetails.DeserializeTagResourceContractDetails, _tagResourceClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetTagResources", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => TagResourceContractDetails.DeserializeTagResourceContractDetails(e), _tagResourceClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetTagResources", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4770,7 +5201,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4783,7 +5214,7 @@ namespace Azure.ResourceManager.ApiManagement
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => _tagResourceRestClient.CreateListByServiceRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
             HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => _tagResourceRestClient.CreateListByServiceNextPageRequest(nextLink, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, filter, top, skip);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, TagResourceContractDetails.DeserializeTagResourceContractDetails, _tagResourceClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetTagResources", "value", "nextLink", cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => TagResourceContractDetails.DeserializeTagResourceContractDetails(e), _tagResourceClientDiagnostics, Pipeline, "ApiManagementServiceResource.GetTagResources", "value", "nextLink", cancellationToken);
         }
 
         /// <summary>
@@ -4799,7 +5230,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4842,7 +5273,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4885,7 +5316,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4928,7 +5359,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -4971,7 +5402,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -5014,7 +5445,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -5057,7 +5488,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -5092,7 +5523,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -5127,7 +5558,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -5189,7 +5620,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -5251,7 +5682,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -5308,7 +5739,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -5365,7 +5796,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -5425,7 +5856,7 @@ namespace Azure.ResourceManager.ApiManagement
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2021-08-01</description>
+        /// <description>2023-03-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>

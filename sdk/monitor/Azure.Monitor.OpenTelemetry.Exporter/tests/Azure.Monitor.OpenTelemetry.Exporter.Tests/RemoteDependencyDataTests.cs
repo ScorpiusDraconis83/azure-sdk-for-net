@@ -52,7 +52,7 @@ namespace Azure.Monitor.OpenTelemetry.Exporter.Tests
             var activityTagsProcessor = TraceHelper.EnumerateActivityTags(activity);
 
             var remoteDependencyDataType = new RemoteDependencyData(2, activity, ref activityTagsProcessor).Type;
-            var expectedType = RemoteDependencyData.s_sqlDbs.Contains(dbSystem) ? "SQL" : dbSystem;
+            var expectedType = AzMonListExtensions.s_dbSystems.Contains(dbSystem) ? "SQL" : dbSystem;
 
             Assert.Equal(expectedType, remoteDependencyDataType);
         }
@@ -189,6 +189,47 @@ namespace Azure.Monitor.OpenTelemetry.Exporter.Tests
             var remoteDependencyDataName = new RemoteDependencyData(2, activity, ref activityTagsProcessor).Name;
 
             Assert.Equal(activity.DisplayName, remoteDependencyDataName);
+        }
+
+        [Fact]
+        public void VerifyAllDependenciesSetTargetViaServerAddress()
+        {
+            using ActivitySource activitySource = new ActivitySource(ActivitySourceName);
+            using var activity = activitySource.StartActivity(
+                ActivityName,
+                ActivityKind.Client,
+                parentContext: new ActivityContext(ActivityTraceId.CreateRandom(), ActivitySpanId.CreateRandom(), ActivityTraceFlags.Recorded),
+                startTime: DateTime.UtcNow);
+
+            Assert.NotNull(activity);
+            activity.SetTag(SemanticConventions.AttributeServerAddress, "unitTestAddress");
+
+            var activityTagsProcessor = TraceHelper.EnumerateActivityTags(activity);
+
+            var remoteDependencyData = new RemoteDependencyData(2, activity, ref activityTagsProcessor);
+
+            Assert.Equal("unitTestAddress", remoteDependencyData.Target);
+        }
+
+        [Fact]
+        public void VerifyAllDependenciesSetTargetViaServerAddressAndPort()
+        {
+            using ActivitySource activitySource = new ActivitySource(ActivitySourceName);
+            using var activity = activitySource.StartActivity(
+                ActivityName,
+                ActivityKind.Client,
+                parentContext: new ActivityContext(ActivityTraceId.CreateRandom(), ActivitySpanId.CreateRandom(), ActivityTraceFlags.Recorded),
+                startTime: DateTime.UtcNow);
+
+            Assert.NotNull(activity);
+            activity.SetTag(SemanticConventions.AttributeServerAddress, "unitTestAddress");
+            activity.SetTag(SemanticConventions.AttributeServerPort, "unitTestPort");
+
+            var activityTagsProcessor = TraceHelper.EnumerateActivityTags(activity);
+
+            var remoteDependencyData = new RemoteDependencyData(2, activity, ref activityTagsProcessor);
+
+            Assert.Equal("unitTestAddress:unitTestPort", remoteDependencyData.Target);
         }
     }
 }

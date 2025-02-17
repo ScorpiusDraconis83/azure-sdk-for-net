@@ -1,23 +1,69 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.ClientModel.Primitives;
+using System.Threading;
+using System.Threading.Tasks;
+using Azure.Core.TestFramework;
 using ClientModel.Tests.Mocks;
 using NUnit.Framework;
-using System.ClientModel.Primitives;
+using SyncAsyncTestBase = ClientModel.Tests.SyncAsyncTestBase;
 
 namespace System.ClientModel.Tests.Message;
 
-public class PipelineMessageTests
+public class PipelineMessageTests : SyncAsyncTestBase
 {
+    public PipelineMessageTests(bool isAsync) : base(isAsync)
+    {
+    }
+
+    [Test]
+    public void ApplyAddsRequestHeaders()
+    {
+        ClientPipeline pipeline = ClientPipeline.Create();
+        PipelineMessage message = pipeline.CreateMessage();
+
+        RequestOptions options = new RequestOptions();
+        options.AddHeader("MockHeader", "MockValue");
+        message.Apply(options);
+
+        Assert.IsTrue(message.Request.Headers.TryGetValue("MockHeader", out string? value));
+        Assert.AreEqual("MockValue", value);
+    }
+
+    [Test]
+    public void ApplySetsCancellationToken()
+    {
+        ClientPipeline pipeline = ClientPipeline.Create();
+        PipelineMessage message = pipeline.CreateMessage();
+
+        int msDelay = 234567;
+        CancellationTokenSource cts = new CancellationTokenSource(msDelay);
+
+        RequestOptions options = new RequestOptions();
+        options.CancellationToken = cts.Token;
+        message.Apply(options);
+
+        Assert.AreEqual(message.CancellationToken, cts.Token);
+        Assert.IsFalse(message.CancellationToken.IsCancellationRequested);
+
+        cts.Cancel();
+
+        Assert.IsTrue(message.CancellationToken.IsCancellationRequested);
+    }
+
+    [Test]
+    public void NullOptionsIsNoOp()
+    {
+        ClientPipeline pipeline = ClientPipeline.Create();
+        PipelineMessage message = pipeline.CreateMessage();
+        Assert.DoesNotThrow(() => message.Apply(null));
+    }
+
     [Test]
     public void CanSetAndGetMessageProperties()
     {
-        ClientPipelineOptions options = new ClientPipelineOptions()
-        {
-            Transport = new ObservableTransport("MockTransport")
-        };
-
-        ClientPipeline pipeline = ClientPipeline.Create(options);
+        ClientPipeline pipeline = ClientPipeline.Create();
         PipelineMessage message = pipeline.CreateMessage();
 
         message.SetProperty(GetType(), "MockProperty");
@@ -29,12 +75,7 @@ public class PipelineMessageTests
     [Test]
     public void TryGetPropertyReturnsFalseIfNotExist()
     {
-        ClientPipelineOptions options = new ClientPipelineOptions()
-        {
-            Transport = new ObservableTransport("MockTransport")
-        };
-
-        ClientPipeline pipeline = ClientPipeline.Create(options);
+        ClientPipeline pipeline = ClientPipeline.Create();
         PipelineMessage message = pipeline.CreateMessage();
 
         Assert.False(message.TryGetProperty(GetType(), out _));
@@ -43,12 +84,7 @@ public class PipelineMessageTests
     [Test]
     public void TryGetPropertyReturnsValueIfSet()
     {
-        ClientPipelineOptions options = new ClientPipelineOptions()
-        {
-            Transport = new ObservableTransport("MockTransport")
-        };
-
-        ClientPipeline pipeline = ClientPipeline.Create(options);
+        ClientPipeline pipeline = ClientPipeline.Create();
         PipelineMessage message = pipeline.CreateMessage();
 
         message.SetProperty(GetType(), "value");
@@ -60,12 +96,7 @@ public class PipelineMessageTests
     [Test]
     public void TryGetTypeKeyedPropertyReturnsCorrectValues()
     {
-        ClientPipelineOptions options = new ClientPipelineOptions()
-        {
-            Transport = new ObservableTransport("MockTransport")
-        };
-
-        ClientPipeline pipeline = ClientPipeline.Create(options);
+        ClientPipeline pipeline = ClientPipeline.Create();
         PipelineMessage message = pipeline.CreateMessage();
 
         int readLoops = 10;
@@ -94,6 +125,48 @@ public class PipelineMessageTests
 
         message.TryGetProperty(typeof(T4), out value);
         Assert.AreEqual(4444, ((T4)value!).Value);
+    }
+
+    [Test]
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task ResponseStreamAccessibleAfterMessageDisposed(bool buffer)
+    {
+        byte[] serverBytes = new byte[1000];
+        new Random().NextBytes(serverBytes);
+
+        ClientPipelineOptions options = new() { NetworkTimeout = Timeout.InfiniteTimeSpan };
+        ClientPipeline pipeline = ClientPipeline.Create(options);
+
+        using TestServer testServer = new(async context =>
+        {
+            await context.Response.Body.WriteAsync(serverBytes, 0, serverBytes.Length).ConfigureAwait(false);
+        });
+
+        PipelineResponse? response;
+        using (PipelineMessage message = pipeline.CreateMessage())
+        {
+            message.Request.Uri = testServer.Address;
+            message.BufferResponse = buffer;
+
+            await pipeline.SendSyncOrAsync(message, IsAsync);
+
+            response = message.ExtractResponse();
+
+            Assert.IsNull(message.Response);
+        }
+
+        Assert.NotNull(response!.ContentStream);
+
+        byte[] clientBytes = new byte[serverBytes.Length];
+        int readLength = 0;
+        while (readLength < serverBytes.Length)
+        {
+            readLength += await response.ContentStream!.ReadAsync(clientBytes, 0, serverBytes.Length);
+        }
+
+        Assert.AreEqual(serverBytes.Length, readLength);
+        CollectionAssert.AreEqual(serverBytes, clientBytes);
     }
 
     #region Helpers

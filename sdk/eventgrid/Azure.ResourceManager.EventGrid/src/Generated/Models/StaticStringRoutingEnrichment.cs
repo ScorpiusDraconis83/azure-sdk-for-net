@@ -5,6 +5,9 @@
 
 #nullable disable
 
+using System;
+using System.Collections.Generic;
+
 namespace Azure.ResourceManager.EventGrid.Models
 {
     /// <summary> The StaticStringRoutingEnrichment. </summary>
@@ -19,14 +22,16 @@ namespace Azure.ResourceManager.EventGrid.Models
         /// <summary> Initializes a new instance of <see cref="StaticStringRoutingEnrichment"/>. </summary>
         /// <param name="key"> Static routing enrichment key. </param>
         /// <param name="valueType"> Static routing enrichment value type. For e.g. this property value can be 'String'. </param>
+        /// <param name="serializedAdditionalRawData"> Keeps track of any properties unknown to the library. </param>
         /// <param name="value"> String type routing enrichment value. </param>
-        internal StaticStringRoutingEnrichment(string key, StaticRoutingEnrichmentType valueType, string value) : base(key, valueType)
+        internal StaticStringRoutingEnrichment(string key, StaticRoutingEnrichmentType valueType, IDictionary<string, BinaryData> serializedAdditionalRawData, string value) : base(key, valueType, serializedAdditionalRawData)
         {
             Value = value;
             ValueType = valueType;
         }
 
         /// <summary> String type routing enrichment value. </summary>
+        [WirePath("value")]
         public string Value { get; set; }
     }
 }

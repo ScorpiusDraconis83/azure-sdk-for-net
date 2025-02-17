@@ -6,12 +6,14 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
 using Azure.Core.Pipeline;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Common;
 using Azure.Storage.Cryptography;
 
 namespace Azure.Storage.Blobs
@@ -143,6 +145,7 @@ namespace Azure.Storage.Blobs
             // tracing
             DiagnosticScope scope = _client.ClientConfiguration.ClientDiagnostics.CreateScope(_operationName);
             using DisposableBucket disposables = new DisposableBucket();
+            Queue<Task<Response<BlobDownloadStreamingResult>>> runningTasks = null;
             try
             {
                 scope.Start();
@@ -158,6 +161,7 @@ namespace Azure.Storage.Blobs
                 {
                     initialResponse = await _client.DownloadStreamingInternal(
                         initialRange,
+                        true,
                         conditions,
                         ValidationOptions,
                         _progress,
@@ -169,6 +173,7 @@ namespace Azure.Storage.Blobs
                 {
                     initialResponse = await _client.DownloadStreamingInternal(
                         range: default,
+                        false,
                         conditions,
                         ValidationOptions,
                         _progress,
@@ -227,9 +232,8 @@ namespace Azure.Storage.Blobs
                 BlobRequestConditions conditionsWithEtag = conditions?.WithIfMatch(etag) ?? new BlobRequestConditions { IfMatch = etag };
 
 #pragma warning disable AZC0110 // DO NOT use await keyword in possibly synchronous scope.
-                                // Rule checker cannot understand this section, but this
-                                // massively reduces code duplication.
-                Queue<Task<Response<BlobDownloadStreamingResult>>> runningTasks = null;
+                // Rule checker cannot understand this section, but this
+                // massively reduces code duplication.
                 int effectiveWorkerCount = async ? _maxWorkerCount : 1;
                 if (effectiveWorkerCount > 1)
                 {
@@ -258,6 +262,7 @@ namespace Azure.Storage.Blobs
                     ValueTask<Response<BlobDownloadStreamingResult>> responseValueTask = _client
                         .DownloadStreamingInternal(
                             httpRange,
+                            true,
                             conditionsWithEtag,
                             ValidationOptions,
                             _progress,
@@ -336,13 +341,13 @@ namespace Azure.Storage.Blobs
                             async,
                             cancellationToken)
                             .ConfigureAwait(false);
-                            if (UseMasterCrc)
-                            {
-                                StorageCrc64Composer.Compose(
-                                    (composedCrc.ToArray(), 0L),
-                                    (partitionChecksum.ToArray(), response.Value.Details.ContentLength)
-                                ).CopyTo(composedCrc);
-                            }
+                        if (UseMasterCrc)
+                        {
+                            StorageCrc64Composer.Compose(
+                                (composedCrc.ToArray(), 0L),
+                                (partitionChecksum.ToArray(), response.Value.Details.ContentLength)
+                            ).CopyTo(composedCrc);
+                        }
                     }
                 }
             }
@@ -353,6 +358,17 @@ namespace Azure.Storage.Blobs
             }
             finally
             {
+#pragma warning disable AZC0110
+                if (runningTasks != null)
+                {
+                    async Task DisposeStreamAsync(Task<Response<BlobDownloadStreamingResult>> task)
+                    {
+                        Response<BlobDownloadStreamingResult> response = await task.ConfigureAwait(false);
+                        response.Value.Content.Dispose();
+                    }
+                    await Task.WhenAll(runningTasks.Select(DisposeStreamAsync)).ConfigureAwait(false);
+                }
+#pragma warning restore AZC0110
                 scope.Dispose();
             }
         }

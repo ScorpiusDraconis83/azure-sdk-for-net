@@ -18,6 +18,10 @@ sample-gen:
 skip-csproj: true
 modelerfour:
   flatten-payloads: false
+use-model-reader-writer: true
+
+models-to-treat-empty-string-as-null:
+  - IaasComputeVmProtectedItem
 
 rename-mapping:
   Job: BackupGenericJob
@@ -325,6 +329,7 @@ acronym-mapping:
   SSO: Sso
   URI: Uri
   Etag: ETag|etag
+  ETag: ETag|eTag
   IaaSVM: IaasVm
   Iaasvm: IaasVm
   Sqldb: SqlDB
@@ -477,7 +482,7 @@ directive:
     where: $.paths['/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupResourceGuardProxies']
     transform: >
       $.get['operationId'] = 'ResourceGuardProxy_List';
-  # Here the format date-time isn't specified in swagger, hence adding it explicitly 
+  # Here the format date-time isn't specified in swagger, hence adding it explicitly
   - from: bms.json
     where: $.definitions.RecoveryPointProperties.properties.expiryTime
     transform: >
