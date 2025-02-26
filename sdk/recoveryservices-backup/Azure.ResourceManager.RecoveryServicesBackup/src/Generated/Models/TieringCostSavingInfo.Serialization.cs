@@ -5,14 +5,62 @@
 
 #nullable disable
 
+using System;
+using System.ClientModel.Primitives;
+using System.Collections.Generic;
 using System.Text.Json;
+using Azure.Core;
 
 namespace Azure.ResourceManager.RecoveryServicesBackup.Models
 {
-    public partial class TieringCostSavingInfo
+    public partial class TieringCostSavingInfo : IUtf8JsonSerializable, IJsonModel<TieringCostSavingInfo>
     {
-        internal static TieringCostSavingInfo DeserializeTieringCostSavingInfo(JsonElement element)
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<TieringCostSavingInfo>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+
+        void IJsonModel<TieringCostSavingInfo>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
+            writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected override void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<TieringCostSavingInfo>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(TieringCostSavingInfo)} does not support writing '{format}' format.");
+            }
+
+            base.JsonModelWriteCore(writer, options);
+            writer.WritePropertyName("sourceTierSizeReductionInBytes"u8);
+            writer.WriteNumberValue(SourceTierSizeReductionInBytes);
+            writer.WritePropertyName("targetTierSizeIncreaseInBytes"u8);
+            writer.WriteNumberValue(TargetTierSizeIncreaseInBytes);
+            writer.WritePropertyName("retailSourceTierCostPerGBPerMonth"u8);
+            writer.WriteNumberValue(RetailSourceTierCostPerGBPerMonth);
+            writer.WritePropertyName("retailTargetTierCostPerGBPerMonth"u8);
+            writer.WriteNumberValue(RetailTargetTierCostPerGBPerMonth);
+        }
+
+        TieringCostSavingInfo IJsonModel<TieringCostSavingInfo>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<TieringCostSavingInfo>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(TieringCostSavingInfo)} does not support reading '{format}' format.");
+            }
+
+            using JsonDocument document = JsonDocument.ParseValue(ref reader);
+            return DeserializeTieringCostSavingInfo(document.RootElement, options);
+        }
+
+        internal static TieringCostSavingInfo DeserializeTieringCostSavingInfo(JsonElement element, ModelReaderWriterOptions options = null)
+        {
+            options ??= ModelSerializationExtensions.WireOptions;
+
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
@@ -22,6 +70,8 @@ namespace Azure.ResourceManager.RecoveryServicesBackup.Models
             double retailSourceTierCostPerGBPerMonth = default;
             double retailTargetTierCostPerGBPerMonth = default;
             string objectType = default;
+            IDictionary<string, BinaryData> serializedAdditionalRawData = default;
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("sourceTierSizeReductionInBytes"u8))
@@ -49,8 +99,50 @@ namespace Azure.ResourceManager.RecoveryServicesBackup.Models
                     objectType = property.Value.GetString();
                     continue;
                 }
+                if (options.Format != "W")
+                {
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                }
             }
-            return new TieringCostSavingInfo(objectType, sourceTierSizeReductionInBytes, targetTierSizeIncreaseInBytes, retailSourceTierCostPerGBPerMonth, retailTargetTierCostPerGBPerMonth);
+            serializedAdditionalRawData = rawDataDictionary;
+            return new TieringCostSavingInfo(
+                objectType,
+                serializedAdditionalRawData,
+                sourceTierSizeReductionInBytes,
+                targetTierSizeIncreaseInBytes,
+                retailSourceTierCostPerGBPerMonth,
+                retailTargetTierCostPerGBPerMonth);
         }
+
+        BinaryData IPersistableModel<TieringCostSavingInfo>.Write(ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<TieringCostSavingInfo>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options);
+                default:
+                    throw new FormatException($"The model {nameof(TieringCostSavingInfo)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        TieringCostSavingInfo IPersistableModel<TieringCostSavingInfo>.Create(BinaryData data, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<TieringCostSavingInfo>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    {
+                        using JsonDocument document = JsonDocument.Parse(data);
+                        return DeserializeTieringCostSavingInfo(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(TieringCostSavingInfo)} does not support reading '{options.Format}' format.");
+            }
+        }
+
+        string IPersistableModel<TieringCostSavingInfo>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

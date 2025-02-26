@@ -5,16 +5,35 @@
 
 #nullable disable
 
+using System;
+using System.ClientModel.Primitives;
 using System.Text.Json;
 using Azure.Core;
 
 namespace Azure.ResourceManager.SecurityCenter.Models
 {
-    public partial class ExternalSecuritySolution : IUtf8JsonSerializable
+    public partial class ExternalSecuritySolution : IUtf8JsonSerializable, IJsonModel<ExternalSecuritySolution>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ExternalSecuritySolution>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+
+        void IJsonModel<ExternalSecuritySolution>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected override void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ExternalSecuritySolution>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(ExternalSecuritySolution)} does not support writing '{format}' format.");
+            }
+
+            base.JsonModelWriteCore(writer, options);
             if (Kind != null)
             {
                 writer.WritePropertyName("kind"u8);
@@ -24,11 +43,29 @@ namespace Azure.ResourceManager.SecurityCenter.Models
             {
                 writer.WriteNull("kind");
             }
-            writer.WriteEndObject();
+            if (options.Format != "W" && Optional.IsDefined(Location))
+            {
+                writer.WritePropertyName("location"u8);
+                writer.WriteStringValue(Location.Value);
+            }
         }
 
-        internal static ExternalSecuritySolution DeserializeExternalSecuritySolution(JsonElement element)
+        ExternalSecuritySolution IJsonModel<ExternalSecuritySolution>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
+            var format = options.Format == "W" ? ((IPersistableModel<ExternalSecuritySolution>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(ExternalSecuritySolution)} does not support reading '{format}' format.");
+            }
+
+            using JsonDocument document = JsonDocument.ParseValue(ref reader);
+            return DeserializeExternalSecuritySolution(document.RootElement, options);
+        }
+
+        internal static ExternalSecuritySolution DeserializeExternalSecuritySolution(JsonElement element, ModelReaderWriterOptions options = null)
+        {
+            options ??= ModelSerializationExtensions.WireOptions;
+
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
@@ -37,12 +74,43 @@ namespace Azure.ResourceManager.SecurityCenter.Models
             {
                 switch (discriminator.GetString())
                 {
-                    case "AAD": return AadExternalSecuritySolution.DeserializeAadExternalSecuritySolution(element);
-                    case "ATA": return AtaExternalSecuritySolution.DeserializeAtaExternalSecuritySolution(element);
-                    case "CEF": return CefExternalSecuritySolution.DeserializeCefExternalSecuritySolution(element);
+                    case "AAD": return AadExternalSecuritySolution.DeserializeAadExternalSecuritySolution(element, options);
+                    case "ATA": return AtaExternalSecuritySolution.DeserializeAtaExternalSecuritySolution(element, options);
+                    case "CEF": return CefExternalSecuritySolution.DeserializeCefExternalSecuritySolution(element, options);
                 }
             }
-            return UnknownExternalSecuritySolution.DeserializeUnknownExternalSecuritySolution(element);
+            return UnknownExternalSecuritySolution.DeserializeUnknownExternalSecuritySolution(element, options);
         }
+
+        BinaryData IPersistableModel<ExternalSecuritySolution>.Write(ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ExternalSecuritySolution>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options);
+                default:
+                    throw new FormatException($"The model {nameof(ExternalSecuritySolution)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        ExternalSecuritySolution IPersistableModel<ExternalSecuritySolution>.Create(BinaryData data, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<ExternalSecuritySolution>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    {
+                        using JsonDocument document = JsonDocument.Parse(data);
+                        return DeserializeExternalSecuritySolution(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(ExternalSecuritySolution)} does not support reading '{options.Format}' format.");
+            }
+        }
+
+        string IPersistableModel<ExternalSecuritySolution>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

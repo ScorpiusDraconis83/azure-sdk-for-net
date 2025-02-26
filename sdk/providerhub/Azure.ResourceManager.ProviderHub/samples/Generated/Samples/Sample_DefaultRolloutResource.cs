@@ -8,20 +8,17 @@
 using System;
 using System.Threading.Tasks;
 using System.Xml;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.ProviderHub;
 using Azure.ResourceManager.ProviderHub.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.ProviderHub.Samples
 {
     public partial class Sample_DefaultRolloutResource
     {
-        // DefaultRollouts_Get
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_DefaultRolloutsGet()
         {
             // Generated from example definition: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Get.json
@@ -50,9 +47,8 @@ namespace Azure.ResourceManager.ProviderHub.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // DefaultRollouts_Delete
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Delete_DefaultRolloutsDelete()
         {
             // Generated from example definition: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Delete.json
@@ -74,12 +70,11 @@ namespace Azure.ResourceManager.ProviderHub.Samples
             // invoke the operation
             await defaultRollout.DeleteAsync(WaitUntil.Completed);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // DefaultRollouts_CreateOrUpdate
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_DefaultRolloutsCreateOrUpdate()
         {
             // Generated from example definition: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_CreateOrUpdate.json
@@ -99,20 +94,17 @@ namespace Azure.ResourceManager.ProviderHub.Samples
             DefaultRolloutResource defaultRollout = client.GetDefaultRolloutResource(defaultRolloutResourceId);
 
             // invoke the operation
-            DefaultRolloutData data = new DefaultRolloutData()
+            DefaultRolloutData data = new DefaultRolloutData
             {
-                Properties = new DefaultRolloutProperties()
+                Properties = new DefaultRolloutProperties
                 {
-                    Specification = new DefaultRolloutSpecification()
+                    Specification = new DefaultRolloutSpecification
                     {
-                        Canary = new CanaryTrafficRegionRolloutConfiguration()
+                        Canary = new CanaryTrafficRegionRolloutConfiguration
                         {
-                            SkipRegions =
-{
-new AzureLocation("eastus2euap")
-},
+                            SkipRegions = { new AzureLocation("eastus2euap") },
                         },
-                        RestOfTheWorldGroupTwo = new TrafficRegionRolloutConfiguration()
+                        RestOfTheWorldGroupTwo = new TrafficRegionRolloutConfiguration
                         {
                             WaitDuration = XmlConvert.ToTimeSpan("PT4H"),
                         },
@@ -129,9 +121,8 @@ new AzureLocation("eastus2euap")
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // DefaultRollouts_Stop
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Stop_DefaultRolloutsStop()
         {
             // Generated from example definition: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Stop.json
@@ -153,7 +144,7 @@ new AzureLocation("eastus2euap")
             // invoke the operation
             await defaultRollout.StopAsync();
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
     }
 }

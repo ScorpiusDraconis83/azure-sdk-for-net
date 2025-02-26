@@ -3,30 +3,30 @@
 
 using Azure.Core;
 
-// CUSTOM CODE NOTE: renaming models to suppress analyze errors. These should
-// be moved to the spec.
-
 #pragma warning disable SA1402 // File may only contain a single type
 
 namespace Azure.AI.DocumentIntelligence
 {
-    [CodeGenModel("AnalyzeDocumentRequest")]
-    public partial class AnalyzeDocumentContent { }
+    public partial class AnalyzeBatchOperationDetails
+    {
+        /// <summary> Analyze batch operation result ID. </summary>
+        public string ResultId { get; }
+    }
 
-    [CodeGenModel("AuthorizeCopyRequest")]
-    public partial class AuthorizeCopyContent { }
+    public partial class AnalyzeResult
+    {
+        internal StringIndexType StringIndexType { get; }
+    }
 
-    [CodeGenModel("BuildDocumentClassifierRequest")]
-    public partial class BuildDocumentClassifierContent { }
+    public readonly partial struct BoundingRegion { }
 
-    [CodeGenModel("BuildDocumentModelRequest")]
-    public partial class BuildDocumentModelContent { }
+    public readonly partial struct DocumentSpan { }
+}
 
-    [CodeGenModel("ClassifyDocumentRequest")]
-    public partial class ClassifyDocumentContent { }
-
-    [CodeGenModel("ComposeDocumentModelRequest")]
-    public partial class ComposeDocumentModelContent { }
+namespace Microsoft.Extensions.Azure
+{
+    [CodeGenModel("AIDocumentIntelligenceClientBuilderExtensions")]
+    public partial class DocumentIntelligenceClientBuilderExtensions { }
 }
 
 #pragma warning restore SA1402 // File may only contain a single type

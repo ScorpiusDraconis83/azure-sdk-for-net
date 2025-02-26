@@ -12,10 +12,8 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 using Azure.ResourceManager.PostgreSql.FlexibleServers.Models;
 
 namespace Azure.ResourceManager.PostgreSql.FlexibleServers
@@ -67,7 +65,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -91,7 +89,9 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
             try
             {
                 var response = await _postgreSqlMigrationMigrationsRestClient.CreateAsync(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrationName, data, cancellationToken).ConfigureAwait(false);
-                var operation = new FlexibleServersArmOperation<PostgreSqlMigrationResource>(Response.FromValue(new PostgreSqlMigrationResource(Client, response), response.GetRawResponse()));
+                var uri = _postgreSqlMigrationMigrationsRestClient.CreateCreateRequestUri(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrationName, data);
+                var rehydrationToken = NextLinkOperationImplementation.GetRehydrationToken(RequestMethod.Put, uri.ToUri(), uri.ToString(), "None", null, OperationFinalStateVia.OriginalUri.ToString());
+                var operation = new FlexibleServersArmOperation<PostgreSqlMigrationResource>(Response.FromValue(new PostgreSqlMigrationResource(Client, response), response.GetRawResponse()), rehydrationToken);
                 if (waitUntil == WaitUntil.Completed)
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
                 return operation;
@@ -116,7 +116,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -140,7 +140,9 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
             try
             {
                 var response = _postgreSqlMigrationMigrationsRestClient.Create(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrationName, data, cancellationToken);
-                var operation = new FlexibleServersArmOperation<PostgreSqlMigrationResource>(Response.FromValue(new PostgreSqlMigrationResource(Client, response), response.GetRawResponse()));
+                var uri = _postgreSqlMigrationMigrationsRestClient.CreateCreateRequestUri(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, migrationName, data);
+                var rehydrationToken = NextLinkOperationImplementation.GetRehydrationToken(RequestMethod.Put, uri.ToUri(), uri.ToString(), "None", null, OperationFinalStateVia.OriginalUri.ToString());
+                var operation = new FlexibleServersArmOperation<PostgreSqlMigrationResource>(Response.FromValue(new PostgreSqlMigrationResource(Client, response), response.GetRawResponse()), rehydrationToken);
                 if (waitUntil == WaitUntil.Completed)
                     operation.WaitForCompletion(cancellationToken);
                 return operation;
@@ -165,7 +167,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -210,7 +212,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -255,7 +257,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -286,7 +288,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -317,7 +319,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -360,7 +362,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -403,7 +405,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -448,7 +450,7 @@ namespace Azure.ResourceManager.PostgreSql.FlexibleServers
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-03-01-preview</description>
+        /// <description>2024-08-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>

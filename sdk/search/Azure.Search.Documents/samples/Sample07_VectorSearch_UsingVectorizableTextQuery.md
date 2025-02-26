@@ -11,7 +11,7 @@ We will create an instace of `SearchIndex` and define `Hotel` fields.
 ```C# Snippet:Azure_Search_Documents_Tests_Samples_Sample07_Vector_Search_Index_UsingVectorizableTextQuery
 string vectorSearchProfileName = "my-vector-profile";
 string vectorSearchHnswConfig = "my-hsnw-vector-config";
-string modelName = "text-embedding-ada-002";
+string deploymentName = "text-embedding-ada-002";
 int modelDimensions = 1536;
 
 string indexName = "hotel";
@@ -32,7 +32,7 @@ SearchIndex searchIndex = new(indexName)
         {
             new VectorSearchProfile(vectorSearchProfileName, vectorSearchHnswConfig)
             {
-                Vectorizer = "openai"
+                VectorizerName = "openai"
             }
         },
         Algorithms =
@@ -43,11 +43,12 @@ SearchIndex searchIndex = new(indexName)
         {
             new AzureOpenAIVectorizer("openai")
             {
-                AzureOpenAIParameters  = new AzureOpenAIParameters()
+                Parameters  = new AzureOpenAIVectorizerParameters()
                 {
                     ResourceUri = new Uri(Environment.GetEnvironmentVariable("OPENAI_ENDPOINT")),
                     ApiKey = Environment.GetEnvironmentVariable("OPENAI_KEY"),
-                    DeploymentId = modelName,
+                    DeploymentName = deploymentName,
+                    ModelName = AzureOpenAIModelName.TextEmbeddingAda002
                 }
             }
         }
@@ -86,20 +87,22 @@ Next, we will create sample hotel documents. The vector field requires submittin
 
 ### Get Embeddings using `Azure.AI.OpenAI`
 
-```C# Snippet:Azure_Search_Tests_Samples_Readme_GetEmbeddings
-Uri endpoint = new Uri(Environment.GetEnvironmentVariable("OpenAI_ENDPOINT"));
-string key = Environment.GetEnvironmentVariable("OpenAI_API_KEY");
-AzureKeyCredential credential = new AzureKeyCredential(key);
+```C# Snippet:Azure_Search_Documents_Tests_Samples_Sample07_Vector_Search_GetEmbeddings
+public static ReadOnlyMemory<float> GetEmbeddings(string input)
+{
+    Uri endpoint = new Uri(Environment.GetEnvironmentVariable("OpenAI_ENDPOINT"));
+    string key = Environment.GetEnvironmentVariable("OpenAI_API_KEY");
+    AzureKeyCredential credential = new AzureKeyCredential(key);
 
-OpenAIClient openAIClient = new OpenAIClient(endpoint, credential);
-string description = "Very popular hotel in town.";
-EmbeddingsOptions embeddingsOptions = new("EmbeddingsModelName", new string[] { description });
+    AzureOpenAIClient openAIClient = new AzureOpenAIClient(endpoint, credential);
+    EmbeddingClient embeddingClient = openAIClient.GetEmbeddingClient("text-embedding-ada-002");
 
-Embeddings embeddings = await openAIClient.GetEmbeddingsAsync(embeddingsOptions);
-ReadOnlyMemory<float> descriptionVector = embeddings.Data[0].Embedding;
+    OpenAIEmbedding embedding = embeddingClient.GenerateEmbedding(input);
+    return embedding.ToFloats();
+}
 ```
 
-In the sample code below, we are using hardcoded embeddings for the vector fields named `DescriptionVector` and `CategoryVector`:
+In the sample code below, we are using `GetEmbeddings` method mentioned above to get embeddings for the vector fields named `DescriptionVector` and `CategoryVector`:
 
 ```C# Snippet:Azure_Search_Documents_Tests_Samples_Sample07_Vector_Search_Hotel_Document
 public static Hotel[] GetHotelDocuments()
@@ -114,20 +117,23 @@ public static Hotel[] GetHotelDocuments()
                 "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, " +
                 "and a really helpful concierge. The location is perfect -- right downtown, close to all " +
                 "the tourist attractions. We highly recommend this hotel.",
-            DescriptionVector = VectorSearchEmbeddings.Hotel1VectorizeDescription,
+            DescriptionVector = GetEmbeddings(
+                "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, " +
+                "and a really helpful concierge. The location is perfect -- right downtown, close to all " +
+                "the tourist attractions. We highly recommend this hotel."),
             Category = "Luxury",
-            CategoryVector = VectorSearchEmbeddings.LuxuryVectorizeCategory
+            CategoryVector = GetEmbeddings("Luxury")
         },
         new Hotel()
         {
             HotelId = "2",
             HotelName = "Roach Motel",
             Description = "Cheapest hotel in town. Infact, a motel.",
-            DescriptionVector = VectorSearchEmbeddings.Hotel2VectorizeDescription,
+            DescriptionVector = GetEmbeddings("Cheapest hotel in town. Infact, a motel."),
             Category = "Budget",
-            CategoryVector = VectorSearchEmbeddings.BudgetVectorizeCategory
+            CategoryVector = GetEmbeddings("Budget")
         },
-         // Add more hotel documents here...
+        // Add more hotel documents here...
     };
 }
 ```

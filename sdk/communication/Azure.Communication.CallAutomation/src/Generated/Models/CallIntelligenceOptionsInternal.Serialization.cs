@@ -20,7 +20,20 @@ namespace Azure.Communication.CallAutomation
                 writer.WritePropertyName("cognitiveServicesEndpoint"u8);
                 writer.WriteStringValue(CognitiveServicesEndpoint);
             }
+            if (Optional.IsDefined(BackupCognitiveServicesEndpoint))
+            {
+                writer.WritePropertyName("backupCognitiveServicesEndpoint"u8);
+                writer.WriteStringValue(BackupCognitiveServicesEndpoint);
+            }
             writer.WriteEndObject();
+        }
+
+        /// <summary> Convert into a <see cref="RequestContent"/>. </summary>
+        internal virtual RequestContent ToRequestContent()
+        {
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(this);
+            return content;
         }
     }
 }

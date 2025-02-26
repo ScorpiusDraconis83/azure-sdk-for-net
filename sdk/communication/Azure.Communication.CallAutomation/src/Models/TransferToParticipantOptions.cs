@@ -42,6 +42,16 @@ namespace Azure.Communication.CallAutomation
         }
 
         /// <summary>
+        /// Creates a new TransferToParticipantOptions object.
+        /// </summary>
+        /// <param name="targetIdentity"> The target to transfer the call to. </param>
+        public TransferToParticipantOptions(MicrosoftTeamsAppIdentifier targetIdentity)
+        {
+            Target = targetIdentity;
+            CustomCallingContext = new CustomCallingContext(sipHeaders: null, voipHeaders: new Dictionary<string, string>());
+        }
+
+        /// <summary>
         /// The target callee.
         /// </summary>
         /// <value></value>
@@ -67,5 +77,10 @@ namespace Azure.Communication.CallAutomation
         /// This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
         /// </summary>
         public Uri OperationCallbackUri { get; set; }
+
+        /// <summary>
+        /// The phone number that will be used as the transferor(Contoso) caller id when transfering a call a pstn target.
+        /// </summary>
+        public PhoneNumberIdentifier SourceCallerIdNumber { get; set; }
     }
 }

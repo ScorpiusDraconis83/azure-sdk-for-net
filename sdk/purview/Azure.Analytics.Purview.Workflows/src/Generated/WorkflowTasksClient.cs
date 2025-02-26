@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 
@@ -87,9 +86,9 @@ namespace Azure.Analytics.Purview.Workflows
         /// <include file="Docs/WorkflowTasksClient.xml" path="doc/members/member[@name='GetWorkflowTasksAsync(string,IEnumerable{string},string,int?,string,IEnumerable{string},IEnumerable{string},IEnumerable{string},IEnumerable{string},string,RequestContext)']/*" />
         public virtual AsyncPageable<BinaryData> GetWorkflowTasksAsync(string viewMode, IEnumerable<string> workflowIds, string timeWindow, int? maxpagesize, string orderby, IEnumerable<string> taskTypes, IEnumerable<string> taskStatuses, IEnumerable<string> requestors, IEnumerable<string> assignees, string workflowNameKeyword, RequestContext context)
         {
-            HttpMessage FirstPageRequest(int? pageSizeHint) => CreateGetWorkflowTasksRequest(viewMode, workflowIds, timeWindow, maxpagesize, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
-            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => CreateGetWorkflowTasksNextPageRequest(nextLink, viewMode, workflowIds, timeWindow, maxpagesize, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => BinaryData.FromString(e.GetRawText()), ClientDiagnostics, _pipeline, "WorkflowTasksClient.GetWorkflowTasks", "value", "nextLink", context);
+            HttpMessage FirstPageRequest(int? pageSizeHint) => CreateGetWorkflowTasksRequest(viewMode, workflowIds, timeWindow, pageSizeHint, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
+            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => CreateGetWorkflowTasksNextPageRequest(nextLink, viewMode, workflowIds, timeWindow, pageSizeHint, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, NextPageRequest, e => BinaryData.FromString(e.GetRawText()), ClientDiagnostics, _pipeline, "WorkflowTasksClient.GetWorkflowTasks", "value", "nextLink", maxpagesize, context);
         }
 
         /// <summary>
@@ -118,9 +117,9 @@ namespace Azure.Analytics.Purview.Workflows
         /// <include file="Docs/WorkflowTasksClient.xml" path="doc/members/member[@name='GetWorkflowTasks(string,IEnumerable{string},string,int?,string,IEnumerable{string},IEnumerable{string},IEnumerable{string},IEnumerable{string},string,RequestContext)']/*" />
         public virtual Pageable<BinaryData> GetWorkflowTasks(string viewMode, IEnumerable<string> workflowIds, string timeWindow, int? maxpagesize, string orderby, IEnumerable<string> taskTypes, IEnumerable<string> taskStatuses, IEnumerable<string> requestors, IEnumerable<string> assignees, string workflowNameKeyword, RequestContext context)
         {
-            HttpMessage FirstPageRequest(int? pageSizeHint) => CreateGetWorkflowTasksRequest(viewMode, workflowIds, timeWindow, maxpagesize, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
-            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => CreateGetWorkflowTasksNextPageRequest(nextLink, viewMode, workflowIds, timeWindow, maxpagesize, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => BinaryData.FromString(e.GetRawText()), ClientDiagnostics, _pipeline, "WorkflowTasksClient.GetWorkflowTasks", "value", "nextLink", context);
+            HttpMessage FirstPageRequest(int? pageSizeHint) => CreateGetWorkflowTasksRequest(viewMode, workflowIds, timeWindow, pageSizeHint, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
+            HttpMessage NextPageRequest(int? pageSizeHint, string nextLink) => CreateGetWorkflowTasksNextPageRequest(nextLink, viewMode, workflowIds, timeWindow, pageSizeHint, orderby, taskTypes, taskStatuses, requestors, assignees, workflowNameKeyword, context);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, NextPageRequest, e => BinaryData.FromString(e.GetRawText()), ClientDiagnostics, _pipeline, "WorkflowTasksClient.GetWorkflowTasks", "value", "nextLink", maxpagesize, context);
         }
 
         internal HttpMessage CreateGetWorkflowTasksRequest(string viewMode, IEnumerable<string> workflowIds, string timeWindow, int? maxpagesize, string orderby, IEnumerable<string> taskTypes, IEnumerable<string> taskStatuses, IEnumerable<string> requestors, IEnumerable<string> assignees, string workflowNameKeyword, RequestContext context)
@@ -137,7 +136,7 @@ namespace Azure.Analytics.Purview.Workflows
             {
                 uri.AppendQuery("viewMode", viewMode, true);
             }
-            if (workflowIds != null && Optional.IsCollectionDefined(workflowIds))
+            if (workflowIds != null && !(workflowIds is ChangeTrackingList<string> changeTrackingList && changeTrackingList.IsUndefined))
             {
                 uri.AppendQueryDelimited("workflowIds", workflowIds, ",", true);
             }
@@ -153,19 +152,19 @@ namespace Azure.Analytics.Purview.Workflows
             {
                 uri.AppendQuery("orderby", orderby, true);
             }
-            if (taskTypes != null && Optional.IsCollectionDefined(taskTypes))
+            if (taskTypes != null && !(taskTypes is ChangeTrackingList<string> changeTrackingList0 && changeTrackingList0.IsUndefined))
             {
                 uri.AppendQueryDelimited("taskTypes", taskTypes, ",", true);
             }
-            if (taskStatuses != null && Optional.IsCollectionDefined(taskStatuses))
+            if (taskStatuses != null && !(taskStatuses is ChangeTrackingList<string> changeTrackingList1 && changeTrackingList1.IsUndefined))
             {
                 uri.AppendQueryDelimited("taskStatuses", taskStatuses, ",", true);
             }
-            if (requestors != null && Optional.IsCollectionDefined(requestors))
+            if (requestors != null && !(requestors is ChangeTrackingList<string> changeTrackingList2 && changeTrackingList2.IsUndefined))
             {
                 uri.AppendQueryDelimited("requestors", requestors, ",", true);
             }
-            if (assignees != null && Optional.IsCollectionDefined(assignees))
+            if (assignees != null && !(assignees is ChangeTrackingList<string> changeTrackingList3 && changeTrackingList3.IsUndefined))
             {
                 uri.AppendQueryDelimited("assignees", assignees, ",", true);
             }

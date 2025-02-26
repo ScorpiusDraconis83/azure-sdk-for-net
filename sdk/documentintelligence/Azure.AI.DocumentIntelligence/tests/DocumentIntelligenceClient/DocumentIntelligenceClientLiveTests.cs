@@ -10,22 +10,19 @@ namespace Azure.AI.DocumentIntelligence.Tests
     public class DocumentIntelligenceClientLiveTests : DocumentIntelligenceLiveTestBase
     {
         public DocumentIntelligenceClientLiveTests(bool isAsync)
-            : base(isAsync, RecordedTestMode.Live)
+            : base(isAsync)
         {
         }
 
         [RecordedTest]
-        [Ignore("https://github.com/Azure/azure-sdk-for-net/issues/40054")]
-        public async Task DocumentIntelligenceClientCanAuthenticateWithTokenCredential()
+        public async Task DocumentIntelligenceClientCanAuthenticateWithApiKey()
         {
-            var client = CreateDocumentIntelligenceClient(useTokenCredential: true);
+            var client = CreateDocumentIntelligenceClient(useApiKey: true);
 
-            var content = new AnalyzeDocumentContent()
-            {
-                UrlSource = DocumentIntelligenceTestEnvironment.CreateUri(TestFile.Blank)
-            };
+            var uriSource = DocumentIntelligenceTestEnvironment.CreateUri(TestFile.Blank);
+            var options = new AnalyzeDocumentOptions("prebuilt-layout", uriSource);
 
-            Operation<AnalyzeResult> operation = await client.AnalyzeDocumentAsync(WaitUntil.Completed, "prebuilt-layout", content);
+            Operation<AnalyzeResult> operation = await client.AnalyzeDocumentAsync(WaitUntil.Completed, options);
             Response rawResponse = operation.GetRawResponse();
 
             Assert.That(rawResponse.Status, Is.EqualTo(200));

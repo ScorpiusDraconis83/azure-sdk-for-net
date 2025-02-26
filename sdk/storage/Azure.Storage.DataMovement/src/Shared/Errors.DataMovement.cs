@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using Azure.Storage.DataMovement;
 
 namespace Azure.Storage
 {
@@ -26,10 +25,10 @@ namespace Azure.Storage
         public static ArgumentException UnableToGetLength()
             => new ArgumentException("Unable to get the length of the source storage resource");
 
-        public static ArgumentException UnsupportedJobSchemaVersionHeader(string schemaVersion)
+        public static ArgumentException UnsupportedJobSchemaVersionHeader(int schemaVersion)
             => new ArgumentException($"The checkpoint file schema version {schemaVersion} is not supported by this version of the SDK.");
 
-        public static ArgumentException UnsupportedJobPartSchemaVersionHeader(string schemaVersion)
+        public static ArgumentException UnsupportedJobPartSchemaVersionHeader(int schemaVersion)
             => new ArgumentException($"The checkpoint part file schema version {schemaVersion} is not supported by this version of the SDK.");
 
         public static ArgumentException MismatchTransferId(string passedTransferId, string storedTransferId)
@@ -126,5 +125,14 @@ namespace Azure.Storage
         public static ArgumentException NoResourceProviderFound(bool isSource, string providerId)
             => new ArgumentException($"Unable to find resource provider for transfer {(isSource ? "source" : "destination")} with provider id: {providerId}. " +
                 $"Please ensure you have registered the required resource provider with TransferManagerOptions.ResumeProviders.");
+
+        public static ArgumentException UnexpectedPropertyType(string propertyName, params string[] expectedTypes)
+            => new ArgumentException($"Unexpected property type encountered for storage resource property {propertyName}: {string.Join(",", (string[])expectedTypes)}");
+
+        public static InvalidOperationException CheckpointerDisabled(string method)
+            => new InvalidOperationException($"Unable to perform {method}. The transfer checkpointer is disabled.");
+
+        public static InvalidOperationException CollisionTransferId(string id)
+            => new InvalidOperationException($"Transfer Id Collision: The transfer id, {id}, already exists in the transfer manager.");
     }
 }

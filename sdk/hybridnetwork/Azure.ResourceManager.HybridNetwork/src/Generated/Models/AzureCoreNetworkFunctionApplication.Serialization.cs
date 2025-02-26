@@ -5,33 +5,56 @@
 
 #nullable disable
 
+using System;
+using System.ClientModel.Primitives;
 using System.Text.Json;
 using Azure.Core;
 
 namespace Azure.ResourceManager.HybridNetwork.Models
 {
-    public partial class AzureCoreNetworkFunctionApplication : IUtf8JsonSerializable
+    [PersistableModelProxy(typeof(UnknownAzureCoreNetworkFunctionApplication))]
+    public partial class AzureCoreNetworkFunctionApplication : IUtf8JsonSerializable, IJsonModel<AzureCoreNetworkFunctionApplication>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<AzureCoreNetworkFunctionApplication>)this).Write(writer, ModelSerializationExtensions.WireOptions);
+
+        void IJsonModel<AzureCoreNetworkFunctionApplication>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName("artifactType"u8);
-            writer.WriteStringValue(ArtifactType.ToString());
-            if (Optional.IsDefined(Name))
-            {
-                writer.WritePropertyName("name"u8);
-                writer.WriteStringValue(Name);
-            }
-            if (Optional.IsDefined(DependsOnProfile))
-            {
-                writer.WritePropertyName("dependsOnProfile"u8);
-                writer.WriteObjectValue(DependsOnProfile);
-            }
+            JsonModelWriteCore(writer, options);
             writer.WriteEndObject();
         }
 
-        internal static AzureCoreNetworkFunctionApplication DeserializeAzureCoreNetworkFunctionApplication(JsonElement element)
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected override void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
+            var format = options.Format == "W" ? ((IPersistableModel<AzureCoreNetworkFunctionApplication>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(AzureCoreNetworkFunctionApplication)} does not support writing '{format}' format.");
+            }
+
+            base.JsonModelWriteCore(writer, options);
+            writer.WritePropertyName("artifactType"u8);
+            writer.WriteStringValue(ArtifactType.ToString());
+        }
+
+        AzureCoreNetworkFunctionApplication IJsonModel<AzureCoreNetworkFunctionApplication>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<AzureCoreNetworkFunctionApplication>)this).GetFormatFromOptions(options) : options.Format;
+            if (format != "J")
+            {
+                throw new FormatException($"The model {nameof(AzureCoreNetworkFunctionApplication)} does not support reading '{format}' format.");
+            }
+
+            using JsonDocument document = JsonDocument.ParseValue(ref reader);
+            return DeserializeAzureCoreNetworkFunctionApplication(document.RootElement, options);
+        }
+
+        internal static AzureCoreNetworkFunctionApplication DeserializeAzureCoreNetworkFunctionApplication(JsonElement element, ModelReaderWriterOptions options = null)
+        {
+            options ??= ModelSerializationExtensions.WireOptions;
+
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
@@ -40,11 +63,42 @@ namespace Azure.ResourceManager.HybridNetwork.Models
             {
                 switch (discriminator.GetString())
                 {
-                    case "ArmTemplate": return AzureCoreNetworkFunctionArmTemplateApplication.DeserializeAzureCoreNetworkFunctionArmTemplateApplication(element);
-                    case "VhdImageFile": return AzureCoreNetworkFunctionVhdApplication.DeserializeAzureCoreNetworkFunctionVhdApplication(element);
+                    case "ArmTemplate": return AzureCoreNetworkFunctionArmTemplateApplication.DeserializeAzureCoreNetworkFunctionArmTemplateApplication(element, options);
+                    case "VhdImageFile": return AzureCoreNetworkFunctionVhdApplication.DeserializeAzureCoreNetworkFunctionVhdApplication(element, options);
                 }
             }
-            return UnknownAzureCoreNetworkFunctionApplication.DeserializeUnknownAzureCoreNetworkFunctionApplication(element);
+            return UnknownAzureCoreNetworkFunctionApplication.DeserializeUnknownAzureCoreNetworkFunctionApplication(element, options);
         }
+
+        BinaryData IPersistableModel<AzureCoreNetworkFunctionApplication>.Write(ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<AzureCoreNetworkFunctionApplication>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options);
+                default:
+                    throw new FormatException($"The model {nameof(AzureCoreNetworkFunctionApplication)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        AzureCoreNetworkFunctionApplication IPersistableModel<AzureCoreNetworkFunctionApplication>.Create(BinaryData data, ModelReaderWriterOptions options)
+        {
+            var format = options.Format == "W" ? ((IPersistableModel<AzureCoreNetworkFunctionApplication>)this).GetFormatFromOptions(options) : options.Format;
+
+            switch (format)
+            {
+                case "J":
+                    {
+                        using JsonDocument document = JsonDocument.Parse(data);
+                        return DeserializeAzureCoreNetworkFunctionApplication(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(AzureCoreNetworkFunctionApplication)} does not support reading '{options.Format}' format.");
+            }
+        }
+
+        string IPersistableModel<AzureCoreNetworkFunctionApplication>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

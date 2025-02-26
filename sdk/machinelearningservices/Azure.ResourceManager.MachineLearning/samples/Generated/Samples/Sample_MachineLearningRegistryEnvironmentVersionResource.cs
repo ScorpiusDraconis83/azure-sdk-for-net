@@ -7,52 +7,20 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.MachineLearning;
 using Azure.ResourceManager.MachineLearning.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.MachineLearning.Samples
 {
     public partial class Sample_MachineLearningRegistryEnvironmentVersionResource
     {
-        // Delete Registry Environment Version.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task Delete_DeleteRegistryEnvironmentVersion()
-        {
-            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2023-06-01-preview/examples/Registry/EnvironmentVersion/delete.json
-            // this example is just showing the usage of "RegistryEnvironmentVersions_Delete" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this MachineLearningRegistryEnvironmentVersionResource created on azure
-            // for more information of creating MachineLearningRegistryEnvironmentVersionResource, please refer to the document of MachineLearningRegistryEnvironmentVersionResource
-            string subscriptionId = "00000000-1111-2222-3333-444444444444";
-            string resourceGroupName = "test-rg";
-            string registryName = "my-aml-registry";
-            string environmentName = "string";
-            string version = "string";
-            ResourceIdentifier machineLearningRegistryEnvironmentVersionResourceId = MachineLearningRegistryEnvironmentVersionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, registryName, environmentName, version);
-            MachineLearningRegistryEnvironmentVersionResource machineLearningRegistryEnvironmentVersion = client.GetMachineLearningRegistryEnvironmentVersionResource(machineLearningRegistryEnvironmentVersionResourceId);
-
-            // invoke the operation
-            await machineLearningRegistryEnvironmentVersion.DeleteAsync(WaitUntil.Completed);
-
-            Console.WriteLine($"Succeeded");
-        }
-
-        // Get Registry Environment Version.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_GetRegistryEnvironmentVersion()
         {
-            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2023-06-01-preview/examples/Registry/EnvironmentVersion/get.json
+            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/EnvironmentVersion/get.json
             // this example is just showing the usage of "RegistryEnvironmentVersions_Get" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -80,12 +48,39 @@ namespace Azure.ResourceManager.MachineLearning.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // CreateOrUpdate Registry Environment Version.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
+        public async Task Delete_DeleteRegistryEnvironmentVersion()
+        {
+            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/EnvironmentVersion/delete.json
+            // this example is just showing the usage of "RegistryEnvironmentVersions_Delete" operation, for the dependent resources, they will have to be created separately.
+
+            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
+            TokenCredential cred = new DefaultAzureCredential();
+            // authenticate your client
+            ArmClient client = new ArmClient(cred);
+
+            // this example assumes you already have this MachineLearningRegistryEnvironmentVersionResource created on azure
+            // for more information of creating MachineLearningRegistryEnvironmentVersionResource, please refer to the document of MachineLearningRegistryEnvironmentVersionResource
+            string subscriptionId = "00000000-1111-2222-3333-444444444444";
+            string resourceGroupName = "test-rg";
+            string registryName = "my-aml-registry";
+            string environmentName = "string";
+            string version = "string";
+            ResourceIdentifier machineLearningRegistryEnvironmentVersionResourceId = MachineLearningRegistryEnvironmentVersionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, registryName, environmentName, version);
+            MachineLearningRegistryEnvironmentVersionResource machineLearningRegistryEnvironmentVersion = client.GetMachineLearningRegistryEnvironmentVersionResource(machineLearningRegistryEnvironmentVersionResourceId);
+
+            // invoke the operation
+            await machineLearningRegistryEnvironmentVersion.DeleteAsync(WaitUntil.Completed);
+
+            Console.WriteLine("Succeeded");
+        }
+
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_CreateOrUpdateRegistryEnvironmentVersion()
         {
-            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2023-06-01-preview/examples/Registry/EnvironmentVersion/createOrUpdate.json
+            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/EnvironmentVersion/createOrUpdate.json
             // this example is just showing the usage of "RegistryEnvironmentVersions_CreateOrUpdate" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -104,15 +99,15 @@ namespace Azure.ResourceManager.MachineLearning.Samples
             MachineLearningRegistryEnvironmentVersionResource machineLearningRegistryEnvironmentVersion = client.GetMachineLearningRegistryEnvironmentVersionResource(machineLearningRegistryEnvironmentVersionResourceId);
 
             // invoke the operation
-            MachineLearningEnvironmentVersionData data = new MachineLearningEnvironmentVersionData(new MachineLearningEnvironmentVersionProperties()
+            MachineLearningEnvironmentVersionData data = new MachineLearningEnvironmentVersionData(new MachineLearningEnvironmentVersionProperties
             {
+                Image = "docker.io/tensorflow/serving:latest",
+                CondaFile = "string",
                 Build = new MachineLearningBuildContext(new Uri("https://storage-account.blob.core.windows.net/azureml/DockerBuildContext/95ddede6b9b8c4e90472db3acd0a8d28/"))
                 {
                     DockerfilePath = "prod/Dockerfile",
                 },
-                CondaFile = "string",
-                Image = "docker.io/tensorflow/serving:latest",
-                InferenceConfig = new MachineLearningInferenceContainerProperties()
+                InferenceConfig = new MachineLearningInferenceContainerProperties
                 {
                     LivenessRoute = new MachineLearningInferenceContainerRoute("string", 1),
                     ReadinessRoute = new MachineLearningInferenceContainerRoute("string", 1),
@@ -120,13 +115,13 @@ namespace Azure.ResourceManager.MachineLearning.Samples
                 },
                 IsAnonymous = false,
                 Description = "string",
-                Properties =
-{
-["string"] = "string",
-},
                 Tags =
 {
-["string"] = "string",
+["string"] = "string"
+},
+                Properties =
+{
+["string"] = "string"
 },
             });
             ArmOperation<MachineLearningRegistryEnvironmentVersionResource> lro = await machineLearningRegistryEnvironmentVersion.UpdateAsync(WaitUntil.Completed, data);

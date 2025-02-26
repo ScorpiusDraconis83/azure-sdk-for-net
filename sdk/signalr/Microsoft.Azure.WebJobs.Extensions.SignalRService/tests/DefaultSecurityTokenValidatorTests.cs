@@ -5,16 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+
 using Xunit;
 
 namespace Microsoft.Azure.WebJobs.Extensions.SignalRService.Tests
 {
     public class DefaultSecurityTokenValidatorTests
     {
-        private const string IssuerToken = "myfunctionauthtest";
+        // The issue token must be longer than 32 characters.
+        private const string IssuerToken = "1234567812345678912345678123456789";
         public static IEnumerable<object[]> TestData = new List<object[]>
         {
             new object []
@@ -40,16 +43,16 @@ namespace Microsoft.Azure.WebJobs.Extensions.SignalRService.Tests
         {
             var ctx = new DefaultHttpContext();
             var req = ctx.Request;
-            req.Headers.Add("Authorization", new StringValues(tokenString));
+            req.Headers.Append("Authorization", new StringValues(tokenString));
 
             Action<TokenValidationParameters> configureTokenValidationParameters = parameters =>
             {
                 parameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(IssuerToken));
                 parameters.RequireSignedTokens = true;
-                parameters.ValidateAudience = false;
-                parameters.ValidateIssuer = false;
                 parameters.ValidateIssuerSigningKey = true;
                 parameters.ValidateLifetime = true;
+                parameters.ValidIssuer = "issuer";
+                parameters.ValidAudience = "audience";
             };
 
             var securityTokenValidator = new DefaultSecurityTokenValidator(configureTokenValidationParameters);

@@ -15,6 +15,19 @@ namespace Azure.Search.Documents.Models
     /// <summary> Model factory for models. </summary>
     public static partial class SearchModelFactory
     {
+        /// <summary> Initializes a new instance of <see cref="Models.FacetResult"/>. </summary>
+        /// <param name="count"> The approximate count of documents falling within the bucket described by this facet. </param>
+        /// <param name="facets"> The nested facet query results for the search operation, organized as a collection of buckets for each faceted field; null if the query did not contain any nested facets. </param>
+        /// <param name="additionalProperties"> Additional Properties. </param>
+        /// <returns> A new <see cref="Models.FacetResult"/> instance for mocking. </returns>
+        public static FacetResult FacetResult(long? count = null, IReadOnlyDictionary<string, IList<FacetResult>> facets = null, IReadOnlyDictionary<string, object> additionalProperties = null)
+        {
+            facets ??= new Dictionary<string, IList<FacetResult>>();
+            additionalProperties ??= new Dictionary<string, object>();
+
+            return new FacetResult(count, facets, additionalProperties);
+        }
+
         /// <summary> Initializes a new instance of <see cref="Models.QueryAnswerResult"/>. </summary>
         /// <param name="score"> The score value represents how relevant the answer is to the query relative to other answers returned for the query. </param>
         /// <param name="key"> The key of the document the answer was extracted from. </param>
@@ -43,10 +56,11 @@ namespace Azure.Search.Documents.Models
 
         /// <summary> Initializes a new instance of <see cref="Models.DocumentDebugInfo"/>. </summary>
         /// <param name="semantic"> Contains debugging information specific to semantic ranking requests. </param>
+        /// <param name="vectors"> Contains debugging information specific to vector and hybrid search. </param>
         /// <returns> A new <see cref="Models.DocumentDebugInfo"/> instance for mocking. </returns>
-        public static DocumentDebugInfo DocumentDebugInfo(SemanticDebugInfo semantic = null)
+        public static DocumentDebugInfo DocumentDebugInfo(SemanticDebugInfo semantic = null, VectorsDebugInfo vectors = null)
         {
-            return new DocumentDebugInfo(semantic);
+            return new DocumentDebugInfo(semantic, vectors);
         }
 
         /// <summary> Initializes a new instance of <see cref="Models.SemanticDebugInfo"/>. </summary>
@@ -80,6 +94,73 @@ namespace Azure.Search.Documents.Models
         public static QueryResultDocumentRerankerInput QueryResultDocumentRerankerInput(string title = null, string content = null, string keywords = null)
         {
             return new QueryResultDocumentRerankerInput(title, content, keywords);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.VectorsDebugInfo"/>. </summary>
+        /// <param name="subscores"> The breakdown of subscores of the document prior to the chosen result set fusion/combination method such as RRF. </param>
+        /// <returns> A new <see cref="Models.VectorsDebugInfo"/> instance for mocking. </returns>
+        public static VectorsDebugInfo VectorsDebugInfo(QueryResultDocumentSubscores subscores = null)
+        {
+            return new VectorsDebugInfo(subscores);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.QueryResultDocumentSubscores"/>. </summary>
+        /// <param name="text"> The BM25 or Classic score for the text portion of the query. </param>
+        /// <param name="vectors"> The vector similarity and @search.score values for each vector query. </param>
+        /// <param name="documentBoost"> The BM25 or Classic score for the text portion of the query. </param>
+        /// <returns> A new <see cref="Models.QueryResultDocumentSubscores"/> instance for mocking. </returns>
+        public static QueryResultDocumentSubscores QueryResultDocumentSubscores(TextResult text = null, IEnumerable<IDictionary<string, SingleVectorFieldResult>> vectors = null, double? documentBoost = null)
+        {
+            vectors ??= new List<IDictionary<string, SingleVectorFieldResult>>();
+
+            return new QueryResultDocumentSubscores(text, vectors?.ToList(), documentBoost);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.TextResult"/>. </summary>
+        /// <param name="searchScore"> The BM25 or Classic score for the text portion of the query. </param>
+        /// <returns> A new <see cref="Models.TextResult"/> instance for mocking. </returns>
+        public static TextResult TextResult(double? searchScore = null)
+        {
+            return new TextResult(searchScore);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.SingleVectorFieldResult"/>. </summary>
+        /// <param name="searchScore"> The @search.score value that is calculated from the vector similarity score. This is the score that's visible in a pure single-field single-vector query. </param>
+        /// <param name="vectorSimilarity"> The vector similarity score for this document. Note this is the canonical definition of similarity metric, not the 'distance' version. For example, cosine similarity instead of cosine distance. </param>
+        /// <returns> A new <see cref="Models.SingleVectorFieldResult"/> instance for mocking. </returns>
+        public static SingleVectorFieldResult SingleVectorFieldResult(double? searchScore = null, double? vectorSimilarity = null)
+        {
+            return new SingleVectorFieldResult(searchScore, vectorSimilarity);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.DebugInfo"/>. </summary>
+        /// <param name="queryRewrites"> Contains debugging information specific to query rewrites. </param>
+        /// <returns> A new <see cref="Models.DebugInfo"/> instance for mocking. </returns>
+        public static DebugInfo DebugInfo(QueryRewritesDebugInfo queryRewrites = null)
+        {
+            return new DebugInfo(queryRewrites);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.QueryRewritesDebugInfo"/>. </summary>
+        /// <param name="text"> List of query rewrites generated for the text query. </param>
+        /// <param name="vectors"> List of query rewrites generated for the vectorizable text queries. </param>
+        /// <returns> A new <see cref="Models.QueryRewritesDebugInfo"/> instance for mocking. </returns>
+        public static QueryRewritesDebugInfo QueryRewritesDebugInfo(QueryRewritesValuesDebugInfo text = null, IEnumerable<QueryRewritesValuesDebugInfo> vectors = null)
+        {
+            vectors ??= new List<QueryRewritesValuesDebugInfo>();
+
+            return new QueryRewritesDebugInfo(text, vectors?.ToList());
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.QueryRewritesValuesDebugInfo"/>. </summary>
+        /// <param name="inputQuery"> The input text to the generative query rewriting model. There may be cases where the user query and the input to the generative model are not identical. </param>
+        /// <param name="rewrites"> List of query rewrites. </param>
+        /// <returns> A new <see cref="Models.QueryRewritesValuesDebugInfo"/> instance for mocking. </returns>
+        public static QueryRewritesValuesDebugInfo QueryRewritesValuesDebugInfo(string inputQuery = null, IEnumerable<string> rewrites = null)
+        {
+            rewrites ??= new List<string>();
+
+            return new QueryRewritesValuesDebugInfo(inputQuery, rewrites?.ToList());
         }
 
         /// <summary> Initializes a new instance of <see cref="Models.AutocompleteResults"/>. </summary>
@@ -125,7 +206,19 @@ namespace Azure.Search.Documents.Models
             errors ??= new List<SearchIndexerError>();
             warnings ??= new List<SearchIndexerWarning>();
 
-            return new IndexerExecutionResult(status, statusDetail, currentState, errorMessage, startTime, endTime, errors?.ToList(), warnings?.ToList(), itemCount, failedItemCount, initialTrackingState, finalTrackingState);
+            return new IndexerExecutionResult(
+                status,
+                statusDetail,
+                currentState,
+                errorMessage,
+                startTime,
+                endTime,
+                errors?.ToList(),
+                warnings?.ToList(),
+                itemCount,
+                failedItemCount,
+                initialTrackingState,
+                finalTrackingState);
         }
 
         /// <summary> Initializes a new instance of <see cref="Indexes.Models.SearchIndexStatistics"/>. </summary>
@@ -189,7 +282,28 @@ namespace Azure.Search.Documents.Models
                 throw new ArgumentNullException(nameof(vectorIndexSizeCounter));
             }
 
-            return new SearchServiceCounters(aliasCounter, documentCounter, indexCounter, indexerCounter, dataSourceCounter, storageSizeCounter, synonymMapCounter, skillsetCounter, vectorIndexSizeCounter);
+            return new SearchServiceCounters(
+                aliasCounter,
+                documentCounter,
+                indexCounter,
+                indexerCounter,
+                dataSourceCounter,
+                storageSizeCounter,
+                synonymMapCounter,
+                skillsetCounter,
+                vectorIndexSizeCounter);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Indexes.Models.SearchServiceLimits"/>. </summary>
+        /// <param name="maxFieldsPerIndex"> The maximum allowed fields per index. </param>
+        /// <param name="maxFieldNestingDepthPerIndex"> The maximum depth which you can nest sub-fields in an index, including the top-level complex field. For example, a/b/c has a nesting depth of 3. </param>
+        /// <param name="maxComplexCollectionFieldsPerIndex"> The maximum number of fields of type Collection(Edm.ComplexType) allowed in an index. </param>
+        /// <param name="maxComplexObjectsInCollectionsPerDocument"> The maximum number of objects in complex collections allowed per document. </param>
+        /// <param name="maxStoragePerIndexInBytes"> The maximum amount of storage in bytes allowed per index. </param>
+        /// <returns> A new <see cref="Indexes.Models.SearchServiceLimits"/> instance for mocking. </returns>
+        public static SearchServiceLimits SearchServiceLimits(int? maxFieldsPerIndex = null, int? maxFieldNestingDepthPerIndex = null, int? maxComplexCollectionFieldsPerIndex = null, int? maxComplexObjectsInCollectionsPerDocument = null, long? maxStoragePerIndexInBytes = null)
+        {
+            return new SearchServiceLimits(maxFieldsPerIndex, maxFieldNestingDepthPerIndex, maxComplexCollectionFieldsPerIndex, maxComplexObjectsInCollectionsPerDocument, maxStoragePerIndexInBytes);
         }
     }
 }

@@ -13,7 +13,7 @@ using Azure.Core.TestFramework;
 
 namespace Azure.Search.Documents.Tests.Samples.VectorSearch
 {
-    [ClientTestFixture(SearchClientOptions.ServiceVersion.V2023_10_01_Preview), ServiceVersion(Min = SearchClientOptions.ServiceVersion.V2023_10_01_Preview)]
+    [ClientTestFixture(SearchClientOptions.ServiceVersion.V2024_11_01_Preview), ServiceVersion(Min = SearchClientOptions.ServiceVersion.V2024_11_01_Preview)]
     public partial class VectorSemanticHybridSearch : SearchTestBase
     {
         public VectorSemanticHybridSearch(bool async, SearchClientOptions.ServiceVersion serviceVersion)
@@ -35,7 +35,11 @@ namespace Azure.Search.Documents.Tests.Samples.VectorSearch
                 SearchClient searchClient = await UploadDocuments(resources, indexName);
 
                 #region Snippet:Azure_Search_Documents_Tests_Samples_Sample07_Vector_Semantic_Hybrid_Search
+#if !SNIPPET
                 ReadOnlyMemory<float> vectorizedResult = VectorSearchEmbeddings.SearchVectorizeDescription; // "Top hotels in town"
+#else
+                ReadOnlyMemory<float> vectorizedResult = GetEmbeddings("Top hotels in town");
+#endif
 #if !SNIPPET
                 await Task.Delay(TimeSpan.FromSeconds(1));
 #endif
@@ -190,6 +194,11 @@ namespace Azure.Search.Documents.Tests.Samples.VectorSearch
         public static Hotel[] GetHotelDocuments()
         {
             return VectorSearchCommons.GetHotelDocuments();
+        }
+
+        public static ReadOnlyMemory<float> GetEmbeddings(string input)
+        {
+            return VectorSearchCommons.GetEmbeddings(input);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace Azure.ResourceManager.ServiceNetworking.Models
 {
-    /// <summary> The AssociationType. </summary>
+    /// <summary> Association Type Enum. </summary>
     public readonly partial struct AssociationType : IEquatable<AssociationType>
     {
         private readonly string _value;
@@ -24,13 +24,13 @@ namespace Azure.ResourceManager.ServiceNetworking.Models
 
         private const string SubnetsValue = "subnets";
 
-        /// <summary> subnets. </summary>
+        /// <summary> Association of Type Subnet. </summary>
         public static AssociationType Subnets { get; } = new AssociationType(SubnetsValue);
         /// <summary> Determines if two <see cref="AssociationType"/> values are the same. </summary>
         public static bool operator ==(AssociationType left, AssociationType right) => left.Equals(right);
         /// <summary> Determines if two <see cref="AssociationType"/> values are not the same. </summary>
         public static bool operator !=(AssociationType left, AssociationType right) => !left.Equals(right);
-        /// <summary> Converts a string to a <see cref="AssociationType"/>. </summary>
+        /// <summary> Converts a <see cref="string"/> to a <see cref="AssociationType"/>. </summary>
         public static implicit operator AssociationType(string value) => new AssociationType(value);
 
         /// <inheritdoc />
@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.ServiceNetworking.Models
 
         /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override int GetHashCode() => _value != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(_value) : 0;
         /// <inheritdoc />
         public override string ToString() => _value;
     }

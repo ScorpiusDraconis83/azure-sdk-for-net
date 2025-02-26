@@ -7,11 +7,8 @@
 
 using System.Threading;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Automation;
 using Azure.ResourceManager.Automation.Models;
 
 namespace Azure.ResourceManager.Automation.Mocking
@@ -129,7 +126,7 @@ namespace Azure.ResourceManager.Automation.Mocking
         public virtual AsyncPageable<DeletedAutomationAccount> GetDeletedAutomationAccountsBySubscriptionAsync(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => deletedAutomationAccountsRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, DeletedAutomationAccount.DeserializeDeletedAutomationAccount, deletedAutomationAccountsClientDiagnostics, Pipeline, "MockableAutomationSubscriptionResource.GetDeletedAutomationAccountsBySubscription", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => DeletedAutomationAccount.DeserializeDeletedAutomationAccount(e), deletedAutomationAccountsClientDiagnostics, Pipeline, "MockableAutomationSubscriptionResource.GetDeletedAutomationAccountsBySubscription", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -154,7 +151,7 @@ namespace Azure.ResourceManager.Automation.Mocking
         public virtual Pageable<DeletedAutomationAccount> GetDeletedAutomationAccountsBySubscription(CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => deletedAutomationAccountsRestClient.CreateListBySubscriptionRequest(Id.SubscriptionId);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, DeletedAutomationAccount.DeserializeDeletedAutomationAccount, deletedAutomationAccountsClientDiagnostics, Pipeline, "MockableAutomationSubscriptionResource.GetDeletedAutomationAccountsBySubscription", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => DeletedAutomationAccount.DeserializeDeletedAutomationAccount(e), deletedAutomationAccountsClientDiagnostics, Pipeline, "MockableAutomationSubscriptionResource.GetDeletedAutomationAccountsBySubscription", "value", null, cancellationToken);
         }
     }
 }

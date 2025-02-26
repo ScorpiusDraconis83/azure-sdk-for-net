@@ -170,7 +170,8 @@ namespace Azure.Storage.DataMovement.Tests
                     stream,
                     streamLength: length,
                     false,
-                    completeLength: length);
+                    completeLength: length,
+                    options: new StorageResourceWriteToOffsetOptions() { Initial = true });
             }
 
             // Assert
@@ -200,7 +201,7 @@ namespace Azure.Storage.DataMovement.Tests
                     streamLength: length,
                     overwrite: false,
                     completeLength: length,
-                    options: new StorageResourceWriteToOffsetOptions() { Position = writePosition });
+                    options: new StorageResourceWriteToOffsetOptions() { Position = writePosition, Initial = false });
             }
 
             // Assert
@@ -219,7 +220,7 @@ namespace Azure.Storage.DataMovement.Tests
             string path = await CreateRandomFileAsync(test.DirectoryPath, size: length);
             LocalFileStorageResource storageResource = new LocalFileStorageResource(path);
             var data = GetRandomBuffer(length);
-            try
+            Assert.ThrowsAsync<IOException>(async () =>
             {
                 using (var stream = new MemoryStream(data))
                 {
@@ -227,13 +228,11 @@ namespace Azure.Storage.DataMovement.Tests
                         stream: stream,
                         streamLength: length,
                         overwrite: false,
-                        completeLength: length);
+                        completeLength: length,
+                        options: new StorageResourceWriteToOffsetOptions() { Initial = true });
                 }
-            }
-            catch (IOException ex)
-            {
-                Assert.AreEqual(ex.Message, $"File path `{path}` already exists. Cannot overwrite file.");
-            }
+            },
+            $"File path `{path}` already exists. Cannot overwrite file.");
         }
 
         [Test]
@@ -246,12 +245,12 @@ namespace Azure.Storage.DataMovement.Tests
             LocalFileStorageResource storageResource = new LocalFileStorageResource(path);
 
             // Act
-            StorageResourceProperties result = await storageResource.GetPropertiesAsync();
+            StorageResourceItemProperties result = await storageResource.GetPropertiesAsync();
 
             // Assert
             Assert.NotNull(result);
-            Assert.AreEqual(result.ContentLength, size);
-            Assert.NotNull(result.ETag);
+            Assert.AreEqual(result.ResourceLength, size);
+            Assert.NotNull(result.RawProperties);
         }
 
         [Test]

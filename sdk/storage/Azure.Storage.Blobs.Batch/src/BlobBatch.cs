@@ -164,8 +164,7 @@ namespace Azure.Storage.Blobs.Specialized
         #region DeleteBlob
         /// <summary>
         /// The <see cref="DeleteBlob(string, string, DeleteSnapshotsOption, BlobRequestConditions)"/>
-        /// operation marks the specified blob or snapshot for  deletion. The
-        /// blob is later deleted during garbage collection which could take several minutes.
+        /// operation marks the specified blob or snapshot for deletion.
         ///
         /// Note that in order to delete a blob, you must delete all of its
         /// snapshots. You can delete both at the same time using
@@ -199,7 +198,7 @@ namespace Azure.Storage.Blobs.Specialized
             DeleteSnapshotsOption snapshotsOption,
             BlobRequestConditions conditions)
         {
-            DeleteBlobOptions options = null;
+            BatchDeleteBlobOptions options = null;
             if (snapshotsOption != DeleteSnapshotsOption.None ||
                 conditions != null)
             {
@@ -213,9 +212,8 @@ namespace Azure.Storage.Blobs.Specialized
         }
 
         /// <summary>
-        /// The <see cref="DeleteBlob(string, string, DeleteBlobOptions)"/>
-        /// operation marks the specified blob or snapshot for  deletion. The
-        /// blob is later deleted during garbage collection which could take several minutes.
+        /// The <see cref="DeleteBlob(string, string, BatchDeleteBlobOptions)"/>
+        /// operation marks the specified blob or snapshot for deletion.
         ///
         /// Note that in order to delete a blob, you must delete all of its
         /// snapshots. You can delete both at the same time using
@@ -241,14 +239,14 @@ namespace Azure.Storage.Blobs.Specialized
         public virtual Response DeleteBlob(
             string blobContainerName,
             string blobName,
-            DeleteBlobOptions options = default)
+            BatchDeleteBlobOptions options = default)
         {
             SetBatchOperationType(BlobBatchOperationType.Delete);
 
             HttpMessage message = BlobRestClient.CreateDeleteRequest(
                 containerName: blobContainerName,
                 blob: blobName.EscapePath(),
-                versionId: options?.VersionID,
+                versionId: options?.VersionId,
                 timeout: null,
                 leaseId: options?.Conditions?.LeaseId,
                 deleteSnapshots: options?.SnapshotsOption.ToDeleteSnapshotsOptionType(),
@@ -278,8 +276,7 @@ namespace Azure.Storage.Blobs.Specialized
 
         /// <summary>
         /// The <see cref="DeleteBlob(Uri, DeleteSnapshotsOption, BlobRequestConditions)"/>
-        /// operation marks the specified blob or snapshot for deletion. The
-        /// blob is later deleted during garbage collection which could take several minutes.
+        /// operation marks the specified blob or snapshot for deletion.
         ///
         /// Note that in order to delete a blob, you must delete all of its
         /// snapshots. You can delete both at the same time using

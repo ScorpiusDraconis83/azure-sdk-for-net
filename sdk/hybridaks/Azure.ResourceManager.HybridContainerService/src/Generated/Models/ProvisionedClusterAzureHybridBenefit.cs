@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace Azure.ResourceManager.HybridContainerService.Models
 {
-    /// <summary> Indicates whether Azure Hybrid Benefit is opted in. </summary>
+    /// <summary> Indicates whether Azure Hybrid Benefit is opted in. Default value is false. </summary>
     public readonly partial struct ProvisionedClusterAzureHybridBenefit : IEquatable<ProvisionedClusterAzureHybridBenefit>
     {
         private readonly string _value;
@@ -36,7 +36,7 @@ namespace Azure.ResourceManager.HybridContainerService.Models
         public static bool operator ==(ProvisionedClusterAzureHybridBenefit left, ProvisionedClusterAzureHybridBenefit right) => left.Equals(right);
         /// <summary> Determines if two <see cref="ProvisionedClusterAzureHybridBenefit"/> values are not the same. </summary>
         public static bool operator !=(ProvisionedClusterAzureHybridBenefit left, ProvisionedClusterAzureHybridBenefit right) => !left.Equals(right);
-        /// <summary> Converts a string to a <see cref="ProvisionedClusterAzureHybridBenefit"/>. </summary>
+        /// <summary> Converts a <see cref="string"/> to a <see cref="ProvisionedClusterAzureHybridBenefit"/>. </summary>
         public static implicit operator ProvisionedClusterAzureHybridBenefit(string value) => new ProvisionedClusterAzureHybridBenefit(value);
 
         /// <inheritdoc />
@@ -47,7 +47,7 @@ namespace Azure.ResourceManager.HybridContainerService.Models
 
         /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override int GetHashCode() => _value != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(_value) : 0;
         /// <inheritdoc />
         public override string ToString() => _value;
     }

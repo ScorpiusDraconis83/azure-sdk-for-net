@@ -1,14 +1,70 @@
 # Release History
 
-## 12.19.0-beta.2 (Unreleased)
+## 12.23.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug where in rare cases, a `NullReferenceException` could be thrown when parsing an error response from the service.
+- Fixed bug to ensure that the accumulated disposables within the internal `StorageWriteStream` are disposed properly in the event that an exception is thrown during the disposal process. (#47781)
 
 ### Other Changes
+
+## 12.23.0-beta.1 (2025-02-11)
+
+### Features Added
+- This release contains bug fixes to improve quality.
+
+## 12.22.0 (2024-11-12)
+
+### Features Added
+- This release contains bug fixes to improve quality.
+
+## 12.22.0-beta.2 (2024-10-10)
+
+### Other Changes
+- Upgraded `System.Text.Json` package dependency to 6.0.10 for security fix.
+
+## 12.21.1 (2024-10-10)
+
+### Other Changes
+- Upgraded `System.Text.Json` package dependency to 6.0.10 for security fix.
+
+## 12.22.0-beta.1 (2024-10-08)
+
+### Features Added
+- This release contains bug fixes to improve quality.
+
+## 12.21.0 (2024-09-18)
+
+### Features Added
+- This release contains bug fixes to improve quality.
+
+## 12.21.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
+
+## 12.20.1 (2024-07-25)
+
+### Bugs Fixed
+- Fixed \[BUG\] Azure Blob Storage Client SDK No Longer Supports Globalization Invariant Mode for Account Key Authentication #45052
+
+## 12.20.0 (2024-07-16)
+
+### Features Added
+- Includes all features from 12.20.0-beta.1.
+
+## 12.20.0-beta.1 (2024-06-11)
+- This release contains bug fixes to improve quality.
+
+## 12.19.0 (2024-05-13)
+- This release contains bug fixes to improve quality.
+
+## 12.19.0-beta.2 (2024-04-15)
+- This release contains bug fixes to improve quality.
 
 ## 12.19.0-beta.1 (2023-12-05)
 - Fixed bug where parsing the "sdd" value of a SAS would increment the value by 6 if the value was 10 or over.

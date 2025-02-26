@@ -5,13 +5,14 @@
 
 #nullable disable
 
+using System;
+using System.Collections.Generic;
 using Azure.Core;
 using Azure.ResourceManager.Models;
-using Azure.ResourceManager.SecurityCenter;
 
 namespace Azure.ResourceManager.SecurityCenter.Models
 {
-    /// <summary> The UnknownSetting. </summary>
+    /// <summary> Unknown version of Setting. </summary>
     internal partial class UnknownSetting : SecuritySettingData
     {
         /// <summary> Initializes a new instance of <see cref="UnknownSetting"/>. </summary>
@@ -20,9 +21,15 @@ namespace Azure.ResourceManager.SecurityCenter.Models
         /// <param name="resourceType"> The resourceType. </param>
         /// <param name="systemData"> The systemData. </param>
         /// <param name="kind"> the kind of the settings string. </param>
-        internal UnknownSetting(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, SettingKind kind) : base(id, name, resourceType, systemData, kind)
+        /// <param name="serializedAdditionalRawData"> Keeps track of any properties unknown to the library. </param>
+        internal UnknownSetting(ResourceIdentifier id, string name, ResourceType resourceType, SystemData systemData, SettingKind kind, IDictionary<string, BinaryData> serializedAdditionalRawData) : base(id, name, resourceType, systemData, kind, serializedAdditionalRawData)
         {
             Kind = kind;
+        }
+
+        /// <summary> Initializes a new instance of <see cref="UnknownSetting"/> for deserialization. </summary>
+        internal UnknownSetting()
+        {
         }
     }
 }

@@ -10,23 +10,30 @@ using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
-using Azure.ResourceManager.Advisor;
 
 namespace Azure.ResourceManager.Advisor.Models
 {
     internal partial class ResourceRecommendationBaseListResult : IUtf8JsonSerializable, IJsonModel<ResourceRecommendationBaseListResult>
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ResourceRecommendationBaseListResult>)this).Write(writer, new ModelReaderWriterOptions("W"));
+        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer) => ((IJsonModel<ResourceRecommendationBaseListResult>)this).Write(writer, ModelSerializationExtensions.WireOptions);
 
         void IJsonModel<ResourceRecommendationBaseListResult>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            writer.WriteStartObject();
+            JsonModelWriteCore(writer, options);
+            writer.WriteEndObject();
+        }
+
+        /// <param name="writer"> The JSON writer. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             var format = options.Format == "W" ? ((IPersistableModel<ResourceRecommendationBaseListResult>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support writing '{format}' format.");
             }
 
-            writer.WriteStartObject();
             if (Optional.IsDefined(NextLink))
             {
                 writer.WritePropertyName("nextLink"u8);
@@ -38,7 +45,7 @@ namespace Azure.ResourceManager.Advisor.Models
                 writer.WriteStartArray();
                 foreach (var item in Value)
                 {
-                    writer.WriteObjectValue(item);
+                    writer.WriteObjectValue(item, options);
                 }
                 writer.WriteEndArray();
             }
@@ -57,7 +64,6 @@ namespace Azure.ResourceManager.Advisor.Models
 #endif
                 }
             }
-            writer.WriteEndObject();
         }
 
         ResourceRecommendationBaseListResult IJsonModel<ResourceRecommendationBaseListResult>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
@@ -65,7 +71,7 @@ namespace Azure.ResourceManager.Advisor.Models
             var format = options.Format == "W" ? ((IPersistableModel<ResourceRecommendationBaseListResult>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support '{format}' format.");
+                throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support reading '{format}' format.");
             }
 
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
@@ -74,16 +80,16 @@ namespace Azure.ResourceManager.Advisor.Models
 
         internal static ResourceRecommendationBaseListResult DeserializeResourceRecommendationBaseListResult(JsonElement element, ModelReaderWriterOptions options = null)
         {
-            options ??= new ModelReaderWriterOptions("W");
+            options ??= ModelSerializationExtensions.WireOptions;
 
             if (element.ValueKind == JsonValueKind.Null)
             {
                 return null;
             }
-            Optional<string> nextLink = default;
-            Optional<IReadOnlyList<ResourceRecommendationBaseData>> value = default;
+            string nextLink = default;
+            IReadOnlyList<ResourceRecommendationBaseData> value = default;
             IDictionary<string, BinaryData> serializedAdditionalRawData = default;
-            Dictionary<string, BinaryData> additionalPropertiesDictionary = new Dictionary<string, BinaryData>();
+            Dictionary<string, BinaryData> rawDataDictionary = new Dictionary<string, BinaryData>();
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("nextLink"u8))
@@ -100,18 +106,18 @@ namespace Azure.ResourceManager.Advisor.Models
                     List<ResourceRecommendationBaseData> array = new List<ResourceRecommendationBaseData>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(ResourceRecommendationBaseData.DeserializeResourceRecommendationBaseData(item));
+                        array.Add(ResourceRecommendationBaseData.DeserializeResourceRecommendationBaseData(item, options));
                     }
                     value = array;
                     continue;
                 }
                 if (options.Format != "W")
                 {
-                    additionalPropertiesDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
+                    rawDataDictionary.Add(property.Name, BinaryData.FromString(property.Value.GetRawText()));
                 }
             }
-            serializedAdditionalRawData = additionalPropertiesDictionary;
-            return new ResourceRecommendationBaseListResult(nextLink.Value, Optional.ToList(value), serializedAdditionalRawData);
+            serializedAdditionalRawData = rawDataDictionary;
+            return new ResourceRecommendationBaseListResult(nextLink, value ?? new ChangeTrackingList<ResourceRecommendationBaseData>(), serializedAdditionalRawData);
         }
 
         BinaryData IPersistableModel<ResourceRecommendationBaseListResult>.Write(ModelReaderWriterOptions options)
@@ -123,7 +129,7 @@ namespace Azure.ResourceManager.Advisor.Models
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support writing '{options.Format}' format.");
             }
         }
 
@@ -139,7 +145,7 @@ namespace Azure.ResourceManager.Advisor.Models
                         return DeserializeResourceRecommendationBaseListResult(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(ResourceRecommendationBaseListResult)} does not support reading '{options.Format}' format.");
             }
         }
 

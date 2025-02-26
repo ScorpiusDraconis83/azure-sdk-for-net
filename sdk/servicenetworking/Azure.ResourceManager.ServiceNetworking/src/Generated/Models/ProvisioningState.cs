@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace Azure.ResourceManager.ServiceNetworking.Models
 {
-    /// <summary> The ProvisioningState. </summary>
+    /// <summary> Resource Provisioning State Enum. </summary>
     public readonly partial struct ProvisioningState : IEquatable<ProvisioningState>
     {
         private readonly string _value;
@@ -30,25 +30,25 @@ namespace Azure.ResourceManager.ServiceNetworking.Models
         private const string FailedValue = "Failed";
         private const string CanceledValue = "Canceled";
 
-        /// <summary> Provisioning. </summary>
+        /// <summary> Resource in Provisioning State. </summary>
         public static ProvisioningState Provisioning { get; } = new ProvisioningState(ProvisioningValue);
-        /// <summary> Updating. </summary>
+        /// <summary> Resource in Updating State. </summary>
         public static ProvisioningState Updating { get; } = new ProvisioningState(UpdatingValue);
-        /// <summary> Deleting. </summary>
+        /// <summary> Resource in Deleting State. </summary>
         public static ProvisioningState Deleting { get; } = new ProvisioningState(DeletingValue);
-        /// <summary> Accepted. </summary>
+        /// <summary> Resource in Accepted State. </summary>
         public static ProvisioningState Accepted { get; } = new ProvisioningState(AcceptedValue);
-        /// <summary> Succeeded. </summary>
+        /// <summary> Resource in Succeeded State. </summary>
         public static ProvisioningState Succeeded { get; } = new ProvisioningState(SucceededValue);
-        /// <summary> Failed. </summary>
+        /// <summary> Resource in Failed State. </summary>
         public static ProvisioningState Failed { get; } = new ProvisioningState(FailedValue);
-        /// <summary> Canceled. </summary>
+        /// <summary> Resource in Canceled State. </summary>
         public static ProvisioningState Canceled { get; } = new ProvisioningState(CanceledValue);
         /// <summary> Determines if two <see cref="ProvisioningState"/> values are the same. </summary>
         public static bool operator ==(ProvisioningState left, ProvisioningState right) => left.Equals(right);
         /// <summary> Determines if two <see cref="ProvisioningState"/> values are not the same. </summary>
         public static bool operator !=(ProvisioningState left, ProvisioningState right) => !left.Equals(right);
-        /// <summary> Converts a string to a <see cref="ProvisioningState"/>. </summary>
+        /// <summary> Converts a <see cref="string"/> to a <see cref="ProvisioningState"/>. </summary>
         public static implicit operator ProvisioningState(string value) => new ProvisioningState(value);
 
         /// <inheritdoc />
@@ -59,7 +59,7 @@ namespace Azure.ResourceManager.ServiceNetworking.Models
 
         /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override int GetHashCode() => _value?.GetHashCode() ?? 0;
+        public override int GetHashCode() => _value != null ? StringComparer.InvariantCultureIgnoreCase.GetHashCode(_value) : 0;
         /// <inheritdoc />
         public override string ToString() => _value;
     }

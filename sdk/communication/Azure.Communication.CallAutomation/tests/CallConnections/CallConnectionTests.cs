@@ -132,6 +132,16 @@ namespace Azure.Communication.CallAutomation.Tests.CallConnections
             verifyOperationContext(response);
         }
 
+        [TestCaseSource(nameof(TestData_TransferCallToParticipant_MicrosoftTeamsAppTarget))]
+        public async Task TransferCallToParticipantAsync_simpleMethod_MicrosoftTeamsAppAsTarget_202Accepted(CallInvite callInvite)
+        {
+            var callConnection = CreateMockCallConnection(202, OperationContextPayload);
+
+            var response = await callConnection.TransferCallToParticipantAsync(callInvite.Target).ConfigureAwait(false);
+            Assert.AreEqual((int)HttpStatusCode.Accepted, response.GetRawResponse().Status);
+            verifyOperationContext(response);
+        }
+
         [TestCaseSource(nameof(TestData_TransferCallToParticipant))]
         public async Task TransferCallToParticipantAsync_202Accepted(CallInvite callInvite)
         {
@@ -396,7 +406,7 @@ namespace Azure.Communication.CallAutomation.Tests.CallConnections
         }
 
         [TestCaseSource(nameof(TestData_MuteParticipant))]
-        public void MuteParticipant_200OK(CommunicationIdentifier participant)
+        public void MuteParticipant_200Ok(CommunicationIdentifier participant)
         {
             var callConnection = CreateMockCallConnection(200, OperationContextPayload);
 
@@ -414,7 +424,7 @@ namespace Azure.Communication.CallAutomation.Tests.CallConnections
         }
 
         [TestCaseSource(nameof(TestData_MuteParticipant))]
-        public void MuteParticipant_WithOptions_200OK(CommunicationIdentifier participant)
+        public void MuteParticipant_WithOptions_200Ok(CommunicationIdentifier participant)
         {
             var callConnection = CreateMockCallConnection(200, OperationContextPayload);
             var options = new MuteParticipantOptions(participant)
@@ -441,7 +451,7 @@ namespace Azure.Communication.CallAutomation.Tests.CallConnections
         }
 
         [TestCaseSource(nameof(TestData_MuteParticipant))]
-        public async Task MuteParticipantAsync_200OK(CommunicationIdentifier participant)
+        public async Task MuteParticipantAsync_200Accepted(CommunicationIdentifier participant)
         {
             var callConnection = CreateMockCallConnection(200, OperationContextPayload);
 
@@ -545,6 +555,19 @@ namespace Azure.Communication.CallAutomation.Tests.CallConnections
         private static IEnumerable<object?[]> TestData_TransferCallToParticipant()
         {
             var callInvite = new CallInvite(new CommunicationUserIdentifier("userId"));
+            callInvite.CustomCallingContext.AddVoip("key1", "value1");
+            return new[]
+            {
+                new object?[]
+                {
+                    callInvite
+                },
+            };
+        }
+
+        private static IEnumerable<object?[]> TestData_TransferCallToParticipant_MicrosoftTeamsAppTarget()
+        {
+            var callInvite = new CallInvite(new MicrosoftTeamsAppIdentifier("userId"));
             callInvite.CustomCallingContext.AddVoip("key1", "value1");
             return new[]
             {

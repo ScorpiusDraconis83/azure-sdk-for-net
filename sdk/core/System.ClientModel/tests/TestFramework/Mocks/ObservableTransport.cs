@@ -6,12 +6,11 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClientModel.Tests.Mocks;
 
-// TODO: Can I collapse this with RetriableTransport into a single
-// MockTransport?
 public class ObservableTransport : PipelineTransport
 {
     public string Id { get; }
@@ -91,60 +90,44 @@ public class ObservableTransport : PipelineTransport
             throw new NotImplementedException();
         }
 
-        protected override BinaryContent? GetContentCore()
+        protected override BinaryContent? ContentCore
         {
-            throw new NotImplementedException();
+            get => null;
+            set => throw new NotImplementedException();
         }
 
-        protected override PipelineMessageHeaders GetHeadersCore()
-        {
-            throw new NotImplementedException();
-        }
+        protected override PipelineRequestHeaders HeadersCore
+            => new MockRequestHeaders();
 
-        protected override string GetMethodCore()
-        {
-            throw new NotImplementedException();
-        }
+        protected override string MethodCore { get; set; } = "GET";
 
-        protected override Uri GetUriCore()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SetContentCore(BinaryContent? content)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SetMethodCore(string method)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void SetUriCore(Uri uri)
-        {
-            throw new NotImplementedException();
-        }
+        protected override Uri? UriCore { get; set; } = new Uri("http://example.com"); // For the logging policy
     }
 
     private class TransportResponse : PipelineResponse
     {
         public override int Status => 0;
 
-        public override string ReasonPhrase => throw new NotImplementedException();
+        public override string ReasonPhrase { get; } = string.Empty;
 
-        public override Stream? ContentStream
-        {
-            get => null;
-            set => throw new NotImplementedException();
-        }
+        public override Stream? ContentStream { get; set; }
 
-        protected override PipelineMessageHeaders GetHeadersCore()
+        public override BinaryData Content { get; } = new BinaryData(new byte[0]);
+
+        protected override PipelineResponseHeaders HeadersCore
+            => new MockResponseHeaders();
+
+        public override void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public override void Dispose()
+        public override BinaryData BufferContent(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ValueTask<BinaryData> BufferContentAsync(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

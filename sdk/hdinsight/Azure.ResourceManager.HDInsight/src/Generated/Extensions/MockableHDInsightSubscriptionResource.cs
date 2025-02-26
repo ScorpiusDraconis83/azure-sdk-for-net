@@ -9,11 +9,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Autorest.CSharp.Core;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
-using Azure.ResourceManager.HDInsight;
 using Azure.ResourceManager.HDInsight.Models;
 
 namespace Azure.ResourceManager.HDInsight.Mocking
@@ -62,7 +59,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -92,7 +89,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -122,7 +119,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -157,7 +154,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -192,7 +189,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -202,7 +199,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         public virtual AsyncPageable<HDInsightUsage> GetHDInsightUsagesAsync(AzureLocation location, CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => LocationsRestClient.CreateListUsagesRequest(Id.SubscriptionId, location);
-            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, HDInsightUsage.DeserializeHDInsightUsage, LocationsClientDiagnostics, Pipeline, "MockableHDInsightSubscriptionResource.GetHDInsightUsages", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreateAsyncPageable(FirstPageRequest, null, e => HDInsightUsage.DeserializeHDInsightUsage(e), LocationsClientDiagnostics, Pipeline, "MockableHDInsightSubscriptionResource.GetHDInsightUsages", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -218,7 +215,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -228,7 +225,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         public virtual Pageable<HDInsightUsage> GetHDInsightUsages(AzureLocation location, CancellationToken cancellationToken = default)
         {
             HttpMessage FirstPageRequest(int? pageSizeHint) => LocationsRestClient.CreateListUsagesRequest(Id.SubscriptionId, location);
-            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, HDInsightUsage.DeserializeHDInsightUsage, LocationsClientDiagnostics, Pipeline, "MockableHDInsightSubscriptionResource.GetHDInsightUsages", "value", null, cancellationToken);
+            return GeneratorPageableHelpers.CreatePageable(FirstPageRequest, null, e => HDInsightUsage.DeserializeHDInsightUsage(e), LocationsClientDiagnostics, Pipeline, "MockableHDInsightSubscriptionResource.GetHDInsightUsages", "value", null, cancellationToken);
         }
 
         /// <summary>
@@ -244,7 +241,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -279,7 +276,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -314,7 +311,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -353,7 +350,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -392,7 +389,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>
@@ -431,7 +428,7 @@ namespace Azure.ResourceManager.HDInsight.Mocking
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-04-15-preview</description>
+        /// <description>2024-08-01-preview</description>
         /// </item>
         /// </list>
         /// </summary>

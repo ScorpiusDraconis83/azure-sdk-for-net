@@ -1,6 +1,6 @@
 # Release History
 
-## 4.22.0-beta.1 (Unreleased)
+## 4.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,73 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.30.0 (2025-02-14)
+
+### Features Added
+
+- Added `MessageId`, `MessageType`, and `Reaction` properties to the `AcsMessageReceivedEventData` event.
+- Added the `Animated` property to `AcsMessageMediaContent` event.
+
+## 4.29.0 (2025-01-21)
+
+### Features Added
+
+- Added `RecipientMailServerHostName` property to `AcsEmailDeliveryReportStatusDetails`.
+- Added `InternetMessageId` property to `AcsEmailDeliveryReportReceivedEventData` event.
+- Added `SegmentCount` property to `AcsSmsReceivedEventData` event.
+
+## 4.28.0 (2024-11-18)
+
+### Features Added
+
+- Added `ResourceNotificationsContainerServiceEventResourcesScheduledEventData` event.
+- Added `PolicyRunSummary` property to `StorageLifecyclePolicyCompletedEventData` event.
+
+## 4.27.0 (2024-10-14)
+
+### Features Added
+
+- Added `OnBehalfOfCallee` property to `AcsIncomingCallEventData` event.
+
+## 4.26.0 (2024-09-18)
+
+### Features Added
+
+- Added `TierToColdSummary` property to `StorageLifecyclePolicyCompletedEventData`.
+
+## 4.25.0 (2024-08-21)
+
+### Features Added
+
+- Added `AccessTier` and `PreviousTier` properties to `StorageBlobTierChangedEventData` system event.
+- Added `AccessTier` to `StorageBlobCreatedEventData` system event.
+
+## 4.24.1 (2024-07-16)
+
+### Bugs Fixed
+
+- Fixed deserialization bugs in `AcsEmailEngagementTrackingReportReceivedEventData` and `AcsEmailDeliveryReportReceivedEventData` system events that caused the `DeliveryAttemptTimestamp` and `UserActionTimeStamp` properties to be null.
+
+## 4.24.0 (2024-04-09)
+
+### Features Added
+
+- Added new Communication events.
+
+## 4.23.0 (2024-03-11)
+
+### Features Added
+
+- Added API Center events.
+
+## 4.22.0 (2024-02-12)
+
+### Features Added
+
+- Added new Storage Task Assignment system events.
+- Added new AVS system events.
+- Added `Metadata` property to `AcsChatThreadCreatedEventData` system event.
 
 ## 4.21.0 (2023-11-07)
 
@@ -50,7 +117,7 @@
 
 ### Features Added
 
-- Added new system events for Container Service. 
+- Added new system events for Container Service.
 
 ### Breaking Changes
 
@@ -193,7 +260,7 @@
 ### New Features
 * Added the following new system events:
   - StorageBlobInventoryPolicyCompletedEventData
-    
+
 * Updated existing system events:
  - AcsRecordingChunkInfoProperties - Added `ContentLocation` and `MetadataLocation` properties.
 
@@ -203,7 +270,7 @@
 ## 4.2.0 (2021-05-10)
 
 ### New Features
-* Added the following new system events: 
+* Added the following new system events:
   - PolicyInsightsPolicyStateChangedEventData
   - PolicyInsightsPolicyStateCreatedEventData
   - PolicyInsightsPolicyStateDeletedEventData

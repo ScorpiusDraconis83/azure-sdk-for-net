@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 using System;
+using System.ComponentModel;
 using Azure.Core.Extensions;
 using Azure.Core;
 using Azure.Storage;
 using Azure.Storage.Files.Shares;
+using Azure;
 
 namespace Microsoft.Extensions.Azure
 {
@@ -24,12 +26,32 @@ namespace Microsoft.Extensions.Azure
         }
 
         /// <summary>
-        /// Registers a <see cref="ShareServiceClient"/> instance with the provided <paramref name="serviceUri"/>
+        /// Registers a <see cref="ShareServiceClient"/> instance with the provided <paramref name="serviceUri"/>.
+        ///
+        /// Note that use of this method is not recommended as it constructs a <see cref="ShareServiceClient"/> without authentication details, ignoring the token
+        /// credential configured using the client factory builder's UseCredential method. Use <see cref="AddFileServiceClientWithCredential{TBuilder}"/> instead.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static IAzureClientBuilder<ShareServiceClient, ShareClientOptions> AddFileServiceClient<TBuilder>(this TBuilder builder, Uri serviceUri)
             where TBuilder : IAzureClientFactoryBuilder
         {
             return builder.RegisterClientFactory<ShareServiceClient, ShareClientOptions>(options => new ShareServiceClient(serviceUri, options));
+        }
+
+        /// <summary>
+        /// Registers a <see cref="ShareServiceClient"/> instance with the provided <paramref name="serviceUri"/> and the token credential
+        /// configured using the client factory builder's UseCredential method.
+        ///
+        /// Note that service-level operations do not support token credential authentication.
+        /// This extension exists to allow the construction of a <see cref="ShareServiceClient"/> that can be used to derive
+        /// a <see cref="ShareClient"/> that has token credential authentication.
+        ///
+        /// Also note that <see cref="ShareClientOptions.ShareTokenIntent"/> is currently required for token authentication.
+        /// </summary>
+        public static IAzureClientBuilder<ShareServiceClient, ShareClientOptions> AddFileServiceClientWithCredential<TBuilder>(this TBuilder builder, Uri serviceUri)
+            where TBuilder : IAzureClientFactoryBuilderWithCredential
+        {
+            return builder.RegisterClientFactory<ShareServiceClient, ShareClientOptions>((options, cred) => new ShareServiceClient(serviceUri, cred, options));
         }
 
         /// <summary>
@@ -39,6 +61,24 @@ namespace Microsoft.Extensions.Azure
             where TBuilder : IAzureClientFactoryBuilder
         {
             return builder.RegisterClientFactory<ShareServiceClient, ShareClientOptions>(options => new ShareServiceClient(serviceUri, sharedKeyCredential, options));
+        }
+
+        /// <summary>
+        /// Registers a <see cref="ShareServiceClient"/> instance with the provided <paramref name="serviceUri"/> and <paramref name="tokenCredential"/>
+        /// </summary>
+        public static IAzureClientBuilder<ShareServiceClient, ShareClientOptions> AddShareServiceClient<TBuilder>(this TBuilder builder, Uri serviceUri, TokenCredential tokenCredential)
+            where TBuilder : IAzureClientFactoryBuilderWithCredential
+        {
+            return builder.RegisterClientFactory<ShareServiceClient, ShareClientOptions>((options, token) => new ShareServiceClient(serviceUri, token, options));
+        }
+
+        /// <summary>
+        /// Registers a <see cref="ShareServiceClient"/> instance with the provided <paramref name="serviceUri"/> and <paramref name="sasCredential"/>
+        /// </summary>
+        public static IAzureClientBuilder<ShareServiceClient, ShareClientOptions> AddShareServiceClient<TBuilder>(this TBuilder builder, Uri serviceUri, AzureSasCredential sasCredential)
+            where TBuilder : IAzureClientFactoryBuilder
+        {
+            return builder.RegisterClientFactory<ShareServiceClient, ShareClientOptions>(options => new ShareServiceClient(serviceUri, sasCredential, options));
         }
 
         /// <summary>

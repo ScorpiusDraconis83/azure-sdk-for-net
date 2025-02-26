@@ -7,52 +7,20 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.MachineLearning;
 using Azure.ResourceManager.MachineLearning.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.MachineLearning.Samples
 {
     public partial class Sample_MachineLearningFeaturestoreEntityVersionResource
     {
-        // Delete Workspace Featurestore Entity Version.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task Delete_DeleteWorkspaceFeaturestoreEntityVersion()
-        {
-            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2023-06-01-preview/examples/Workspace/FeaturestoreEntityVersion/delete.json
-            // this example is just showing the usage of "FeaturestoreEntityVersions_Delete" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this MachineLearningFeaturestoreEntityVersionResource created on azure
-            // for more information of creating MachineLearningFeaturestoreEntityVersionResource, please refer to the document of MachineLearningFeaturestoreEntityVersionResource
-            string subscriptionId = "00000000-1111-2222-3333-444444444444";
-            string resourceGroupName = "test-rg";
-            string workspaceName = "my-aml-workspace";
-            string name = "string";
-            string version = "string";
-            ResourceIdentifier machineLearningFeaturestoreEntityVersionResourceId = MachineLearningFeaturestoreEntityVersionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, workspaceName, name, version);
-            MachineLearningFeaturestoreEntityVersionResource machineLearningFeaturestoreEntityVersion = client.GetMachineLearningFeaturestoreEntityVersionResource(machineLearningFeaturestoreEntityVersionResourceId);
-
-            // invoke the operation
-            await machineLearningFeaturestoreEntityVersion.DeleteAsync(WaitUntil.Completed);
-
-            Console.WriteLine($"Succeeded");
-        }
-
-        // Get Workspace Featurestore Entity Version.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_GetWorkspaceFeaturestoreEntityVersion()
         {
-            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2023-06-01-preview/examples/Workspace/FeaturestoreEntityVersion/get.json
+            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/FeaturestoreEntityVersion/get.json
             // this example is just showing the usage of "FeaturestoreEntityVersions_Get" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -80,12 +48,39 @@ namespace Azure.ResourceManager.MachineLearning.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // CreateOrUpdate Workspace Featurestore Entity Version.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
+        public async Task Delete_DeleteWorkspaceFeaturestoreEntityVersion()
+        {
+            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/FeaturestoreEntityVersion/delete.json
+            // this example is just showing the usage of "FeaturestoreEntityVersions_Delete" operation, for the dependent resources, they will have to be created separately.
+
+            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
+            TokenCredential cred = new DefaultAzureCredential();
+            // authenticate your client
+            ArmClient client = new ArmClient(cred);
+
+            // this example assumes you already have this MachineLearningFeaturestoreEntityVersionResource created on azure
+            // for more information of creating MachineLearningFeaturestoreEntityVersionResource, please refer to the document of MachineLearningFeaturestoreEntityVersionResource
+            string subscriptionId = "00000000-1111-2222-3333-444444444444";
+            string resourceGroupName = "test-rg";
+            string workspaceName = "my-aml-workspace";
+            string name = "string";
+            string version = "string";
+            ResourceIdentifier machineLearningFeaturestoreEntityVersionResourceId = MachineLearningFeaturestoreEntityVersionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, workspaceName, name, version);
+            MachineLearningFeaturestoreEntityVersionResource machineLearningFeaturestoreEntityVersion = client.GetMachineLearningFeaturestoreEntityVersionResource(machineLearningFeaturestoreEntityVersionResourceId);
+
+            // invoke the operation
+            await machineLearningFeaturestoreEntityVersion.DeleteAsync(WaitUntil.Completed);
+
+            Console.WriteLine("Succeeded");
+        }
+
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_CreateOrUpdateWorkspaceFeaturestoreEntityVersion()
         {
-            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2023-06-01-preview/examples/Workspace/FeaturestoreEntityVersion/createOrUpdate.json
+            // Generated from example definition: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/FeaturestoreEntityVersion/createOrUpdate.json
             // this example is just showing the usage of "FeaturestoreEntityVersions_CreateOrUpdate" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -104,26 +99,23 @@ namespace Azure.ResourceManager.MachineLearning.Samples
             MachineLearningFeaturestoreEntityVersionResource machineLearningFeaturestoreEntityVersion = client.GetMachineLearningFeaturestoreEntityVersionResource(machineLearningFeaturestoreEntityVersionResourceId);
 
             // invoke the operation
-            MachineLearningFeaturestoreEntityVersionData data = new MachineLearningFeaturestoreEntityVersionData(new MachineLearningFeatureStoreEntityVersionProperties()
+            MachineLearningFeaturestoreEntityVersionData data = new MachineLearningFeaturestoreEntityVersionData(new MachineLearningFeatureStoreEntityVersionProperties
             {
-                IndexColumns =
+                IndexColumns = {new IndexColumn
 {
-new IndexColumn()
-{
-ColumnName = "string",
 DataType = FeatureDataType.Datetime,
-}
-},
-                IsAnonymous = false,
+ColumnName = "string",
+}},
                 IsArchived = false,
+                IsAnonymous = false,
                 Description = "string",
-                Properties =
-{
-["string"] = "string",
-},
                 Tags =
 {
-["string"] = "string",
+["string"] = "string"
+},
+                Properties =
+{
+["string"] = "string"
 },
             });
             ArmOperation<MachineLearningFeaturestoreEntityVersionResource> lro = await machineLearningFeaturestoreEntityVersion.UpdateAsync(WaitUntil.Completed, data);

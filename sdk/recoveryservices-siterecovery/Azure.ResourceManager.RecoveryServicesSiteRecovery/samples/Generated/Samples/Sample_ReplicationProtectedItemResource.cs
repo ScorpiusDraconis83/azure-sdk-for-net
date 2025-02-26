@@ -8,24 +8,20 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.RecoveryServicesSiteRecovery;
 using Azure.ResourceManager.RecoveryServicesSiteRecovery.Models;
-using Azure.ResourceManager.Resources;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
 {
     public partial class Sample_ReplicationProtectedItemResource
     {
-        // Gets the details of a Replication protected item.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_GetsTheDetailsOfAReplicationProtectedItem()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Get.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Get.json
             // this example is just showing the usage of "ReplicationProtectedItems_Get" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -54,12 +50,11 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Purges protection.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Delete_PurgesProtection()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Purge.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Purge.json
             // this example is just showing the usage of "ReplicationProtectedItems_Purge" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -81,15 +76,14 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
             // invoke the operation
             await replicationProtectedItem.DeleteAsync(WaitUntil.Completed);
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
 
-        // Updates the replication protected Item settings.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_UpdatesTheReplicationProtectedItemSettings()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Update.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Update.json
             // this example is just showing the usage of "ReplicationProtectedItems_Update" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -109,31 +103,25 @@ namespace Azure.ResourceManager.RecoveryServicesSiteRecovery.Samples
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            ReplicationProtectedItemPatch patch = new ReplicationProtectedItemPatch()
+            ReplicationProtectedItemPatch patch = new ReplicationProtectedItemPatch
             {
-                Properties = new UpdateReplicationProtectedItemProperties()
+                Properties = new UpdateReplicationProtectedItemProperties
                 {
                     RecoveryAzureVmName = "vm1",
                     RecoveryAzureVmSize = "Basic_A0",
                     SelectedRecoveryAzureNetworkId = new ResourceIdentifier("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai"),
-                    VmNics =
-{
-new VmNicContentDetails()
+                    VmNics = {new VmNicContentDetails
 {
 NicId = "TWljcm9zb2Z0OkY4NDkxRTRGLTgxN0EtNDBERC1BOTBDLUFGNzczOTc4Qzc1Qlw3NjAwMzMxRS03NDk4LTQ0QTQtQjdDNy0xQjY1NkJDREQ1MkQ=",
-IPConfigs =
-{
-new HyperVFailoverIPConfigDetails()
+IPConfigs = {new HyperVFailoverIPConfigDetails
 {
 IPConfigName = "ipconfig1",
 IsPrimary = true,
 RecoverySubnetName = "subnet1",
 RecoveryStaticIPAddress = IPAddress.Parse("10.0.2.46"),
-}
-},
+}},
 SelectionType = "SelectedByUser",
-}
-},
+}},
                     LicenseType = SiteRecoveryLicenseType.WindowsServer,
                     ProviderSpecificDetails = new HyperVReplicaAzureUpdateReplicationProtectedItemContent(),
                 },
@@ -148,12 +136,11 @@ SelectionType = "SelectedByUser",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Add disk(s) for protection.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task AddDisks_AddDiskSForProtection()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_AddDisks.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_AddDisks.json
             // this example is just showing the usage of "ReplicationProtectedItems_AddDisks" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -173,14 +160,11 @@ SelectionType = "SelectedByUser",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            SiteRecoveryAddDisksContent content = new SiteRecoveryAddDisksContent()
+            SiteRecoveryAddDisksContent content = new SiteRecoveryAddDisksContent
             {
-                SiteRecoveryAddDisksProviderSpecificDetails = new A2AAddDisksContent()
+                SiteRecoveryAddDisksProviderSpecificDetails = new A2AAddDisksContent
                 {
-                    VmDisks =
-{
-new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd"),new ResourceIdentifier("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage"),new ResourceIdentifier("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage"))
-},
+                    VmDisks = { new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd"), new ResourceIdentifier("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage"), new ResourceIdentifier("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage")) },
                 },
             };
             ArmOperation<ReplicationProtectedItemResource> lro = await replicationProtectedItem.AddDisksAsync(WaitUntil.Completed, content);
@@ -193,12 +177,11 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Change or apply recovery point.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task ApplyRecoveryPoint_ChangeOrApplyRecoveryPoint()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
             // this example is just showing the usage of "ReplicationProtectedItems_ApplyRecoveryPoint" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -232,12 +215,11 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute cancel failover.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task FailoverCancel_ExecuteCancelFailover()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_FailoverCancel.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_FailoverCancel.json
             // this example is just showing the usage of "ReplicationProtectedItems_FailoverCancel" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -267,12 +249,11 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute commit failover.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task FailoverCommit_ExecuteCommitFailover()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_FailoverCommit.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_FailoverCommit.json
             // this example is just showing the usage of "ReplicationProtectedItems_FailoverCommit" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -302,12 +283,11 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute planned failover.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task PlannedFailover_ExecutePlannedFailover()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_PlannedFailover.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_PlannedFailover.json
             // this example is just showing the usage of "ReplicationProtectedItems_PlannedFailover" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -327,9 +307,9 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            PlannedFailoverContent content = new PlannedFailoverContent()
+            PlannedFailoverContent content = new PlannedFailoverContent
             {
-                Properties = new PlannedFailoverProperties()
+                Properties = new PlannedFailoverProperties
                 {
                     FailoverDirection = "PrimaryToRecovery",
                     ProviderSpecificDetails = new HyperVReplicaAzurePlannedFailoverProviderContent(),
@@ -345,12 +325,11 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Removes disk(s).
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task RemoveDisks_RemovesDiskS()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_RemoveDisks.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_RemoveDisks.json
             // this example is just showing the usage of "ReplicationProtectedItems_RemoveDisks" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -370,14 +349,11 @@ new A2AVmDiskDetails(new Uri("https://vmstorage.blob.core.windows.net/vhds/datad
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            RemoveDisksContent content = new RemoveDisksContent()
+            RemoveDisksContent content = new RemoveDisksContent
             {
-                RemoveDisksContentProviderSpecificDetails = new A2ARemoveDisksContent()
+                RemoveDisksContentProviderSpecificDetails = new A2ARemoveDisksContent
                 {
-                    VmDisksUris =
-{
-new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
-},
+                    VmDisksUris = { new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd") },
                 },
             };
             ArmOperation<ReplicationProtectedItemResource> lro = await replicationProtectedItem.RemoveDisksAsync(WaitUntil.Completed, content);
@@ -390,12 +366,11 @@ new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Resynchronize or repair replication.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task RepairReplication_ResynchronizeOrRepairReplication()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_RepairReplication.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_RepairReplication.json
             // this example is just showing the usage of "ReplicationProtectedItems_RepairReplication" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -425,12 +400,11 @@ new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute Reverse Replication\Reprotect.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Reprotect_ExecuteReverseReplicationReprotect()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Reprotect.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Reprotect.json
             // this example is just showing the usage of "ReplicationProtectedItems_Reprotect" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -450,9 +424,9 @@ new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            ReverseReplicationContent content = new ReverseReplicationContent()
+            ReverseReplicationContent content = new ReverseReplicationContent
             {
-                Properties = new ReverseReplicationProperties()
+                Properties = new ReverseReplicationProperties
                 {
                     FailoverDirection = "PrimaryToRecovery",
                     ProviderSpecificDetails = new HyperVReplicaAzureReprotectContent(),
@@ -468,12 +442,11 @@ new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Resolve health errors.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task ResolveHealthErrors_ResolveHealthErrors()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
             // this example is just showing the usage of "ReplicationProtectedItems_ResolveHealthErrors" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -493,15 +466,12 @@ new Uri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            ResolveHealthContent content = new ResolveHealthContent()
+            ResolveHealthContent content = new ResolveHealthContent
             {
-                ResolveHealthErrors =
-{
-new ResolveHealthError()
+                ResolveHealthErrors = {new ResolveHealthError
 {
 HealthErrorId = "3:8020",
-}
-},
+}},
             };
             ArmOperation<ReplicationProtectedItemResource> lro = await replicationProtectedItem.ResolveHealthErrorsAsync(WaitUntil.Completed, content);
             ReplicationProtectedItemResource result = lro.Value;
@@ -513,12 +483,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute switch provider.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task SwitchProvider_ExecuteSwitchProvider()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_SwitchProvider.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_SwitchProvider.json
             // this example is just showing the usage of "ReplicationProtectedItems_SwitchProvider" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -538,9 +507,9 @@ HealthErrorId = "3:8020",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            SwitchProviderContent content = new SwitchProviderContent()
+            SwitchProviderContent content = new SwitchProviderContent
             {
-                Properties = new SwitchProviderProperties()
+                Properties = new SwitchProviderProperties
                 {
                     TargetInstanceType = "InMageRcm",
                     ProviderSpecificDetails = new InMageAzureV2SwitchProviderContent(new ResourceIdentifier("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault2"), new ResourceIdentifier("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud2"), "5efaa202-e958-435e-8171-706bf735fcc4"),
@@ -556,12 +525,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute test failover.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task TestFailover_ExecuteTestFailover()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_TestFailover.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_TestFailover.json
             // this example is just showing the usage of "ReplicationProtectedItems_TestFailover" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -581,7 +549,7 @@ HealthErrorId = "3:8020",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            TestFailoverContent content = new TestFailoverContent(new TestFailoverProperties()
+            TestFailoverContent content = new TestFailoverContent(new TestFailoverProperties
             {
                 FailoverDirection = "PrimaryToRecovery",
                 NetworkType = "VmNetworkAsInput",
@@ -598,12 +566,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute test failover cleanup.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task TestFailoverCleanup_ExecuteTestFailoverCleanup()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
             // this example is just showing the usage of "ReplicationProtectedItems_TestFailoverCleanup" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -623,7 +590,7 @@ HealthErrorId = "3:8020",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            TestFailoverCleanupContent content = new TestFailoverCleanupContent(new TestFailoverCleanupProperties()
+            TestFailoverCleanupContent content = new TestFailoverCleanupContent(new TestFailoverCleanupProperties
             {
                 Comments = "Test Failover Cleanup",
             });
@@ -637,12 +604,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Execute unplanned failover.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task UnplannedFailover_ExecuteUnplannedFailover()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UnplannedFailover.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_UnplannedFailover.json
             // this example is just showing the usage of "ReplicationProtectedItems_UnplannedFailover" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -662,7 +628,7 @@ HealthErrorId = "3:8020",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            UnplannedFailoverContent content = new UnplannedFailoverContent(new UnplannedFailoverProperties()
+            UnplannedFailoverContent content = new UnplannedFailoverContent(new UnplannedFailoverProperties
             {
                 FailoverDirection = "PrimaryToRecovery",
                 SourceSiteOperations = "NotRequired",
@@ -678,12 +644,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Updates appliance for replication protected Item.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task UpdateAppliance_UpdatesApplianceForReplicationProtectedItem()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UpdateAppliance.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_UpdateAppliance.json
             // this example is just showing the usage of "ReplicationProtectedItems_UpdateAppliance" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -703,7 +668,7 @@ HealthErrorId = "3:8020",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            UpdateApplianceForReplicationProtectedItemContent content = new UpdateApplianceForReplicationProtectedItemContent(new UpdateApplianceForReplicationProtectedItemProperties("", new InMageRcmUpdateApplianceForReplicationProtectedItemContent()
+            UpdateApplianceForReplicationProtectedItemContent content = new UpdateApplianceForReplicationProtectedItemContent(new UpdateApplianceForReplicationProtectedItemProperties("", new InMageRcmUpdateApplianceForReplicationProtectedItemContent
             {
                 RunAsAccountId = "",
             }));
@@ -717,12 +682,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Update the mobility service on a protected item.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task UpdateMobilityService_UpdateTheMobilityServiceOnAProtectedItem()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
             // this example is just showing the usage of "ReplicationProtectedItems_UpdateMobilityService" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -742,7 +706,7 @@ HealthErrorId = "3:8020",
             ReplicationProtectedItemResource replicationProtectedItem = client.GetReplicationProtectedItemResource(replicationProtectedItemResourceId);
 
             // invoke the operation
-            UpdateMobilityServiceContent content = new UpdateMobilityServiceContent()
+            UpdateMobilityServiceContent content = new UpdateMobilityServiceContent
             {
                 UpdateMobilityServiceRequestRunAsAccountId = "2",
             };
@@ -756,46 +720,11 @@ HealthErrorId = "3:8020",
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Gets the list of replication protected items.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
-        public async Task GetReplicationProtectedItems_GetsTheListOfReplicationProtectedItems()
-        {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_List.json
-            // this example is just showing the usage of "ReplicationProtectedItems_List" operation, for the dependent resources, they will have to be created separately.
-
-            // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
-            TokenCredential cred = new DefaultAzureCredential();
-            // authenticate your client
-            ArmClient client = new ArmClient(cred);
-
-            // this example assumes you already have this ResourceGroupResource created on azure
-            // for more information of creating ResourceGroupResource, please refer to the document of ResourceGroupResource
-            string subscriptionId = "c183865e-6077-46f2-a3b1-deb0f4f4650a";
-            string resourceGroupName = "resourceGroupPS1";
-            ResourceIdentifier resourceGroupResourceId = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName);
-            ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
-
-            // invoke the operation and iterate over the result
-            string resourceName = "vault1";
-            await foreach (ReplicationProtectedItemResource item in resourceGroupResource.GetReplicationProtectedItemsAsync(resourceName))
-            {
-                // the variable item is a resource, you could call other operations on this instance as well
-                // but just for demo, we get its data from this resource instance
-                ReplicationProtectedItemData resourceData = item.Data;
-                // for demo we just print out the id
-                Console.WriteLine($"Succeeded on id: {resourceData.Id}");
-            }
-
-            Console.WriteLine($"Succeeded");
-        }
-
-        // Gets the list of target compute sizes for the replication protected item.
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetTargetComputeSizesByReplicationProtectedItems_GetsTheListOfTargetComputeSizesForTheReplicationProtectedItem()
         {
-            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
+            // Generated from example definition: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
             // this example is just showing the usage of "TargetComputeSizes_ListByReplicationProtectedItems" operation, for the dependent resources, they will have to be created separately.
 
             // get your azure access token, for more details of how Azure SDK get your access token, please refer to https://learn.microsoft.com/en-us/dotnet/azure/sdk/authentication?tabs=command-line
@@ -820,7 +749,7 @@ HealthErrorId = "3:8020",
                 Console.WriteLine($"Succeeded: {item}");
             }
 
-            Console.WriteLine($"Succeeded");
+            Console.WriteLine("Succeeded");
         }
     }
 }

@@ -7,20 +7,17 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Synapse;
 using Azure.ResourceManager.Synapse.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.Synapse.Samples
 {
     public partial class Sample_SynapseSqlPoolSecurityAlertPolicyResource
     {
-        // Get a security alert of a SQL Analytics pool
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_GetASecurityAlertOfASQLAnalyticsPool()
         {
             // Generated from example definition: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolSecurityAlert.json
@@ -51,9 +48,8 @@ namespace Azure.ResourceManager.Synapse.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Update a Sql pool's threat detection policy with all parameters
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_UpdateASqlPoolSThreatDetectionPolicyWithAllParameters()
         {
             // Generated from example definition: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolSecurityAlertWithAllParameters.json
@@ -75,17 +71,11 @@ namespace Azure.ResourceManager.Synapse.Samples
             SynapseSqlPoolSecurityAlertPolicyResource synapseSqlPoolSecurityAlertPolicy = client.GetSynapseSqlPoolSecurityAlertPolicyResource(synapseSqlPoolSecurityAlertPolicyResourceId);
 
             // invoke the operation
-            SynapseSqlPoolSecurityAlertPolicyData data = new SynapseSqlPoolSecurityAlertPolicyData()
+            SynapseSqlPoolSecurityAlertPolicyData data = new SynapseSqlPoolSecurityAlertPolicyData
             {
                 State = SynapseSecurityAlertPolicyState.Enabled,
-                DisabledAlerts =
-{
-"Sql_Injection","Usage_Anomaly"
-},
-                EmailAddresses =
-{
-"test@microsoft.com","user@microsoft.com"
-},
+                DisabledAlerts = { "Sql_Injection", "Usage_Anomaly" },
+                EmailAddresses = { "test@microsoft.com", "user@microsoft.com" },
                 EnableEmailToAccountAdmins = true,
                 StorageEndpoint = "https://mystorage.blob.core.windows.net",
                 StorageAccountAccessKey = "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==",
@@ -101,9 +91,8 @@ namespace Azure.ResourceManager.Synapse.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Update a Sql pool's threat detection policy with minimal parameters
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_UpdateASqlPoolSThreatDetectionPolicyWithMinimalParameters()
         {
             // Generated from example definition: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolSecurityAlertWithMinParameters.json
@@ -125,7 +114,7 @@ namespace Azure.ResourceManager.Synapse.Samples
             SynapseSqlPoolSecurityAlertPolicyResource synapseSqlPoolSecurityAlertPolicy = client.GetSynapseSqlPoolSecurityAlertPolicyResource(synapseSqlPoolSecurityAlertPolicyResourceId);
 
             // invoke the operation
-            SynapseSqlPoolSecurityAlertPolicyData data = new SynapseSqlPoolSecurityAlertPolicyData()
+            SynapseSqlPoolSecurityAlertPolicyData data = new SynapseSqlPoolSecurityAlertPolicyData
             {
                 State = SynapseSecurityAlertPolicyState.Enabled,
             };

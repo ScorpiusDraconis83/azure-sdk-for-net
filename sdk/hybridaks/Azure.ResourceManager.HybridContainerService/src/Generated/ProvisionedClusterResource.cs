@@ -9,10 +9,8 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
-using Azure.ResourceManager;
 using Azure.ResourceManager.HybridContainerService.Models;
 
 namespace Azure.ResourceManager.HybridContainerService
@@ -110,7 +108,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Gets the agent pool in the Hybrid AKS provisioned cluster instance
+        /// Gets the specified agent pool in the provisioned cluster
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -122,7 +120,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -141,7 +139,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Gets the agent pool in the Hybrid AKS provisioned cluster instance
+        /// Gets the specified agent pool in the provisioned cluster
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -153,7 +151,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -172,7 +170,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Gets the Hybrid AKS provisioned cluster instance
+        /// Gets the provisioned cluster instance
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -184,7 +182,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -212,7 +210,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Gets the Hybrid AKS provisioned cluster instance
+        /// Gets the provisioned cluster instance
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -224,7 +222,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -252,7 +250,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Deletes the Hybrid AKS provisioned cluster instance
+        /// Deletes the provisioned cluster instance
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -264,7 +262,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -294,7 +292,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Deletes the Hybrid AKS provisioned cluster instance
+        /// Deletes the provisioned cluster instance
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -306,7 +304,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -336,7 +334,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Creates the Hybrid AKS provisioned cluster instance
+        /// Creates or updates the provisioned cluster instance
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -348,7 +346,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -357,7 +355,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </list>
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="data"> The <see cref="ProvisionedClusterData"/> to use. </param>
+        /// <param name="data"> Provisioned Cluster resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
         public virtual async Task<ArmOperation<ProvisionedClusterResource>> CreateOrUpdateAsync(WaitUntil waitUntil, ProvisionedClusterData data, CancellationToken cancellationToken = default)
@@ -382,7 +380,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Creates the Hybrid AKS provisioned cluster instance
+        /// Creates or updates the provisioned cluster instance
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -394,7 +392,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -403,7 +401,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </list>
         /// </summary>
         /// <param name="waitUntil"> <see cref="WaitUntil.Completed"/> if the method should wait to return until the long-running operation has completed on the service; <see cref="WaitUntil.Started"/> if it should return after starting the operation. For more information on long-running operations, please see <see href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/core/Azure.Core/samples/LongRunningOperations.md"> Azure.Core Long-Running Operation samples</see>. </param>
-        /// <param name="data"> The <see cref="ProvisionedClusterData"/> to use. </param>
+        /// <param name="data"> Provisioned Cluster resource definition. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="data"/> is null. </exception>
         public virtual ArmOperation<ProvisionedClusterResource> CreateOrUpdate(WaitUntil waitUntil, ProvisionedClusterData data, CancellationToken cancellationToken = default)
@@ -428,7 +426,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Lists the AAD user credentials of a provisioned cluster instance used only in direct mode.
+        /// Lists the user credentials of the provisioned cluster (can only be used within private network)
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -440,7 +438,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -470,7 +468,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Lists the AAD user credentials of a provisioned cluster instance used only in direct mode.
+        /// Lists the user credentials of the provisioned cluster (can only be used within private network)
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -482,7 +480,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -512,7 +510,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Lists the admin credentials of a provisioned cluster instance used only in direct mode.
+        /// Lists the admin credentials of the provisioned cluster (can only be used within private network)
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -524,7 +522,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>
@@ -554,7 +552,7 @@ namespace Azure.ResourceManager.HybridContainerService
         }
 
         /// <summary>
-        /// Lists the admin credentials of a provisioned cluster instance used only in direct mode.
+        /// Lists the admin credentials of the provisioned cluster (can only be used within private network)
         /// <list type="bullet">
         /// <item>
         /// <term>Request Path</term>
@@ -566,7 +564,7 @@ namespace Azure.ResourceManager.HybridContainerService
         /// </item>
         /// <item>
         /// <term>Default Api Version</term>
-        /// <description>2023-11-15-preview</description>
+        /// <description>2024-01-01</description>
         /// </item>
         /// <item>
         /// <term>Resource</term>

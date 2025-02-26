@@ -7,20 +7,18 @@
 
 using System;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.CostManagement;
 using Azure.ResourceManager.CostManagement.Models;
+using Azure.ResourceManager.Resources;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.CostManagement.Samples
 {
     public partial class Sample_TenantScheduledActionCollection
     {
-        // CreateOrUpdatePrivateScheduledAction
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task CreateOrUpdate_CreateOrUpdatePrivateScheduledAction()
         {
             // Generated from example definition: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2023-03-01/examples/scheduledActions/scheduledAction-createOrUpdate-private.json
@@ -31,33 +29,22 @@ namespace Azure.ResourceManager.CostManagement.Samples
             // authenticate your client
             ArmClient client = new ArmClient(cred);
 
-            // this example assumes you already have this TenantResource created on azure
-            // for more information of creating TenantResource, please refer to the document of TenantResource
-            var tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
+            TenantResource tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
 
             // get the collection of this TenantScheduledActionResource
             TenantScheduledActionCollection collection = tenantResource.GetTenantScheduledActions();
 
             // invoke the operation
             string name = "monthlyCostByResource";
-            ScheduledActionData data = new ScheduledActionData()
+            ScheduledActionData data = new ScheduledActionData
             {
                 DisplayName = "Monthly Cost By Resource",
-                Notification = new NotificationProperties(new string[]
-            {
-"user@gmail.com","team@gmail.com"
-            }, "Cost by resource this month"),
+                Notification = new NotificationProperties(new string[] { "user@gmail.com", "team@gmail.com" }, "Cost by resource this month"),
                 Schedule = new ScheduleProperties(ScheduleFrequency.Monthly, DateTimeOffset.Parse("2020-06-19T22:21:51.1287144Z"), DateTimeOffset.Parse("2021-06-19T22:21:51.1287144Z"))
                 {
                     HourOfDay = 10,
-                    DaysOfWeek =
-{
-ScheduledActionDaysOfWeek.Monday
-},
-                    WeeksOfMonth =
-{
-ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
-},
+                    DaysOfWeek = { ScheduledActionDaysOfWeek.Monday },
+                    WeeksOfMonth = { ScheduledActionWeeksOfMonth.First, ScheduledActionWeeksOfMonth.Third },
                 },
                 Status = ScheduledActionStatus.Enabled,
                 ViewId = new ResourceIdentifier("/providers/Microsoft.CostManagement/views/swaggerExample"),
@@ -74,9 +61,8 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // PrivateScheduledAction
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_PrivateScheduledAction()
         {
             // Generated from example definition: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2023-03-01/examples/scheduledActions/scheduledAction-get-private.json
@@ -87,9 +73,7 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
             // authenticate your client
             ArmClient client = new ArmClient(cred);
 
-            // this example assumes you already have this TenantResource created on azure
-            // for more information of creating TenantResource, please refer to the document of TenantResource
-            var tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
+            TenantResource tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
 
             // get the collection of this TenantScheduledActionResource
             TenantScheduledActionCollection collection = tenantResource.GetTenantScheduledActions();
@@ -105,9 +89,8 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // PrivateScheduledAction
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Exists_PrivateScheduledAction()
         {
             // Generated from example definition: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2023-03-01/examples/scheduledActions/scheduledAction-get-private.json
@@ -118,9 +101,7 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
             // authenticate your client
             ArmClient client = new ArmClient(cred);
 
-            // this example assumes you already have this TenantResource created on azure
-            // for more information of creating TenantResource, please refer to the document of TenantResource
-            var tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
+            TenantResource tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
 
             // get the collection of this TenantScheduledActionResource
             TenantScheduledActionCollection collection = tenantResource.GetTenantScheduledActions();
@@ -132,9 +113,8 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
             Console.WriteLine($"Succeeded: {result}");
         }
 
-        // PrivateScheduledAction
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task GetIfExists_PrivateScheduledAction()
         {
             // Generated from example definition: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2023-03-01/examples/scheduledActions/scheduledAction-get-private.json
@@ -145,9 +125,7 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
             // authenticate your client
             ArmClient client = new ArmClient(cred);
 
-            // this example assumes you already have this TenantResource created on azure
-            // for more information of creating TenantResource, please refer to the document of TenantResource
-            var tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
+            TenantResource tenantResource = client.GetTenants().GetAllAsync().GetAsyncEnumerator().Current;
 
             // get the collection of this TenantScheduledActionResource
             TenantScheduledActionCollection collection = tenantResource.GetTenantScheduledActions();
@@ -159,7 +137,7 @@ ScheduledActionWeeksOfMonth.First,ScheduledActionWeeksOfMonth.Third
 
             if (result == null)
             {
-                Console.WriteLine($"Succeeded with null as result");
+                Console.WriteLine("Succeeded with null as result");
             }
             else
             {

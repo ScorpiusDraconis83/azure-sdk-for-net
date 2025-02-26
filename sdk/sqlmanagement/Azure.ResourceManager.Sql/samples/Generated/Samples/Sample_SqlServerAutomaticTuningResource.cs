@@ -9,17 +9,15 @@ using System;
 using System.Threading.Tasks;
 using Azure.Core;
 using Azure.Identity;
-using Azure.ResourceManager;
-using Azure.ResourceManager.Sql;
 using Azure.ResourceManager.Sql.Models;
+using NUnit.Framework;
 
 namespace Azure.ResourceManager.Sql.Samples
 {
     public partial class Sample_SqlServerAutomaticTuningResource
     {
-        // Get a server's automatic tuning settings
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Get_GetAServerSAutomaticTuningSettings()
         {
             // Generated from example definition: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningGet.json
@@ -48,9 +46,8 @@ namespace Azure.ResourceManager.Sql.Samples
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Updates server automatic tuning settings with all properties
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_UpdatesServerAutomaticTuningSettingsWithAllProperties()
         {
             // Generated from example definition: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningUpdateMax.json
@@ -70,23 +67,23 @@ namespace Azure.ResourceManager.Sql.Samples
             SqlServerAutomaticTuningResource sqlServerAutomaticTuning = client.GetSqlServerAutomaticTuningResource(sqlServerAutomaticTuningResourceId);
 
             // invoke the operation
-            SqlServerAutomaticTuningData data = new SqlServerAutomaticTuningData()
+            SqlServerAutomaticTuningData data = new SqlServerAutomaticTuningData
             {
                 DesiredState = AutomaticTuningServerMode.Auto,
                 Options =
 {
-["createIndex"] = new AutomaticTuningServerOptions()
+["createIndex"] = new AutomaticTuningServerOptions
 {
 DesiredState = AutomaticTuningOptionModeDesired.Off,
 },
-["dropIndex"] = new AutomaticTuningServerOptions()
+["dropIndex"] = new AutomaticTuningServerOptions
 {
 DesiredState = AutomaticTuningOptionModeDesired.On,
 },
-["forceLastGoodPlan"] = new AutomaticTuningServerOptions()
+["forceLastGoodPlan"] = new AutomaticTuningServerOptions
 {
 DesiredState = AutomaticTuningOptionModeDesired.Default,
-},
+}
 },
             };
             SqlServerAutomaticTuningResource result = await sqlServerAutomaticTuning.UpdateAsync(data);
@@ -98,9 +95,8 @@ DesiredState = AutomaticTuningOptionModeDesired.Default,
             Console.WriteLine($"Succeeded on id: {resourceData.Id}");
         }
 
-        // Updates server automatic tuning settings with minimal properties
-        [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("Only verifying that the sample builds")]
+        [Test]
+        [Ignore("Only validating compilation of examples")]
         public async Task Update_UpdatesServerAutomaticTuningSettingsWithMinimalProperties()
         {
             // Generated from example definition: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerAutomaticTuningUpdateMin.json
@@ -120,7 +116,7 @@ DesiredState = AutomaticTuningOptionModeDesired.Default,
             SqlServerAutomaticTuningResource sqlServerAutomaticTuning = client.GetSqlServerAutomaticTuningResource(sqlServerAutomaticTuningResourceId);
 
             // invoke the operation
-            SqlServerAutomaticTuningData data = new SqlServerAutomaticTuningData()
+            SqlServerAutomaticTuningData data = new SqlServerAutomaticTuningData
             {
                 DesiredState = AutomaticTuningServerMode.Auto,
             };
